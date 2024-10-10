@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Material Cards</title>
+  <link rel="stylesheet" href="courses.css">
+</head>
+<body>
+
+  <header class="header">
+    <h1>DSA by Dr.BRK</h1><br><br><br>
+    <nav class="navbar">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="header">
+          <img src="dsa_cvr.png" alt="Course Image">
+      </div>
+      <div class="info">
+          <h2 class="title">Basics of Data Structures</h2>
+          <p>Learn the basics of Data structures. Let's start from the beginning!</p>
+      </div>
+      <div class="footer">
+          <p class="tag">C #Beginner</p>
+          <button type="button" class="action" onclick="openCourse('ds_basics_course/dsa_basics.html')">Start Learning</button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="header">
+        <img src="stack_cvr.png" alt="Course Image">
+      </div>
+      <div class="info">
+        <h2 class="title">Stack Data Structure</h2>
+        <p>Learn the basics of Stack Data structure. No prior experience needed!</p>
+      </div>
+      <div class="footer">
+        <p class="tag">C #Beginner</p>
+        <button type="button" class="action">Start Learning</button>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="header">
+        <img src="queue_cvr.png" alt="Course Image">
+      </div>
+      <div class="info">
+        <h2 class="title">Queue Data Structure</h2>
+        <p>Learn the basics of Queue Data structure. No prior experience needed!</p>
+      </div>
+      <div class="footer">
+        <p class="tag">C #Beginner</p>
+        <button type="button" class="action">Start Learning</button>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card">
+      <div class="header">
+        <img src="bfs_cvr.png" alt="Course Image">
+      </div>
+      <div class="info">
+        <h2 class="title">BFS Algorithm</h2>
+        <p>Learn the BFS Algorithm. No prior experience needed!</p>
+      </div>
+      <div class="footer">
+        <p class="tag">C #Beginner</p>
+        <button type="button" class="action">Start Learning</button>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="card">
+      <div class="header">
+        <img src="bfs_cvr.png" alt="Course Image">
+      </div>
+      <div class="info">
+        <h2 class="title">DFS Algorithm</h2>
+        <p>Learn the DFS Algorithm. No prior experience needed!</p>
+      </div>
+      <div class="footer">
+        <p class="tag">C #Beginner</p>
+        <button type="button" class="action">Start Learning</button>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="card">
+      <div class="header">
+        <img src="image.png" alt="Course Image">
+      </div>
+      <div class="info">
+        <h2 class="title">Introduction to HTML</h2>
+        <p>Learn the basics of HTML to structure web pages and create meaningful content. No prior experience needed!</p>
+      </div>
+      <div class="footer">
+        <p class="tag">#HTML #Beginner</p>
+        <button type="button" class="action">Start Learning</button>
+      </div>
+    </div>
+  
+    <!-- Card 7 -->
+    <div class="card">
+      <div class="header">
+        <img src="image2.jpg" alt="Course Image">
+      </div>
+      <div class="info">
+        <h2 class="title">Mastering CSS</h2>
+        <p>Understand the power of CSS to create stunning layouts, animations, and responsive websites.</p>
+      </div>
+      <div class="footer">
+        <p class="tag">#CSS #Intermediate</p>
+        <button type="button" class="action">Start Learning</button>
+      </div>
+    </div>
+  
+    <!-- Card 8 -->
+    <div class="card">
+      <div class="header">
+        <img src="image3.jpg" alt="Course Image">
+      </div>
+      <div class="info">
+        <h2 class="title">JavaScript for Beginners</h2>
+        <p>Dive into JavaScript and learn how to make web pages dynamic with this beginner-friendly course.</p>
+      </div>
+      <div class="footer">
+        <p class="tag">#JavaScript #Beginner</p>
+        <button type="button" class="action">Start Learning</button>
+      </div>
+    </div>
+
+    <!-- Add more cards as needed -->
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 Course Collection. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function openCourse(url) {
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>
