@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            background-color: #3a6cf4;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            transition: width 0.3s ease;
+        }
+
+        h2{
+            font-family:  cursive;
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 24px;
+            /* font-family:  cursive; */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding-left: 0;
+            /* font-family:  cursive; */
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #ffffff;
+            color: #3a6cf4;
+        }
+
+        /* Main content area */
+        .content {
+            margin-left: 260px;
+            padding: 30px;
+            transition: margin-left 0.3s ease;
+        }
+
+        section {
+            display: none;
+            margin-bottom: 50px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: justify; /* Justify text alignment */
+            
+        }
+
+        section.active {
+            display: block;
+        }
+
+        section h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #3a6cf4;
+            text-align: center;
+        }
+
+        section p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 10px;
+            text-align: justify; /* Align text in paragraphs */
+        }
+
+        section img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+        section li{
+            margin-left: 20px;
+        }
+        section.active {
+            display: block;
+        }
+
+        section h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #3a6cf4;
+        }
+
+        section p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        section img {
+            max-width: 100%; /* Responsive width */
+            height: auto; /* Maintain aspect ratio */
+            margin: 20px 0; /* Space around the image */
+        }
+
+        .navigation-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background-color: #3a6cf4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #2a52b5;
+        }
+
+        /* Responsive design */
+        @media (max-width: 576px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+
+        h1 {
+            text-align: center;
+        }
+        #quiz {
+            margin: 20px auto;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .result {
+            margin: 40px auto;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    table {
+    width: 100%;
+    border-collapse: collapse; /* Collapses borders for better appearance */
+    max-width: 100%;
+    box-sizing: border-box; /* Ensures padding is included in the width */
+    overflow-x: auto; /* Ensures the table can scroll horizontally if content overflows */
+    padding: 0;
+    margin: 0;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #dddddd;
+    box-sizing: border-box;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+#submit {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    #submit:hover {
+        background-color: #45a049;
+    }
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+    .correct {
+        color: green;
+    }
+    .incorrect {
+        color: red;
+    }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>What is a Data Structure?</h2>
+        <ul>
+            <li><a href="#" onclick="showSection('intro1')">What is a Data Structure?</a></li>
+            <li><a href="#" onclick="showSection('intro2')">Types Of Data Structures</a></li>
+            <li><a href="#" onclick="showSection('impl1')">Linear Data Structure</a></li>
+            <li><a href="#" onclick="showSection('impl2')">Non-Linear Data Structure</a></li>
+            <li><a href="#" onclick="showSection('apps1')">Applications and Differences (Linear and Non-Linear DS)</a></li>
+            <li><a href="#" onclick="showSection('apps2')">Advantages and Disadvantages of Data Structures</a></li>
+            <li><a href="#" onclick="showSection('quiz')">Test your Knoledge</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <section id="intro1" class="active">
+            <h2>Data Structure</h2>
+            <p>A data structure is a method for efficiently arranging and storing data on a computer. Data structures assist programmers in managing and manipulating data in their applications in a similar way to how a filing cabinet arranges files for convenient access.</p>
+            <!-- <br><h4> Real-World Example</h4> -->
+             <br><br>
+<b>Think of a library as a data structure.</b> <p>
+A data structure is like a system for organizing information.</p><br>
+
+<ul><li>Books in the library represent the information or data we want to keep.</li>
+    <li>The library system: how the books are arranged on shelves, sorted into categories, or listed in a catalog(menu) acts as the data structure.</li>
+    <p>In a library, books can be organized in different ways, like by:</p>
+    <ul>
+        <li>Author (who wrote it)</li>
+        <li>Genre (type of book, like fiction or nonfiction)</li>
+        <li>Title (the name of the book)</li>
+    </ul>
+    <img src="dse.png" alt="example of stack data structure">
+    <p>
+        This organization makes it easier for people to find and borrow books quickly. Similarly, in computer programming, different types of data structures (like arrays, linked lists, or trees) help us organize and manage data efficiently, so we can access and change it easily.
+<br>
+So, just like a well-organized library helps you find books faster, a good data structure helps computers work with data more effectively.
+</p>
+            <div class="navigation-buttons">
+                <span></span>
+                <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+            </div>
+        </section>
+
+        <section id="intro2">
+            <h2>Types Of Data Structures</h2>
+            <p>There are many different types of data structures, each with its own special purpose. Some are good for storing lists of things, while others are better for organizing information in a tree-like structure. By using the right data structure, we can make it easier to find, add, or remove information.</p>
+            <p>Basically we considder two types of data Structures they are :<br><br>
+                <ol>
+                    <li>Linear Data Structures </li><br>
+                    <li>Non Linear Data Structures</li><br>
+                    
+                </ol><br>
+                <img src="typesofds.png" alt="Types of data structures">
+
+                <ol>
+                <li><b>Linear Data Structures</b></li>
+                <p>A linear data structure is a type of data structure where data elements are arranged in a sequence or line. In a linear data structure, each element is connected to its previous and next element, and data is accessed in a sequential manner.</p><br>
+<b>Types of Linear Data Structures:</b><br>
+ <img src="lds.png" alt="types of linear data structures"><br>
+<ol>
+<li> Array.</li>
+<li>Linked List (Singly, Doubly, Circular).</li>
+<li> Stack.</li>
+<li> Queue (Simple Queue, Circular Queue, Priority Queue).</li>
+</ol>
+</p>
+<br><br>
+<li><b>Non Linear Data Structures</b></li>
+                <p>A non-linear data structure is a type of data structure where data elements are not arranged sequentially or in a linear order. Instead, data is organized in a hierarchical or interconnected manner, allowing multiple paths for traversal and access. Unlike linear structures, where elements follow a sequence, non-linear structures have relationships that can branch in different directions.</p>
+                <p> <b>Types of Non-Linear Data Structures:</b><br>
+                    <img src="nlds.png" alt="types of non linear data structures"><br>
+                    <ol>
+                    <li> Tree (Binary Tree, Binary Search Tree, AVL Tree, Heap, B-Tree).</li>
+                    <li>Graph (Directed Graph, Undirected Graph, Weighted Graph, Unweighted Graph).</li>
+                    <li>Tables.</li>
+                    <li>Sets.</li>
+                </ol>
+                    </p>
+    </ol>
+            </p><br><br>
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+            </div>
+        </section>
+
+        <section id="impl1">
+            <h2>Linear Data Structure</h2>
+            <p>A linear data structure is a type of data structure where data elements are arranged in a sequence or line. In a linear data structure, each element is connected to its previous and next element, and data is accessed in a sequential manner.</p>
+
+<br> <b>Characteristics of Linear Data Structure:</b><br><br>
+<ol>
+<li>Sequential Organization: <br> 
+    In a linear data structure, the elements are arranged one after another in a straight line. Each item (except the first one) has something that comes before it, and each item (except the last one) has something that comes after it.</li><br>
+<li>Order Preservation: <br>
+    The order in which you add elements stays the same. So, the first item you add is the first one you can access or remove, and the last item you add is the last one you can access or remove.</li><br>
+<li>Fixed or Dynamic Size:<br>
+    Linear data structures can be either a fixed size or change size. For example, arrays have a fixed size, while structures like linked lists, stacks, and queues can grow or shrink as needed when you add or remove elements.</li><br>
+<li>Efficient Access: <br> 
+    Getting items from a linear data structure is usually quick and easy. For instance, in an array, you can access any item instantly if you know its position (index).</li> <br>
+</ol><br><br>
+<b>Advantages of Linear Data Structures</b><br><br>
+<ol>
+    <li>Easy to access data:<br>
+        You can quickly get to any element by its position in the sequence.</li><br>
+    <li>Flexible size:<br>
+        Linear data structures can grow or shrink as you add or remove elements.</li><br>
+    <li>Easy to set up:<br>
+        It's simple to create linear data structures using arrays or linked lists.</li><br>
+    <li>Useful for many tasks:<br>
+        Linear data structures are great for things like searching, sorting, and organizing data.</li><br>
+    <li>Straightforward algorithms:
+        Many of the algorithms used with linear data structures are simple and easy to understand.</li><br>
+</ol><br><br>
+<b>Disadvantages of Linear Data Structures</b><br><br>
+<ol>
+    <Li>Limited access to data: <br>
+        It can take longer to access elements that aren’t at the beginning or end of the sequence.</Li><br>
+    <Li>Extra memory use: <br>
+        Linked lists, stacks, and queues need extra memory to store links or pointers between elements.</Li><br>
+    <Li>Complex algorithms: <br>
+        Some tasks like searching and sorting can be more complicated and take more time in linear data structures.</Li><br>
+    <Li>Wasted memory:<br>
+        If there are gaps in how memory is allocated, linear data structures can waste space.</Li><br>
+    <li>Not ideal for quick access: <br>
+        Linear data structures aren't the best choice when you need to quickly access random elements, like finding something in a large dataset.</li><br>
+</ol><br><br>
+
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+            </div>
+        </section>
+
+        <section id="impl2">
+            <h2>Non-Linear Data Structure</h2>
+            <p>In non-linear data structures, the data elements are not arranged in a straight line or sequence. This means you can't go through all the elements in just one pass. Non-linear structures are more complex to set up than linear ones, but they use computer memory more efficiently. Examples of non-linear data structures include trees and graphs.</p>
+            <br><b>Characteristics of Non-Linear Data Structure:</b><br><br>
+            <ol>
+                <li>Hierarchical Organization: <br>
+                    Data is organized in levels, where elements can have parent-child relationships (e.g., trees).</li><br>
+                <li>Multiple Paths for Traversal: <br>
+                    You can access elements through different paths, not just in one sequence.</li><br>
+                <li>Efficient Memory Utilization: <br>
+                    Non-linear structures use memory efficiently by avoiding gaps, unlike linear structures.</li><br>
+                <li>Complex to Implement: <br>
+                    Non-linear data structures are harder to set up and manage compared to linear ones.</li><br>
+                <li>Supports Complex Relationships: <br>
+                    They are ideal for representing complex relationships, such as networks or family trees (e.g., graphs).</li><br>
+            </ol><br><br>
+
+<b>Advantages of Non-Linear Data Structures:</b><br><br>
+<ol>
+    <li>Efficient Memory Use: <br>
+        They utilize memory more effectively by not requiring contiguous memory blocks.</li><br>
+    <li>Complex Relationships: <br>
+        Non-linear structures are great for representing complex relationships, like hierarchical data (trees) or networks (graphs).</li><br>
+    <li>Multiple Traversal Options: <br>
+        You can traverse elements in different ways, allowing for more flexible data management.</li><br>
+    <li>Faster Searching: <br>
+        Searching for specific elements can be faster in certain non-linear structures, like trees.</li><br>
+    <li>Supports Multi-level Hierarchy: <br>
+        Non-linear structures are ideal for data that needs multi-level representation, such as organizational charts or file systems.</li><br>
+</ol> <br><br>
+
+<b>Disdvantages of Non-Linear Data Structures:</b><br><br>
+<ol>
+    <li>Complex Implementation: <br>
+        They are harder to implement and manage compared to simpler linear structures.</li><br>
+    <li>Difficult Traversal: <br>
+        Accessing and traversing all elements can be more complicated and time-consuming.</li><br>
+    <li>Higher Memory Overhead: <br>
+        Maintaining relationships (like parent-child or node connections) requires additional memory.</li><br>
+    <li>Algorithm Complexity: <br>
+        Some operations, such as inserting or deleting elements, can be more complex and slow in non-linear structures.</li><br>
+    <li>Requires Advanced Knowledge: <br>
+        Understanding and working with non-linear structures often requires more advanced programming skills.</li><br>
+</ol> <br><br>
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps1')">Next</span>
+            </div>
+        </section>
+
+        <section id="apps1">
+            <h2>Differences between Linear and Non-Linear Data Structures</h2> <br>
+            <table border="1" cellpadding="20" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Linear Data Structure</th>
+                    <th>Non-linear Data Structure</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Data elements are arranged in a linear order, with each element connected to its previous and next neighbor.</td>
+                    <td>Data elements are arranged hierarchically, with elements connected in a branching structure.</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Only a single level of organization is involved.</td>
+                    <td>Multiple levels of organization are involved.</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Easier to implement compared to non-linear data structures.</td>
+                    <td>More complex to implement compared to linear data structures.</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>All elements can be traversed in a single pass.</td>
+                    <td>Elements cannot be traversed in just one pass.</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Memory usage is not very efficient.</td>
+                    <td>Memory is used more efficiently.</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>Examples: Arrays, Stacks, Queues, Linked Lists.</td>
+                    <td>Examples: Trees, Graphs.</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>Mainly used in software development for simple applications.</td>
+                    <td>Used in areas like Artificial Intelligence and image processing.</td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>Best for storing and manipulating simple data.</td>
+                    <td>Best for representing complex relationships, like social networks or file systems.</td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>Good performance for simple operations but slower for searching or modifying elements in the middle.</td>
+                    <td>Performance varies depending on the structure and operation, and can be optimized for specific tasks.</td>
+                  </tr>
+                </tbody>
+              </table> <br><br><br>
+
+
+              <h2>Applications of Linear and Non-Linear Data Structures</h2>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Application</th>
+                          <th>Description</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td>Array</td>
+                          <td>Used for storing multiple items of the same type, allowing for efficient access via indexing.</td>
+                      </tr>
+                      <tr>
+                          <td>Linked List</td>
+                          <td>Used for dynamic memory allocation where elements can be easily added or removed.</td>
+                      </tr>
+                      <tr>
+                          <td>Stack</td>
+                          <td>Used in function call management, expression evaluation, and backtracking algorithms.</td>
+                      </tr>
+                      <tr>
+                          <td>Queue</td>
+                          <td>Used in scheduling processes, managing requests in a web server, and breadth-first search algorithms.</td>
+                      </tr>
+                      <tr>
+                          <td>Tree</td>
+                          <td>Used in hierarchical data representation like file systems, organization structures, and databases.</td>
+                      </tr>
+                      <tr>
+                          <td>Graph</td>
+                          <td>Used for network routing, social network analysis, and mapping relationships between data points.</td>
+                      </tr>
+                  </tbody>
+              </table>
+          
+              
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps2')">Next</span>
+            </div>
+        </section>
+
+        <section id="apps2">
+            <h2>Advantages and Disadvantages of Data Structures</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Advantages</th>
+                        <th>Disadvantages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Efficient data management: <br> Data structures help organize and manage data efficiently.</td>
+                        <td>Complexity: <br> Some data structures can be complex to implement and understand.</td>
+                    </tr>
+                    <tr>
+                        <td>Improved performance: <br> Certain data structures can optimize performance for specific operations.</td>
+                        <td>Memory consumption: <br> Some data structures may require more memory than others.</td>
+                    </tr>
+                    <tr>
+                        <td>Faster access: <br> Data structures like hash tables provide faster access times.</td>
+                        <td>Difficulty in choosing: <br> Selecting the appropriate data structure for a specific task can be challenging.</td>
+                    </tr>
+                    <tr>
+                        <td>Reusability: <br> Data structures can be reused in different programs or systems.</td>
+                        <td>Overhead: <br> Some data structures may introduce overhead due to additional features.</td>
+                    </tr>
+                    <tr>
+                        <td>Encapsulation: <br> Data structures can encapsulate data and provide a clear interface.</td>
+                        <td>Algorithm dependency: <br> The efficiency of operations may depend on the underlying algorithms used.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('apps1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+            </div>
+        </section>
+        <section id="quiz">
+            <h2>Test Your Knowledge</h2>
+            <div id="quiz-container">
+                <div class="question">
+                    <p><strong>1. What is a data structure?</strong></p>
+                    <label><input type="radio" name="q1" value="A"> A method for organizing and storing data.</label><br>
+                    <label><input type="radio" name="q1" value="B"> A programming language.</label><br>
+                    <label><input type="radio" name="q1" value="C"> A type of algorithm.</label><br>
+                    <label><input type="radio" name="q1" value="D"> A hardware component.</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>2. Which of the following is NOT a linear data structure?</strong></p>
+                    <label><input type="radio" name="q2" value="A"> Array</label><br>
+                    <label><input type="radio" name="q2" value="B"> Stack</label><br>
+                    <label><input type="radio" name="q2" value="C"> Queue</label><br>
+                    <label><input type="radio" name="q2" value="D"> Graph</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>3. What is a characteristic of linear data structures?</strong></p>
+                    <label><input type="radio" name="q3" value="A"> Data elements are not arranged sequentially.</label><br>
+                    <label><input type="radio" name="q3" value="B"> Data is organized in a hierarchical manner.</label><br>
+                    <label><input type="radio" name="q3" value="C"> Each element is connected to its previous and next element.</label><br>
+                    <label><input type="radio" name="q3" value="D"> Data can only be accessed in random order.</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>4. Which of the following is an example of a non-linear data structure?</strong></p>
+                    <label><input type="radio" name="q4" value="A"> Linked List</label><br>
+                    <label><input type="radio" name="q4" value="B"> Array</label><br>
+                    <label><input type="radio" name="q4" value="C"> Stack</label><br>
+                    <label><input type="radio" name="q4" value="D"> Tree</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>5. Which of the following is a benefit of using data structures?</strong></p>
+                    <label><input type="radio" name="q5" value="A"> They increase the size of the data.</label><br>
+                    <label><input type="radio" name="q5" value="B"> They help in efficient data access and manipulation.</label><br>
+                    <label><input type="radio" name="q5" value="C"> They are only used in database management.</label><br>
+                    <label><input type="radio" name="q5" value="D"> They eliminate the need for algorithms.</label><br>
+                </div>
+        
+                <div class="question">
+                    <p><strong>6. In a stack, which operation is used to remove an element?</strong></p>
+                    <label><input type="radio" name="q6" value="A"> Push</label><br>
+                    <label><input type="radio" name="q6" value="B"> Pop</label><br>
+                    <label><input type="radio" name="q6" value="C"> Enqueue</label><br>
+                    <label><input type="radio" name="q6" value="D"> Dequeue</label><br>
+                </div>
+        
+                <div class="question">
+                    <p><strong>7. Which of the following data structures uses LIFO (Last In First Out) principle?</strong></p>
+                    <label><input type="radio" name="q7" value="A"> Queue</label><br>
+                    <label><input type="radio" name="q7" value="B"> Stack</label><br>
+                    <label><input type="radio" name="q7" value="C"> Array</label><br>
+                    <label><input type="radio" name="q7" value="D"> Linked List</label><br>
+                </div>
+        
+                <div class="question">
+                    <p><strong>8. Which operation is performed to add an element to a queue?</strong></p>
+                    <label><input type="radio" name="q8" value="A"> Push</label><br>
+                    <label><input type="radio" name="q8" value="B"> Pop</label><br>
+                    <label><input type="radio" name="q8" value="C"> Enqueue</label><br>
+                    <label><input type="radio" name="q8" value="D"> Dequeue</label><br>
+                </div>
+        
+                <div class="question">
+                    <p><strong>9. What is the primary purpose of a linked list?</strong></p>
+                    <label><input type="radio" name="q9" value="A"> To store elements in a contiguous memory location.</label><br>
+                    <label><input type="radio" name="q9" value="B"> To facilitate efficient insertion and deletion of elements.</label><br>
+                    <label><input type="radio" name="q9" value="C"> To improve search time for elements.</label><br>
+                    <label><input type="radio" name="q9" value="D"> To allow random access of elements.</label><br>
+                </div>
+        
+                <div class="question">
+                    <p><strong>10. Which of the following statements about trees is true?</strong></p>
+                    <label><input type="radio" name="q10" value="A"> A tree is a linear data structure.</label><br>
+                    <label><input type="radio" name="q10" value="B"> In a binary tree, each node can have at most two children.</label><br>
+                    <label><input type="radio" name="q10" value="C"> Trees do not have a root node.</label><br>
+                    <label><input type="radio" name="q10" value="D"> Trees are not used for searching data.</label><br>
+                </div>
+            </div>
+            <button id="submit">Submit</button>
+            <div id="result"></div>
+            <div id="analytics"></div>
+            <div id="warning" style="color: red;"></div>
+        </section>
+        
+        <script>
+            document.getElementById('submit').addEventListener('click', function() {
+                const questions = document.querySelectorAll('.question');
+                let score = 0;
+                const totalQuestions = questions.length;
+                let results = [];
+                let explanations = [];
+        
+                // Check if all questions are answered
+                let allAnswered = true;
+                questions.forEach((question, index) => {
+                    const selected = question.querySelector('input[type="radio"]:checked');
+                    if (!selected) {
+                        allAnswered = false;
+                    } else {
+                        const answer = selected.value;
+                        // Assuming correct answers are stored in an array for validation
+                        const correctAnswers = ['A', 'D', 'C', 'D', 'B', 'B', 'B', 'C', 'B', 'B']; // Adjust according to your correct answers
+                        const explanationsData = [
+                            "A data structure is a way of organizing data for efficient access and modification.",
+                            "A graph is a non-linear data structure; all others are linear.",
+                            "In linear data structures, each element is connected in sequence.",
+                            "A tree is a non-linear data structure.",
+                            "Data structures allow for efficient data manipulation.",
+                            "Pop operation removes the top element in a stack.",
+                            "Stack uses LIFO principle.",
+                            "Enqueue adds an element to the back of the queue.",
+                            "Linked lists allow for efficient insertions and deletions.",
+                            "In a binary tree, each node can have at most two children."
+                        ];
+        
+                        results.push({ question: index + 1, selected: answer });
+                        if (answer === correctAnswers[index]) {
+                            score++;
+                            explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
+                        } else {
+                            explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
+                        }
+                    }
+                });
+        
+                if (!allAnswered) {
+                    document.getElementById('warning').innerText = "Please answer all questions before submitting.";
+                    return; // Stop execution if not all questions are answered
+                } else {
+                    document.getElementById('warning').innerText = ""; // Clear the warning
+                }
+        
+                // Display results
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
+                
+                // Display analytics
+                const analyticsDiv = document.getElementById('analytics');
+                analyticsDiv.innerHTML = "<h3>Analytics:</h3>";
+                explanations.forEach(item => {
+                    if (item.correct) {
+                        analyticsDiv.innerHTML += `<p class="correct">Question ${item.question}: Correct! - ${item.explanation}</p>`;
+                    } else {
+                        analyticsDiv.innerHTML += `<p class="incorrect">Question ${item.question}: Incorrect! - ${item.explanation}</p>`;
+                    }
+                });
+            });
+              // Function to show the selected section and hide the others
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>
