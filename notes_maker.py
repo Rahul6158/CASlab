@@ -96,3 +96,4 @@ if st.button('Generate HTML'):
 
     # Option to download the generated HTML
     st.download_button('Download HTML', data=structured_html, file_name='structured.html', mime='text/html')
+ 
