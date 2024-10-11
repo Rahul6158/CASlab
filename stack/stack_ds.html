@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structures</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Stack Data Structure</h2>
+        <ul>
+            <li><a href="#" onclick="showSection('intro1')">Introduction to Stack</a></li>
+            <li><a href="#" onclick="showSection('intro2')">Key Operations in Stack</a></li>
+            <li><a href="#" onclick="showSection('impl1')">Implementation of Stack</a></li>
+            <li><a href="#" onclick="showSection('impl2')">Implementation of Stack using array</a></li>
+            <li><a href="#" onclick="showSection('impl3')">Implementation of Stack using Linked list</a></li>
+            <li><a href="#" onclick="showSection('impl4')">Stack Variants</a></li>
+            <li><a href="#" onclick="showSection('apps1')">Stack Overflow and Underflow</a></li>
+            <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+            
+            <li><div  id="btn"><button onclick="openInNewTab()">Open Stack using Array Visualizations</button>
+            <button onclick="openInNewTabLl()">Open Stack Using Linked List Visualizations</button><br><br>
+            </div></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <section id="intro1" class="active">
+            <h2>What is a Stack?</h2>
+            <p>A <strong>stack</strong> is a linear data structure that follows the <strong>Last-In-First-Out (LIFO)</strong> principle, where the last element added is the first one to be removed. It is like a real-life stack of objects, where items are placed on top of one another, and you can only remove the item on the top.</p><br>
+          <img src="stack.png" alt="stack example"><br><br>
+            <h3>Principle of Stack (LIFO):</h3><br>
+            <p>The stack operates based on the <strong>LIFO (Last-In-First-Out)</strong> principle. This means:</p>
+            <ul>
+              <li>The <strong>last</strong> element that is added to the stack will be the <strong>first</strong> one to be removed.</li>
+            </ul>
+            <p><strong>Example</strong>: Imagine a stack of plates in a kitchen. If you place several plates one by one on top of each other, to get a plate, you have to remove the last one placed first.</p>
+            <img src="stack_of_plates.png" alt="">
+          <br><br>
+          <h3>Understanding the Stack Process</h3><br>
+<p> stack is a simple structure used to store data, and it follows a specific rule for how items are added and removed: Last In, First Out (LIFO). Let’s break down the parts and how the stack process works.</p><br>
+
+<ul>
+<li><strong>Stack Structure:</strong><br>
+    The stack can be visualized as a vertical container where you can add items (like books, plates, or data), but you can only add or remove them from the top. Think of it as a pile of items where you can't pull something out from the middle—only the top item can be interacted with.</li><br>
+<li><strong>Top of the Stack</strong><br>
+    The top of the stack refers to the most recent item added. It’s the only item you can remove or check. If you keep adding items to the stack, the top changes to the latest item added.</li><br>
+</ul><br>
+<h3>Real-Time Examples of Stack</h3>
+<p>Stacks are commonly used in various real-world applications where a last-in, first-out (LIFO) data structure is needed. Some examples include:</p>
+<br><ul>
+    <li><strong>Function Call Stack:</strong> When a function is invoked, its parameters and return address are pushed onto the function call stack, allowing the function to execute and return in reverse order.</li><br>
+    <li><strong>Undo/Redo Operations:</strong> Applications like text editors and web browsers utilize stacks to manage undo and redo functionalities.</li><br>
+    <li><strong>Browser History:</strong> Web browsers maintain a stack of visited pages, allowing users to navigate back to previously viewed pages.</li><br>
+    <li><strong>Expression Evaluation:</strong> Compilers and interpreters use stacks to evaluate expressions in postfix notation.</li><br>
+    <li><strong>Call Stack in Recursion:</strong> Recursive function calls are managed using a stack, with each call pushed onto the stack until the base case is reached.</li><br>
+</ul><br>
+
+            <div class="navigation-buttons">
+                <span></span>
+                <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+            </div>
+        </section>
+
+        <section id="intro2">
+            <h2>Key Operations of a Stack:</h2><br>
+            <ol>
+                <li>
+                    <strong>Push</strong>: The operation used to add an item to the top of the stack. When you push an item onto the stack, it becomes the new top item, and any previously top items are now below it. 
+                </li><br>
+                <li>
+                    <strong>Pop</strong>: The operation used to remove the item from the top of the stack. When you pop an item, you take it off the stack and reduce its size by one. 
+                </li><br>
+                <li>
+                    <strong>Peek (or Top)</strong>: The operation that allows you to view the item at the top of the stack without removing it. 
+                </li><br>
+                <li>
+                    <strong>IsEmpty</strong>: A check that determines whether the stack has any items in it. This operation returns true if the stack is empty and false if it contains items. 
+                </li><br>
+                <li>
+                    <strong>Size</strong>: The operation that returns the number of items currently in the stack. 
+                </li><br>
+            </ol><br><br>
+            
+            <h3>A Real-World Example</h3><br>
+            <ul>
+              <li><strong>Push</strong>: Add an element to the top of the stack. <br> Example: Adding a plate to the top of the stack.</li><br>
+              <li><strong>Pop</strong>: Remove the top element from the stack. <br> Example: Taking the top plate from the stack.</li><br>
+              <li><strong>Peek/Top</strong>: View the top element of the stack without removing it. <br> Example: Checking the plate at the top of the stack without taking it.</li><br>
+              <li><strong>isEmpty</strong>: Check if the stack is empty. <br> Example: If no plates are left in the stack.</li><br>
+              <li><strong>isFull</strong>: Check if the stack is full (in case of a stack with limited size). <br> Example: The stack of plates is full when no more plates can be added.</li><br>
+              <img src="stack_plate.png" alt="stack plates example">
+            </ul><br><br><br>
+
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+            </div>
+        </section>
+
+
+<section id="impl1">
+
+            <h2>Implementation of Stack</h2>
+            <p>A stack can be implemented in various ways, primarily using:</p><br>
+            <ol>
+            <li><strong>Array:</strong> A fixed-size array can be used to store stack elements, with a variable to track the top of the stack.
+            <br><br><ul style="list-style-type: disc;">
+                <li><strong>Usage:</strong> Simple and efficient for a known maximum size.</li>
+                <li><strong>Drawbacks:</strong> Limited by the fixed size of the array. If the stack exceeds this size, it may lead to overflow.</li>
+            </ul>
+            </li><br><br>
+            <li><strong>Linked List:</strong> A dynamic approach using nodes, where each node points to the next, allowing for easy addition and removal of elements without a fixed size.
+                <br><br><ul style="list-style-type: disc;">
+                    <li><strong>Usage:</strong> More flexible as it can grow or shrink dynamically.</li>
+                    <li><strong>Drawbacks:</strong> More memory overhead due to the need to store pointers with each node. Also, performance may be slower due to additional pointer management.</li>
+                </ul>
+            </li><br>
+        </ol><br><br>
+        <h3>Comparison of Stack Implementation: Array vs Linked List </h3><br>
+        <div id="table-overflow">
+        <table border="1" cellpadding="10">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Stack Using Array</th>
+              <th>Stack Using Linked List</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Memory Allocation</td>
+              <td>Fixed size (must define size at the start).</td>
+              <td>Dynamic size (grows and shrinks as needed).</td>
+            </tr>
+            <tr>
+              <td>Space Efficiency</td>
+              <td>May waste memory if the array is not full (fixed size).</td>
+              <td>More space-efficient, but each node requires extra memory for a pointer.</td>
+            </tr>
+            <tr>
+              <td>Overflow Condition</td>
+              <td>Can occur if the stack is full (even if memory is available).</td>
+              <td>No overflow unless system memory is exhausted.</td>
+            </tr>
+            <tr>
+              <td>Underflow Condition</td>
+              <td>Occurs if the stack is empty when trying to pop an element.</td>
+              <td>Occurs if the stack is empty when trying to pop an element.</td>
+            </tr>
+            <tr>
+              <td>Time Complexity for Push</td>
+              <td>O(1) (amortized for dynamic arrays, always O(1) for fixed arrays).</td>
+              <td>O(1), since a new node is added at the top of the list.</td>
+            </tr>
+            <tr>
+              <td>Time Complexity for Pop</td>
+              <td>O(1), just removing the top element from the array.</td>
+              <td>O(1), simply removes the top node of the linked list.</td>
+            </tr>
+            <tr>
+              <td>Time Complexity for Peek</td>
+              <td>O(1), accessing the top element in constant time.</td>
+              <td>O(1), top node is immediately accessible.</td>
+            </tr>
+            <tr>
+              <td>Resize Operations</td>
+              <td>Needs resizing (copying array to a larger/smaller one) when the stack exceeds its initial capacity.</td>
+              <td>No need for resizing, dynamically adjusts size by adding or removing nodes.</td>
+            </tr>
+            <tr>
+              <td>Memory Overhead</td>
+              <td>Minimal overhead since only the array itself is stored.</td>
+              <td>Higher memory overhead because each node needs extra memory for the pointer.</td>
+            </tr>
+            <tr>
+              <td>Implementation Simplicity</td>
+              <td>Easier to implement, with fewer pointers and memory management.</td>
+              <td>Slightly more complex due to the need for handling node pointers.</td>
+            </tr>
+            <tr>
+              <td>Random Access</td>
+              <td>Allows random access to elements via index (though not typical in stack operations).</td>
+              <td>No random access, traversal needed to access middle elements.</td>
+            </tr>
+            <tr>
+              <td>Cache Efficiency</td>
+              <td>Better cache performance due to contiguous memory allocation.</td>
+              <td>Poorer cache performance since nodes are scattered in memory.</td>
+            </tr>
+            <tr>
+              <td>Flexibility</td>
+              <td>Size is fixed unless resized dynamically (requires extra handling).</td>
+              <td>Fully flexible, grows/shrinks automatically with operations.</td>
+            </tr>
+            <tr>
+              <td>Best Suited For</td>
+              <td>When the maximum size of the stack is known in advance and memory is a constraint.</td>
+              <td>When the number of elements is unknown or frequently changes.</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+        </div>
+    </section>
+        <section  id="impl2">
+            <h2>Implementing a Stack Using an Array</h2><br><br>
+
+        <div  id="btn"><button onclick="openInNewTab()">Open Stack using Array Visualizations</button>
+        </div>
+                </a><br><br>
+            <p>To create a stack with an array, we start by initializing an array and using its end as the top of the stack. We’ll implement four main operations: <strong>push</strong> (to add an item), <strong>pop</strong> (to remove an item), <strong>peek</strong> (to check the top item), and <strong>isEmpty</strong> (to check if the stack is empty). We also need to handle situations when the stack is empty or full.</p>
+            <br><br>
+            <h3>Step-by-Step Approach:</h3><br>
+            <ol>
+                <li>Initialize an array to represent the stack.</li>
+                <li>Use the end of the array to represent the top of the stack.</li>
+                <li>Implement push, pop, peek, and isEmpty operations while ensuring we check for empty or full stack conditions.</li>
+            </ol>
+            <br><br>
+            <h3>Combined Stack Operations Algorithm</h3><br>
+            <ol>
+                <li>Initialize the stack with a specified capacity.</li>
+                <li>For <strong>push</strong>: Check if the stack is full. If not, increment the top and add the item.</li>
+                <li>For <strong>pop</strong>: Check if the stack is empty. If not, return the item at the top and decrement the top.</li>
+                <li>For <strong>peek</strong>: Check if the stack is empty. If not, return the item at the top.</li>
+                <li>For <strong>isEmpty</strong>: Check if the top is -1; if yes, return true; otherwise, return false.</li>
+            </ol>
+            <br><br>
+            <h3>Implementation Example</h3><br>
+            <p>Here is a simple C program to demonstrate the array implementation of a stack:</p><br>
+            
+            <pre>
+            <code>
+            #include &lt;limits.h&gt;
+            #include &lt;stdio.h&gt;
+            #include &lt;stdlib.h&gt;
+            
+            // Structure to represent a stack
+            struct Stack {
+                int top;
+                unsigned capacity;
+                int* array;
+            };
+            
+            // Function to create a stack of given capacity
+            struct Stack* createStack(unsigned capacity) {
+                struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+                stack-&gt;capacity = capacity;
+                stack-&gt;top = -1;
+                stack-&gt;array = (int*)malloc(stack-&gt;capacity * sizeof(int));
+                return stack;
+            }
+            
+            // Push operation
+            void push(struct Stack* stack, int item) {
+                if (stack-&gt;top == stack-&gt;capacity - 1) return; // Check if stack is full
+                stack-&gt;array[++stack-&gt;top] = item; // Increment top and add item
+                printf("%d pushed to stack\n", item);
+            }
+            
+            // Pop operation
+            int pop(struct Stack* stack) {
+                if (stack-&gt;top == -1) return INT_MIN; // Check if stack is empty
+                return stack-&gt;array[stack-&gt;top--]; // Return top item and decrement top
+            }
+            
+            // Peek operation
+            int peek(struct Stack* stack) {
+                if (stack-&gt;top == -1) return INT_MIN; // Check if stack is empty
+                return stack-&gt;array[stack-&gt;top]; // Return top item
+            }
+            
+            // isEmpty operation
+            int isEmpty(struct Stack* stack) {
+                return stack-&gt;top == -1; // Return true if stack is empty
+            }
+            
+            // Main function to test the stack operations
+            int main() {
+                struct Stack* stack = createStack(100); // Create a stack of capacity 100
+            
+                push(stack, 10); // Push 10 to stack
+                push(stack, 20); // Push 20 to stack
+                push(stack, 30); // Push 30 to stack
+            
+                printf("%d popped from stack\n", pop(stack)); // Pop item from stack
+            
+                return 0;
+            }
+            </code>
+        </pre><br>
+            
+            <h3>Output</h3><br>
+            <pre><code>
+            10 pushed to stack
+            20 pushed to stack
+            30 pushed to stack
+            30 popped from stack
+            </code></pre><br>
+            <br><br>
+            <a href="https://www.onlinegdb.com/">click here for Online compiler</a><br><br>
+            <br><br>
+            
+            <h3>Code Explanation:</h3><br>
+            <ol>
+                <li><code>#include &lt;limits.h&gt;</code>: <br> Includes the limits header to use <code>INT_MIN</code> for error handling.</li><br>
+                <li><code>#include &lt;stdio.h&gt;</code>: <br> Includes the standard input-output header for printf.</li><br>
+                <li><code>#include &lt;stdlib.h&gt;</code>: <br> Includes the standard library for memory allocation functions.</li><br>
+                <li><code>struct Stack</code>: <br> Defines a structure to represent a stack with <code>top</code>, <code>capacity</code>, and <code>array</code> attributes.</li><br>
+                <li><code>createStack(unsigned capacity)</code>: <br> Function to create a stack of a given capacity. Allocates memory for the stack and initializes its attributes.</li><br>
+                <li><code>isFull(struct Stack* stack)</code>: <br> Function to check if the stack is full by comparing <code>top</code> with <code>capacity - 1</code>.</li><br>
+                <li><code>isEmpty(struct Stack* stack)</code>: <br> Function to check if the stack is empty by checking if <code>top</code> is -1.</li><br>
+                <li><code>push(struct Stack* stack, int item)</code>: <br> Adds an item to the stack if it’s not full. Increments the <code>top</code> and assigns the <code>item</code> to the stack’s <code>array</code>.</li><br>
+                <li><code>pop(struct Stack* stack)</code>: <br> Removes and returns the item from the top of the stack if it’s not empty. Decrements the <code>top</code>.</li><br>
+                <li><code>peek(struct Stack* stack)</code>: <br> Returns the top item without removing it, checking if the stack is empty first.</li><br>
+                <li><code>main()</code>: <br> Tests the stack operations by creating a stack and pushing/removing items.</li><br>
+            </ol>
+            
+            <br><br>
+            <h3>Complexity Analysis:</h3><br>
+            <h4>Time Complexity:</h4><br>
+            <ul>
+                <li>Push: O(1)</li>
+                <li>Pop: O(1)</li>
+                <li>Peek: O(1)</li>
+                <li>isEmpty: O(1)</li>
+            </ul>
+            <p>Auxiliary Space: O(n) (where n is the number of items in the stack).</p>
+            <br><br>
+            <h3>Summary</h3>
+            <p>In this implementation, we define an array to represent the stack and use a variable called <code>top</code> to keep track of the index of the top element in the stack.</p>
+            <p>To add an item to the stack (push operation), we first check if the stack is full. If it's not full, we increment the <code>top</code> index and place the new item at that position in the array.</p>
+            <p>To remove an item from the stack (pop operation), we check if the stack is empty. If it’s not empty, we remove the top element by returning the value at the <code>top</code> index and then decrement the <code>top</code> index.</p><br><br>
+            <h3>Advantages of Array Implementation:</h3><br>
+            <ul>
+                <li>Simple to implement.</li>
+                <li>Saves memory as it doesn’t use pointers.</li>
+            </ul>
+            <br>
+            <br>
+            <h3>Disadvantages of Array Implementation:</h3><br>
+            <ul>
+                <li>Not dynamic; it cannot grow or shrink based on needs during runtime (but in some programming languages like C++, Python, or Java, dynamic-sized arrays can be used to make stacks grow or shrink).</li>
+                <li>The total size of the stack must be defined in advance.</li>
+            </ul><br><br>
+            
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+            </div>
+</section>
+            
+
+<section id="impl3">
+
+    
+    <h2>Implementing a Stack Using a Singly Linked List</h2><br>
+    <div id="btn">
+    <button onclick="openInNewTabLl()">Open Stack Using Linked List Visualizations</button><br></div><br>
+
+    <p>A stack consists of a top pointer, which acts as the "head" of the stack. This is where the insertion and deletion of items occur. The first node has a null value in the link field, while the second node's link points to the first node, and so forth. The address of the last node is stored in the “top” pointer.</p>
+
+    <p>The main advantage of using a linked list for stack implementation is the ability to grow or shrink the stack dynamically as needed. In contrast, an array-based implementation restricts the stack's maximum capacity, which could lead to stack overflow. Here, each new node is allocated dynamically, thus eliminating overflow issues.</p>
+<br><br>
+    <h3>Stack Operations</h3><br>
+    <ul>
+        <li><strong>push():</strong> Insert a new element into the stack by adding it to the beginning of the linked list.</li>
+        <li><strong>pop():</strong> Remove and return the top element of the stack by deleting the first element from the linked list.</li>
+        <li><strong>peek():</strong> Return the top element without removing it.</li>
+        <li><strong>display():</strong> Print all elements in the stack.</li>
+    </ul><br><br>
+
+    <div id="impl3">
+        <h4>Operations and their Algorithms:</h4><br>
+        <p>
+            1. <strong>Initialize Stack:</strong> Create an empty stack and set the top pointer to null.<br><br>
+    
+            2. <strong>Push Operation:</strong><br>
+               &nbsp;&nbsp;&nbsp;&nbsp;a) Create a new node.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;b) Set the node's data to the given value.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;c) Link this new node to the current top of the linked list.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;d) Update the top pointer to the new node.<br><br>
+    
+            3. <strong>Pop Operation:</strong><br>
+               &nbsp;&nbsp;&nbsp;&nbsp;a) Check if the stack is empty. If empty, return an underflow message.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;b) Use a temporary pointer to store the top node.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;c) Move the top pointer to the next node.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;d) Free the memory of the temporary node.<br><br>
+    
+            4. <strong>Peek Operation:</strong><br>
+               &nbsp;&nbsp;&nbsp;&nbsp;a) Check if the stack is empty. If empty, return an error.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;b) Otherwise, return the data of the top node.<br><br>
+    
+            5. <strong>Display Operation:</strong><br>
+               &nbsp;&nbsp;&nbsp;&nbsp;a) Initialize a temporary pointer to the top of the stack.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;b) Traverse the stack using the temporary pointer until it reaches null.<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;c) Print the data of each node during traversal.<br><br>
+    
+            <strong>Time Complexity:</strong> O(1) for all operations (push, pop, peek, display).<br>
+            <strong>Space Complexity:</strong> O(N) where N is the number of elements in the stack.
+        </p>
+    </div>
+    <br><br>
+<h3>Implementation Code</h3><br>
+<pre>
+<code>
+// C program to implement a stack using singly linked list
+#include &lt;limits.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// Struct representing a node in the linked list
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* createNode(int new_data) {
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    new_node->data = new_data;
+    new_node->next = NULL;
+    return new_node;
+}
+
+// Struct to implement stack using a singly linked list
+typedef struct Stack {
+    Node* head;
+} Stack;
+
+// Constructor to initialize the stack
+void initializeStack(Stack* stack) { stack->head = NULL; }
+
+// Function to check if the stack is empty
+int isEmpty(Stack* stack) {
+    return stack->head == NULL; // If head is NULL, the stack is empty
+}
+
+// Function to push an element onto the stack
+void push(Stack* stack, int new_data) {
+    Node* new_node = createNode(new_data);
+    if (!new_node) {
+        printf("\nStack Overflow");
+        return;
+    }
+    new_node->next = stack->head; // Link the new node to the current top
+    stack->head = new_node; // Update the top to the new node
+}
+
+// Function to remove the top element from the stack
+void pop(Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("\nStack Underflow\n");
+        return;
+    } else {
+        Node* temp = stack->head; // Assign current top to a temporary variable
+        stack->head = stack->head->next; // Update top to the next node
+        free(temp); // Deallocate memory of the old top node
+    }
+}
+
+// Function to return the top element of the stack
+int peek(Stack* stack) {
+    if (!isEmpty(stack))
+        return stack->head->data; // Return top element if stack is not empty
+    else {
+        printf("\nStack is empty");
+        return INT_MIN; // Return a sentinel value if stack is empty
+    }
+}
+
+// Driver program to test the stack implementation
+int main() {
+    Stack stack;
+    initializeStack(&stack);
+
+    // Push elements onto the stack
+    push(&stack, 11);
+    push(&stack, 22);
+    push(&stack, 33);
+    push(&stack, 44);
+
+    // Print top element of the stack
+    printf("Top element is %d\n", peek(&stack));
+
+    // Remove two elements from the top
+    printf("Removing two elements...\n");
+    pop(&stack);
+    pop(&stack);
+
+    // Print top element of the stack
+    printf("Top element is %d\n", peek(&stack));
+
+    return 0;
+}
+</code>
+</pre><br><br>
+
+    <h3>Output</h3><br>
+    <pre><code>
+        <p>Top element is 44<br>Top element is 22</p>
+    </code></pre><br><br>
+
+
+    <h3>Complexity Analysis</h3><br>
+    <p><strong>Time Complexity:</strong><br> O(1) for all operations (push, pop, and peek) as we do not traverse the list; operations are performed using the current pointer.<br>
+    <strong>Auxiliary Space:</strong><br> O(N), where N is the size of the stack.</p>
+        <br><br>
+    <h3>Summary</h3>
+    <p>In this implementation, we define a <code>Node</code> struct to represent each node in the linked list and a <code>Stack</code> struct that utilizes this node struct to implement the stack. The head attribute of the <code>Stack</code> struct points to the top of the stack (the first node in the linked list).</p>
+    <p>To add an item to the stack, we create a new node with the specified item and link its next pointer to the current head of the stack, then set the head of the stack to the new node, making it the new top.</p>
+    <p>To remove an item from the stack, we simply update the head of the stack to the next node in the list and return the data from the original head node.</p>
+        <br><br>
+    <h3>Benefits of Using a Singly Linked List for Stack Implementation</h3><br>
+    <ul>
+        <li><strong>Dynamic Memory Allocation:</strong> The stack can grow or shrink dynamically without needing a predetermined fixed size.</li><br>
+        <li><strong>Efficient Memory Usage:</strong> Nodes in a singly linked list use less memory compared to doubly linked lists, as they only have a next pointer.</li><br>
+        <li><strong>Easy Implementation:</strong> The implementation is straightforward, requiring only a few lines of code.</li><br>
+        <li><strong>Versatile:</strong> Singly linked lists can also be utilized to implement other data structures such as queues and trees.</li><br>
+    </ul>
+    <br><br>
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+            </div>
+        </section>
+
+<section id="impl4">
+            <h2>Stack Variants</h2><br>
+          
+            <h3>1. Simple Stack</h3><br>
+            <p><strong>Definition:</strong> A basic stack that follows the Last-In-First-Out (LIFO) principle.</p>
+            <p><strong>Principle:</strong> The last element added is the first one to be removed.</p>
+            <p><strong>Operations:</strong> Push, Pop, Peek, isEmpty, isFull.</p><br><br><br>
+          
+            <h3>2. Doubly Ended Stack (Deque)</h3><br>
+            <p><strong>Definition:</strong> A stack where elements can be added and removed from both ends.</p>
+            <p><strong>Principle:</strong> Supports both LIFO and FIFO operations.</p>
+            <p><strong>Operations:</strong> Push, Pop, AddFront, AddBack, RemoveFront, RemoveBack.</p><br><br><br>
+          
+            <h3>3. Circular Stack</h3><br>
+            <p><strong>Definition:</strong> A stack that operates in a circular manner, efficiently using memory.</p>
+            <p><strong>Principle:</strong> Once the stack is full, the next push operation starts from the beginning.</p>
+            <p><strong>Operations:</strong> Push, Pop, Peek, isEmpty.</p><br><br><br>
+          
+            <h3>4. Linked List-based Stack</h3><br>
+            <p><strong>Definition:</strong> A stack implemented using a linked list for dynamic memory allocation.</p>
+            <p><strong>Principle:</strong> Allows for unlimited growth as long as memory is available.</p>
+            <p><strong>Operations:</strong> Push, Pop, Peek, isEmpty.</p><br><br><br>
+          
+            <h3>5. Multi-stack</h3><br>
+            <p><strong>Definition:</strong> A collection of multiple stacks within a single data structure.</p>
+            <p><strong>Principle:</strong> Efficiently manages more than one stack simultaneously.</p>
+            <p><strong>Operations:</strong> Push, Pop for each stack, isEmpty for each stack.</p><br><br><br>
+          
+            <h3>6. Min/Max Stack</h3><br>
+            <p><strong>Definition:</strong> An extended stack that keeps track of the minimum or maximum element.</p>
+            <p><strong>Principle:</strong> Returns the min or max element in constant time.</p>
+            <p><strong>Operations:</strong> Push, Pop, Peek, getMin(), getMax().</p><br><br><br>
+          
+            <h3>7. Fixed-size Stack</h3><br>
+            <p><strong>Definition:</strong> A stack with a predetermined fixed size, implemented using arrays.</p>
+            <p><strong>Principle:</strong> Operations are limited by the stack's size, leading to overflow if full.</p>
+            <p><strong>Operations:</strong> Push, Pop, Peek, isEmpty, isFull.</p><br><br><br>
+          
+            <h3>8. Persistent Stack</h3><br>
+            <p><strong>Definition:</strong> A stack variant where every operation creates a new version.</p>
+            <p><strong>Principle:</strong> Maintains immutability, useful in functional programming.</p>
+            <p><strong>Operations:</strong> Push, Pop, Peek, versioning functions.</p><br><br><br>
+          
+            <h3>9. Parallel Stack</h3><br>
+            <p><strong>Definition:</strong> A stack designed for concurrent operations in multi-threaded environments.</p>
+            <p><strong>Principle:</strong> Ensures safe access by multiple threads without corruption.</p>
+            <p><strong>Operations:</strong> Push, Pop, Peek, isEmpty, isFull, thread-safe operations.</p><br><br><br>
+          
+            <h3>10. Two Stacks in One Array</h3><br>
+            <p><strong>Definition:</strong> Two stacks share a single array, growing from opposite ends.</p>
+            <p><strong>Principle:</strong> Optimizes space usage by allowing two stacks to coexist.</p>
+            <p><strong>Operations:</strong> Push, Pop for each stack, isEmpty for each stack.</p><br><br><br>
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl3')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps1')">Next</span>
+            </div>
+</section>
+          
+
+
+<section id="apps1">
+    <h2>Stack Overflow and Underflow</h2><br>
+  
+    <h3>Stack Overflow</h3><br>
+    <p><strong>Definition:</strong> Stack overflow happens when you try to add more items to a stack than it can hold.</p>
+    <p><strong>Example:</strong> Imagine a stack of plates in a cafeteria. If you keep adding plates to the stack, there will come a point when you can't add any more plates because the stack is already full. If you try to add another plate, it will fall off the stack and create a mess. In programming, this is called a stack overflow error.</p><br><br>
+    <br>
+    <h3>Stack Underflow</h3><br>
+    <p><strong>Definition:</strong> Stack underflow occurs when you try to remove an item from an empty stack.</p>
+    <p><strong>Example:</strong> Using the same cafeteria analogy, if you have an empty stack of plates and you try to take a plate away, there are no plates to take. This situation causes an error known as stack underflow. In programming, this error happens when a pop operation is attempted on an empty stack.</p><br><br>
+  
+    <h3>Summary</h3><br>
+    <ul>
+      <li><strong>Stack Overflow:</strong> Trying to add items to a full stack.</li>
+      <li><strong>Stack Underflow:</strong> Trying to remove items from an empty stack.</li>
+    </ul><br><br>
+  
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('apps1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+            </div>
+        </section>
+        <section id="quiz">
+            <h2>Test Your Knowledge on Stacks</h2>
+            <div id="quiz-container">
+                <div class="question">
+                    <p><strong>1. What is a stack?</strong></p>
+                    <label><input type="radio" name="q1" value="A"> A collection of elements that follows the FIFO principle.</label><br>
+                    <label><input type="radio" name="q1" value="B"> A collection of elements that follows the LIFO principle.</label><br>
+                    <label><input type="radio" name="q1" value="C"> A data structure that allows random access to elements.</label><br>
+                    <label><input type="radio" name="q1" value="D"> A type of linear search algorithm.</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>2. Which operation adds an element to the top of the stack?</strong></p>
+                    <label><input type="radio" name="q2" value="A"> Pop</label><br>
+                    <label><input type="radio" name="q2" value="B"> Push</label><br>
+                    <label><input type="radio" name="q2" value="C"> Enqueue</label><br>
+                    <label><input type="radio" name="q2" value="D"> Dequeue</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>3. Which operation removes the top element from the stack?</strong></p>
+                    <label><input type="radio" name="q3" value="A"> Push</label><br>
+                    <label><input type="radio" name="q3" value="B"> Pop</label><br>
+                    <label><input type="radio" name="q3" value="C"> Enqueue</label><br>
+                    <label><input type="radio" name="q3" value="D"> Dequeue</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>4. What will be the top element after pushing 5, 10, and 15 onto an empty stack?</strong></p>
+                    <label><input type="radio" name="q4" value="A"> 5</label><br>
+                    <label><input type="radio" name="q4" value="B"> 10</label><br>
+                    <label><input type="radio" name="q4" value="C"> 15</label><br>
+                    <label><input type="radio" name="q4" value="D"> Stack will be empty.</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>5. Which data structure is most suitable for implementing a stack?</strong></p>
+                    <label><input type="radio" name="q5" value="A"> Array</label><br>
+                    <label><input type="radio" name="q5" value="B"> Linked List</label><br>
+                    <label><input type="radio" name="q5" value="C"> Both A and B</label><br>
+                    <label><input type="radio" name="q5" value="D"> Tree</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>6. What happens if you try to pop an element from an empty stack?</strong></p>
+                    <label><input type="radio" name="q6" value="A"> The top element is removed.</label><br>
+                    <label><input type="radio" name="q6" value="B"> It throws an underflow error.</label><br>
+                    <label><input type="radio" name="q6" value="C"> It returns null.</label><br>
+                    <label><input type="radio" name="q6" value="D"> Nothing happens.</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>7. What is the time complexity of the push operation in a stack implemented using an array?</strong></p>
+                    <label><input type="radio" name="q7" value="A"> O(1)</label><br>
+                    <label><input type="radio" name="q7" value="B"> O(n)</label><br>
+                    <label><input type="radio" name="q7" value="C"> O(log n)</label><br>
+                    <label><input type="radio" name="q7" value="D"> O(n^2)</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>8. Which of the following applications can use a stack?</strong></p>
+                    <label><input type="radio" name="q8" value="A"> Undo functionality in text editors</label><br>
+                    <label><input type="radio" name="q8" value="B"> Expression evaluation and syntax parsing</label><br>
+                    <label><input type="radio" name="q8" value="C"> Function calls (call stack)</label><br>
+                    <label><input type="radio" name="q8" value="D"> All of the above</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>9. What is a common use case for stacks in programming?</strong></p>
+                    <label><input type="radio" name="q9" value="A"> To store elements for searching</label><br>
+                    <label><input type="radio" name="q9" value="B"> To implement recursive algorithms</label><br>
+                    <label><input type="radio" name="q9" value="C"> To store data in a database</label><br>
+                    <label><input type="radio" name="q9" value="D"> To sort data</label><br>
+                </div>
+                <div class="question">
+                    <p><strong>10. In which situation would you prefer using a stack over a queue?</strong></p>
+                    <label><input type="radio" name="q10" value="A"> When you need to process items in the order they arrive.</label><br>
+                    <label><input type="radio" name="q10" value="B"> When you need to reverse items.</label><br>
+                    <label><input type="radio" name="q10" value="C"> When items need to be stored persistently.</label><br>
+                    <label><input type="radio" name="q10" value="D"> When you need to access elements in a random order.</label><br>
+                </div>
+            </div>
+            <button id="submit">Submit</button>
+            <div id="result"></div>
+            <div id="analytics"></div>
+            <div id="warning" style="color: red;"></div>
+        </section>
+        
+        <script>
+document.getElementById('submit').addEventListener('click', function() {
+    const questions = document.querySelectorAll('.question');
+    let score = 0;
+    const totalQuestions = questions.length;
+    let results = [];
+    let explanations = [];
+
+    // Check if all questions are answered
+    let allAnswered = true;
+    questions.forEach((question, index) => {
+        const selected = question.querySelector('input[type="radio"]:checked');
+        if (!selected) {
+            allAnswered = false;
+        } else {
+            const answer = selected.value;
+            // Assuming correct answers are stored in an array for validation
+            const correctAnswers = ['B', 'B', 'B', 'C', 'C', 'B', 'A', 'D', 'B', 'B']; // Adjust according to your correct answers
+            const explanationsData = [
+                "A stack is a collection of elements that follows the LIFO principle.",
+                "The push operation adds an element to the top of the stack.",
+                "The pop operation removes the top element from the stack.",
+                "The last element pushed (15) will be the top element.",
+                "Both arrays and linked lists can be used to implement stacks.",
+                "Popping from an empty stack typically throws an underflow error.",
+                "The time complexity for the push operation in a stack using an array is O(1).",
+                "Stacks can be used for undo functionality, expression evaluation, and function calls.",
+                "Stacks are commonly used in recursive algorithms.",
+                "Stacks are preferred when reversing items."
+            ];
+
+            results.push({ question: index + 1, selected: answer });
+            if (answer === correctAnswers[index]) {
+                score++;
+                explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
+            } else {
+                explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
+            }
+        }
+    });
+
+    if (!allAnswered) {
+        document.getElementById('warning').innerText = "Please answer all questions before submitting.";
+        return; // Stop execution if not all questions are answered
+    } else {
+        document.getElementById('warning').innerText = ""; // Clear the warning
+    }
+
+    document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
+
+    // Display detailed analytics
+    const analyticsDiv = document.getElementById('analytics');
+    analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
+    explanations.forEach(item => {
+        const colorClass = item.correct ? 'correct' : 'incorrect';
+        const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
+        analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
+    });
+});
+
+              // Function to show the selected section and hide the others
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+        function openInNewTab() {
+            window.open('https://brk8789.github.io/Brk_visualizations/Basics/stack/stack.html', '_blank');
+        }
+        function openInNewTabLl() {
+            window.open('https://brk8789.github.io/Brk_visualizations/Basics/implementation-linked-list/linkedlist.html', '_blank');
+        }
+    </script>
+
+</body>
+
+</html>
