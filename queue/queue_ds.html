@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Data Structure</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Queue Data Structure</h2>
+        <ul>
+            <li><a href="#" onclick="showSection('intro1')">Introduction to Queue</a></li>
+            <li><a href="#" onclick="showSection('intro2')">Key Operations in Queue</a></li>
+            <li><a href="#" onclick="showSection('impl1')">Implementation of Queue</a></li>
+            <li><a href="#" onclick="showSection('impl2')">Implementation of Queue using Array</a></li>
+            <li><a href="#" onclick="showSection('impl3')">Implementation of Queue using Linked List</a></li>
+            <li><a href="#" onclick="showSection('impl4')">Queue Variants</a></li>
+            <li><a href="#" onclick="showSection('apps1')">Queue Overflow and Underflow</a></li>
+            <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+            
+            <li><div id="btn">
+                <button onclick="openInNewTabArray()">Open Queue using Array Visualizations</button>
+                <button onclick="openInNewTab()">Queue Using Array Simple Version</button>
+                <button onclick="openInNewTabLl()">Open Queue Using Linked List Visualizations</button><br><br>
+            </div></li>
+        </ul>
+    </div>
+    
+
+    <div class="content">
+        <section id="intro1" class="active">
+            <h2>What is a Queue?</h2>
+            <p>A <strong>queue</strong> is a linear data structure that follows the <strong>First-In-First-Out (FIFO)</strong> principle, where the first element added is the first one to be removed. It is similar to a real-life queue, like a line of people waiting, where the first person in line is the first one served.</p><br>
+    
+            <img src="queue.png" alt="queue example"><br><br>
+            
+            <h3>Principle of Queue (FIFO):</h3><br>
+            <p>The queue operates based on the <strong>FIFO (First-In-First-Out)</strong> principle. This means:</p>
+            <ul>
+                <li>The <strong>first</strong> element added to the queue will be the <strong>first</strong> one to be removed.</li>
+            </ul>
+            <p><strong>Example</strong>: Think of a line at a ticket counter. The person who gets in line first will be the first to get served, and others have to wait their turn.</p>
+            <img src="queue_ex.avif" alt="queue of people">
+            <br><br>
+    
+            <h3>Understanding the Queue Process</h3><br>
+            <p>A queue is a structure used to store data with a rule for adding and removing items: First In, First Out (FIFO). Let’s break down how a queue works.</p><br>
+    
+            <ul>
+                <li><strong>Queue Structure:</strong><br>
+                    A queue can be visualized as a horizontal line where items are added at the rear and removed from the front. Imagine a line at a bus stop, where people enter at one end and leave from the other end.</li><br>
+                <li><strong>Front and Rear of the Queue:</strong><br>
+                    The front of the queue is where the first item is located and can be removed, while the rear is where new items are added. Each time you add an item, it becomes the new rear.</li><br>
+            </ul><br>
+            
+            <h3>Real-Time Examples of Queue</h3>
+            <p>Queues are frequently used in various real-world applications where a first-in, first-out (FIFO) data structure is needed. Some examples include:</p>
+            <br><ul>
+                <li><strong>Print Queue:</strong> When multiple print requests are sent to a printer, they are queued, and the printer processes them in order.</li><br>
+                <li><strong>Task Scheduling:</strong> Operating systems use queues to manage tasks, with tasks processed in the order they arrive.</li><br>
+                <li><strong>Customer Service Lines:</strong> In customer support, requests are handled in the order they are received.</li><br>
+                <li><strong>Data Buffers:</strong> In streaming or networking, data packets are buffered in a queue and processed in order.</li><br>
+                <li><strong>Call Center Systems:</strong> Calls are queued in the order they are received, ensuring each caller is served sequentially.</li><br>
+            </ul><br>
+    
+            <div class="navigation-buttons">
+                <span></span>
+                <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+            </div>
+        </section>
+        
+        <section id="intro2">
+            <h2>Key Operations of a Queue:</h2><br>
+            <ol>
+                <li>
+                    <strong>Enqueue</strong>: The operation used to add an item to the rear of the queue. When you enqueue an item, it is added to the end, and any previous items remain in the order they were added.
+                </li><br>
+                <li>
+                    <strong>Dequeue</strong>: The operation used to remove the item from the front of the queue. When you dequeue, the item at the front is removed, allowing the next item in line to move up to the front.
+                </li><br>
+                <li>
+                    <strong>Peek (or Front)</strong>: The operation that allows you to view the item at the front of the queue without removing it.
+                </li><br>
+                <li>
+                    <strong>IsEmpty</strong>: A check that determines whether the queue has any items in it. This operation returns true if the queue is empty and false if it contains items.
+                </li><br>
+                <li>
+                    <strong>Size</strong>: The operation that returns the number of items currently in the queue.
+                </li><br>
+            </ol><br><br>
+            
+            <h3>A Real-World Example</h3><br>
+            <ul>
+                <li><strong>Enqueue</strong>: Add an element to the end of the queue. <br> Example: Joining the end of a line at a ticket counter.</li><br>
+                <li><strong>Dequeue</strong>: Remove the element at the front of the queue. <br> Example: The first person in line being served at the counter.</li><br>
+                <li><strong>Peek/Front</strong>: View the element at the front of the queue without removing it. <br> Example: Checking who is first in line without serving them.</li><br>
+                <li><strong>IsEmpty</strong>: Check if the queue is empty. <br> Example: If there are no people left in line.</li><br>
+                <li><strong>IsFull</strong>: Check if the queue is full (in case of a queue with limited size). <br> Example: A limited waiting area is full when no more people can join the line.</li><br>
+                <img src="queue_operns.avif" alt="ticket counter example">
+            </ul><br><br><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+            </div>
+        </section>
+        
+
+<section id="impl1">
+
+            <h2>Implementation of Queue</h2>
+            <p>A queue can be implemented in various ways, primarily using:</p><br>
+            <ol>
+                <li><strong>Array:</strong> A fixed-size array can be used to store queue elements, with variables to track the front and rear of the queue.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Simple and efficient for a known maximum size.</li>
+                        <li><strong>Drawbacks:</strong> Limited by the fixed size of the array. If the queue exceeds this size, it may lead to overflow.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Linked List:</strong> A dynamic approach using nodes, where each node points to the next, allowing for easy addition at the rear and removal from the front without a fixed size.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> More flexible as it can grow or shrink dynamically.</li>
+                        <li><strong>Drawbacks:</strong> More memory overhead due to the need to store pointers with each node. Also, performance may be slower due to additional pointer management.</li>
+                    </ul>
+                </li><br>
+            </ol><br><br>
+            
+            <h3>Comparison of Queue Implementation: Array vs Linked List</h3><br>
+            <div id="table-overflow">
+                <table border="1" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Queue Using Array</th>
+                            <th>Queue Using Linked List</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Memory Allocation</td>
+                            <td>Fixed size (must define size at the start).</td>
+                            <td>Dynamic size (grows and shrinks as needed).</td>
+                        </tr>
+                        <tr>
+                            <td>Space Efficiency</td>
+                            <td>May waste memory if the array is not full (fixed size).</td>
+                            <td>More space-efficient, but each node requires extra memory for a pointer.</td>
+                        </tr>
+                        <tr>
+                            <td>Overflow Condition</td>
+                            <td>Can occur if the queue is full (even if memory is available).</td>
+                            <td>No overflow unless system memory is exhausted.</td>
+                        </tr>
+                        <tr>
+                            <td>Underflow Condition</td>
+                            <td>Occurs if the queue is empty when trying to dequeue an element.</td>
+                            <td>Occurs if the queue is empty when trying to dequeue an element.</td>
+                        </tr>
+                        <tr>
+                            <td>Time Complexity for Enqueue</td>
+                            <td>O(1) (when rear is known and the array has space).</td>
+                            <td>O(1), as a new node is added at the rear of the list.</td>
+                        </tr>
+                        <tr>
+                            <td>Time Complexity for Dequeue</td>
+                            <td>O(1), removing the front element when it’s known.</td>
+                            <td>O(1), removing the front node of the linked list.</td>
+                        </tr>
+                        <tr>
+                            <td>Time Complexity for Peek</td>
+                            <td>O(1), accessing the front element in constant time.</td>
+                            <td>O(1), front node is immediately accessible.</td>
+                        </tr>
+                        <tr>
+                            <td>Resize Operations</td>
+                            <td>Requires resizing when queue exceeds initial capacity (or using circular arrays).</td>
+                            <td>No need for resizing, dynamically adjusts size by adding or removing nodes.</td>
+                        </tr>
+                        <tr>
+                            <td>Memory Overhead</td>
+                            <td>Minimal overhead since only the array itself is stored.</td>
+                            <td>Higher memory overhead because each node needs extra memory for the pointer.</td>
+                        </tr>
+                        <tr>
+                            <td>Implementation Simplicity</td>
+                            <td>Easier to implement, with fewer pointers and memory management.</td>
+                            <td>Slightly more complex due to the need for handling node pointers.</td>
+                        </tr>
+                        <tr>
+                            <td>Random Access</td>
+                            <td>Allows random access to elements via index (though not typical in queue operations).</td>
+                            <td>No random access, traversal needed to access middle elements.</td>
+                        </tr>
+                        <tr>
+                            <td>Cache Efficiency</td>
+                            <td>Better cache performance due to contiguous memory allocation.</td>
+                            <td>Poorer cache performance since nodes are scattered in memory.</td>
+                        </tr>
+                        <tr>
+                            <td>Flexibility</td>
+                            <td>Size is fixed unless resized dynamically (requires extra handling).</td>
+                            <td>Fully flexible, grows/shrinks automatically with operations.</td>
+                        </tr>
+                        <tr>
+                            <td>Best Suited For</td>
+                            <td>When the maximum size of the queue is known in advance and memory is a constraint.</td>
+                            <td>When the number of elements is unknown or frequently changes.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+            </div>
+</section>
+
+<section id="impl2">
+    <h2>Implementing a Queue Using an Array</h2><br><br>
+
+    <div id="btn"><button onclick="openInNewTab()">Open Queue Using Array Visualizations</button></div>
+    <br><br>
+    <p>To create a queue with an array, we start by initializing an array and using indices to keep track of the <strong>front</strong> and <strong>rear</strong> of the queue. We’ll implement four main operations: <strong>enqueue</strong> (to add an item), <strong>dequeue</strong> (to remove an item), <strong>peek</strong> (to check the front item), and <strong>isEmpty</strong> (to check if the queue is empty). We also need to handle situations when the queue is empty or full.</p>
+    <br><br>
+    <h3>Step-by-Step Approach:</h3><br>
+    <ol>
+        <li>Initialize an array to represent the queue, with <code>front</code> and <code>rear</code> indices.</li>
+        <li>Implement enqueue, dequeue, peek, and isEmpty operations, ensuring we check for empty or full queue conditions.</li>
+    </ol>
+    <br><br>
+    <h3>Combined Queue Operations Algorithm</h3><br>
+    <ol>
+        <li>Initialize the queue with a specified capacity.</li>
+        <li>For <strong>enqueue</strong>: Check if the queue is full. If not, increment the <code>rear</code> and add the item at the rear.</li>
+        <li>For <strong>dequeue</strong>: Check if the queue is empty. If not, return the item at the <code>front</code> and increment the <code>front</code>.</li>
+        <li>For <strong>peek</strong>: Check if the queue is empty. If not, return the item at the <code>front</code>.</li>
+        <li>For <strong>isEmpty</strong>: Check if the front is equal to the rear; if yes, return true; otherwise, return false.</li>
+    </ol>
+    <br><br>
+    <h3>Implementation Example</h3><br>
+    <p>Here is a simple C program to demonstrate the array implementation of a queue:</p><br>
+
+    <pre>
+    <code>
+    #include &lt;limits.h&gt;
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+
+    // Structure to represent a queue
+    struct Queue {
+        int front, rear, size;
+        unsigned capacity;
+        int* array;
+    };
+
+    // Function to create a queue of given capacity
+    struct Queue* createQueue(unsigned capacity) {
+        struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+        queue-&gt;capacity = capacity;
+        queue-&gt;front = queue-&gt;size = 0;
+        queue-&gt;rear = capacity - 1;  // rear starts at the end
+        queue-&gt;array = (int*)malloc(queue-&gt;capacity * sizeof(int));
+        return queue;
+    }
+
+    // Enqueue operation
+    void enqueue(struct Queue* queue, int item) {
+        if (queue-&gt;size == queue-&gt;capacity) return; // Check if queue is full
+        queue-&gt;rear = (queue-&gt;rear + 1) % queue-&gt;capacity; // Circular increment
+        queue-&gt;array[queue-&gt;rear] = item;
+        queue-&gt;size++;
+        printf("%d enqueued to queue\n", item);
+    }
+
+    // Dequeue operation
+    int dequeue(struct Queue* queue) {
+        if (queue-&gt;size == 0) return INT_MIN; // Check if queue is empty
+        int item = queue-&gt;array[queue-&gt;front];
+        queue-&gt;front = (queue-&gt;front + 1) % queue-&gt;capacity; // Circular increment
+        queue-&gt;size--;
+        return item;
+    }
+
+    // Peek operation
+    int peek(struct Queue* queue) {
+        if (queue-&gt;size == 0) return INT_MIN; // Check if queue is empty
+        return queue-&gt;array[queue-&gt;front];
+    }
+
+    // isEmpty operation
+    int isEmpty(struct Queue* queue) {
+        return (queue-&gt;size == 0); // Return true if queue is empty
+    }
+
+    // Main function to test the queue operations
+    int main() {
+        struct Queue* queue = createQueue(100); // Create a queue of capacity 100
+
+        enqueue(queue, 10); // Enqueue 10 to queue
+        enqueue(queue, 20); // Enqueue 20 to queue
+        enqueue(queue, 30); // Enqueue 30 to queue
+
+        printf("%d dequeued from queue\n", dequeue(queue)); // Dequeue item from queue
+
+        return 0;
+    }
+    </code>
+    </pre><br>
+
+    <h3>Output</h3><br>
+    <pre><code>
+    10 enqueued to queue
+    20 enqueued to queue
+    30 enqueued to queue
+    10 dequeued from queue
+    </code></pre><br><br>
+    <a href="https://www.onlinegdb.com/">click here for Online compiler</a><br><br>
+    <br><br>
+
+    <h3>Code Explanation:</h3><br>
+    <ol>
+        <li><code>#include &lt;limits.h&gt;</code>: <br> Includes the limits header to use <code>INT_MIN</code> for error handling.</li><br>
+        <li><code>#include &lt;stdio.h&gt;</code>: <br> Includes the standard input-output header for printf.</li><br>
+        <li><code>#include &lt;stdlib.h&gt;</code>: <br> Includes the standard library for memory allocation functions.</li><br>
+        <li><code>struct Queue</code>: <br> Defines a structure to represent a queue with <code>front</code>, <code>rear</code>, <code>size</code>, <code>capacity</code>, and <code>array</code> attributes.</li><br>
+        <li><code>createQueue(unsigned capacity)</code>: <br> Function to create a queue of a given capacity. Allocates memory for the queue and initializes its attributes.</li><br>
+        <li><code>isFull(struct Queue* queue)</code>: <br> Function to check if the queue is full by comparing <code>size</code> with <code>capacity</code>.</li><br>
+        <li><code>isEmpty(struct Queue* queue)</code>: <br> Function to check if the queue is empty by checking if <code>size</code> is 0.</li><br>
+        <li><code>enqueue(struct Queue* queue, int item)</code>: <br> Adds an item to the queue if it’s not full, and increments the <code>rear</code> and <code>size</code>.</li><br>
+        <li><code>dequeue(struct Queue* queue)</code>: <br> Removes and returns the item from the front of the queue if it’s not empty. Increments the <code>front</code> and decrements <code>size</code>.</li><br>
+        <li><code>peek(struct Queue* queue)</code>: <br> Returns the front item without removing it, checking if the queue is empty first.</li><br>
+        <li><code>main()</code>: <br> Tests the queue operations by creating a queue and enqueuing/dequeuing items.</li><br>
+    </ol>
+
+    <br><br>
+    <h3>Complexity Analysis:</h3><br>
+    <h4>Time Complexity:</h4><br>
+    <ul>
+        <li>Enqueue: O(1)</li>
+        <li>Dequeue: O(1)</li>
+        <li>Peek: O(1)</li>
+        <li>isEmpty: O(1)</li>
+    </ul>
+    <p>Auxiliary Space: O(n) (where n is the number of items in the queue).</p>
+    <br><br>
+    <h3>Summary</h3>
+    <p>In this implementation, we define an array to represent the queue, with <code>front</code> and <code>rear</code> indices to track the start and end of the queue.</p>
+    <p>To add an item to the queue (enqueue operation), we first check if the queue is full. If it’s not full, we increment the <code>rear</code> index in a circular manner and place the new item at that position in the array.</p>
+    <p>To remove an item from the queue (dequeue operation), we check if the queue is empty. If it’s not empty, we remove the front element, increment the <code>front</code> index in a circular manner, and decrease the size.</p>
+    <br><br>
+    <h3>Advantages of Array Implementation:</h3><br>
+    <ul>
+        <li>Simple to implement.</li>
+        <li>Time complexity for enqueue and dequeue is constant, O(1).</li>
+    </ul>
+    <br><br>
+    <h3>Disadvantages of Array Implementation:</h3><br>
+    <ul>
+        <li>Fixed size; can be limiting if the queue grows beyond the defined capacity.</li>
+        <li>Static memory allocation (unless using dynamic arrays in other languages).</li>
+    </ul>
+
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+        <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+    </div>    
+</section>
+    
+
+<section id="impl3">
+
+    <h2>Implementing a Queue Using a Singly Linked List</h2><br>
+    <div id="btn">
+    <button onclick="openInNewTabQueue()">Open Queue Using Linked List Visualizations</button><br></div><br>
+    
+    <p>A queue consists of a front and a rear pointer. The front pointer points to the first node in the queue, where items are removed, and the rear pointer points to the last node, where new items are added. The first node has a null value in the link field, and each subsequent node's link points to the next node. The address of the last node is stored in the “rear” pointer.</p>
+    
+    <p>The main advantage of using a linked list for queue implementation is the ability to grow or shrink the queue dynamically as needed. In contrast, an array-based implementation restricts the queue's maximum capacity, which could lead to overflow. Here, each new node is allocated dynamically, thus eliminating overflow issues.</p>
+    <br><br>
+    <h3>Queue Operations</h3><br>
+    <ul>
+    <li><strong>enqueue():</strong> Insert a new element at the end of the queue by adding it to the end of the linked list.</li>
+    <li><strong>dequeue():</strong> Remove and return the front element of the queue by deleting the first element from the linked list.</li>
+    <li><strong>peek():</strong> Return the front element without removing it.</li>
+    <li><strong>display():</strong> Print all elements in the queue.</li>
+    </ul><br><br>
+    
+    <div id="impl3">
+    <h4>Operations and their Algorithms:</h4><br>
+    <p>
+        1. <strong>Initialize Queue:</strong> Create an empty queue and set both the front and rear pointers to null.<br><br>
+    
+        2. <strong>Enqueue Operation:</strong><br>
+           &nbsp;&nbsp;&nbsp;&nbsp;a) Create a new node.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;b) Set the node's data to the given value.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;c) If the queue is empty, set both front and rear pointers to the new node.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;d) If not empty, link the new node to the current rear node and update the rear pointer.<br><br>
+    
+        3. <strong>Dequeue Operation:</strong><br>
+           &nbsp;&nbsp;&nbsp;&nbsp;a) Check if the queue is empty. If empty, return an underflow message.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;b) Use a temporary pointer to store the front node.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;c) Move the front pointer to the next node.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;d) Free the memory of the temporary node.<br><br>
+    
+        4. <strong>Peek Operation:</strong><br>
+           &nbsp;&nbsp;&nbsp;&nbsp;a) Check if the queue is empty. If empty, return an error.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;b) Otherwise, return the data of the front node.<br><br>
+    
+        5. <strong>Display Operation:</strong><br>
+           &nbsp;&nbsp;&nbsp;&nbsp;a) Initialize a temporary pointer to the front of the queue.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;b) Traverse the queue using the temporary pointer until it reaches null.<br>
+           &nbsp;&nbsp;&nbsp;&nbsp;c) Print the data of each node during traversal.<br><br>
+    
+        <strong>Time Complexity:</strong> O(1) for enqueue and dequeue operations.<br>
+        <strong>Space Complexity:</strong> O(N) where N is the number of elements in the queue.
+    </p>
+    </div>
+    <br><br>
+    <h3>Implementation Code</h3><br>
+    <pre>
+    <code>
+    // C program to implement a queue using singly linked list
+    #include &lt;limits.h&gt;
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    // Struct representing a node in the linked list
+    typedef struct Node {
+    int data;
+    struct Node* next;
+    } Node;
+    
+    Node* createNode(int new_data) {
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    new_node->data = new_data;
+    new_node->next = NULL;
+    return new_node;
+    }
+    
+    // Struct to implement queue using a singly linked list
+    typedef struct Queue {
+    Node* front;
+    Node* rear;
+    } Queue;
+    
+    // Constructor to initialize the queue
+    void initializeQueue(Queue* queue) { 
+        queue->front = queue->rear = NULL; 
+    }
+    
+    // Function to check if the queue is empty
+    int isEmpty(Queue* queue) {
+        return queue->front == NULL; // If front is NULL, the queue is empty
+    }
+    
+    // Function to enqueue an element onto the queue
+    void enqueue(Queue* queue, int new_data) {
+        Node* new_node = createNode(new_data);
+        if (!new_node) {
+            printf("\nQueue Overflow");
+            return;
+        }
+        if (queue->rear == NULL) { // If the queue is empty
+            queue->front = queue->rear = new_node;
+        } else {
+            queue->rear->next = new_node; // Link the new node to the current rear
+            queue->rear = new_node; // Update the rear to the new node
+        }
+    }
+    
+    // Function to remove the front element from the queue
+    void dequeue(Queue* queue) {
+        if (isEmpty(queue)) {
+            printf("\nQueue Underflow\n");
+            return;
+        } else {
+            Node* temp = queue->front; // Assign current front to a temporary variable
+            queue->front = queue->front->next; // Update front to the next node
+            if (queue->front == NULL) queue->rear = NULL; // If queue becomes empty
+            free(temp); // Deallocate memory of the old front node
+        }
+    }
+    
+    // Function to return the front element of the queue
+    int peek(Queue* queue) {
+        if (!isEmpty(queue))
+            return queue->front->data; // Return front element if queue is not empty
+        else {
+            printf("\nQueue is empty");
+            return INT_MIN; // Return a sentinel value if queue is empty
+        }
+    }
+    
+    // Driver program to test the queue implementation
+    int main() {
+        Queue queue;
+        initializeQueue(&queue);
+    
+        // Enqueue elements onto the queue
+        enqueue(&queue, 11);
+        enqueue(&queue, 22);
+        enqueue(&queue, 33);
+        enqueue(&queue, 44);
+    
+        // Print front element of the queue
+        printf("Front element is %d\n", peek(&queue));
+    
+        // Remove two elements from the front
+        printf("Removing two elements...\n");
+        dequeue(&queue);
+        dequeue(&queue);
+    
+        // Print front element of the queue
+        printf("Front element is %d\n", peek(&queue));
+    
+        return 0;
+    }
+    </code>
+    </pre><br><br>
+    
+    <h3>Output</h3><br>
+    <pre><code>
+    <p>Front element is 11<br>Front element is 33</p>
+    </code></pre><br><br>
+    
+    <h3>Complexity Analysis</h3><br>
+    <p><strong>Time Complexity:</strong><br> O(1) for enqueue and dequeue operations as we do not traverse the list; operations are performed using the current pointer.<br>
+    <strong>Auxiliary Space:</strong><br> O(N), where N is the size of the queue.</p>
+    <br><br>
+    <h3>Summary</h3>
+    <p>In this implementation, we define a <code>Node</code> struct to represent each node in the linked list and a <code>Queue</code> struct that utilizes this node struct to implement the queue. The front and rear attributes of the <code>Queue</code> struct point to the first and last nodes of the queue, respectively.</p>
+    <p>To add an item to the queue, we create a new node with the specified item and link it as the next node after the current rear, then set the rear of the queue to the new node, making it the new end of the queue.</p>
+    <p>To remove an item from the queue, we simply update the front of the queue to the next node in the list and return the data from the original front node. If the queue becomes empty, we also set the rear to null.</p>
+    <br><br>
+    <h3>Benefits of Using a Singly Linked List for Queue Implementation</h3><br>
+    <ul>
+    <li><strong>Dynamic Memory Allocation:</strong> The queue can grow or shrink dynamically without needing a predetermined fixed size.</li><br>
+    <li><strong>Efficient Memory Usage:</strong> Nodes in a singly linked list use less memory compared to doubly linked lists, as they only have a next pointer.</li><br>
+    <li><strong>Easy Implementation:</strong> The implementation is straightforward, requiring only a few lines of code.</li><br>
+    <li><strong>Versatile:</strong> Singly linked lists can also be utilized to implement other data structures such as stacks and trees.</li><br>
+    </ul>
+    <br><br>
+    
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+        <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+    </div>
+</section>
+    
+<section id="impl4">
+    <h2>Queue Variants</h2><br>
+  
+    <h3>1. Simple Queue</h3><br>
+    <p><strong>Definition:</strong> A basic queue that follows the First-In-First-Out (FIFO) principle.</p>
+    <p><strong>Principle:</strong> The first element added is the first one to be removed.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty, isFull.</p><br><br><br>
+  
+    <h3>2. Circular Queue</h3><br>
+    <p><strong>Definition:</strong> A queue that connects the end of the queue back to the front, making efficient use of space.</p>
+    <p><strong>Principle:</strong> Once the queue is full, the next enqueue operation starts from the beginning.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty.</p><br><br><br>
+  
+    <h3>3. Deque (Double-ended Queue)</h3><br>
+    <p><strong>Definition:</strong> A queue where elements can be added and removed from both ends.</p>
+    <p><strong>Principle:</strong> Supports both FIFO and LIFO operations.</p>
+    <p><strong>Operations:</strong> EnqueueFront, EnqueueBack, DequeueFront, DequeueBack, isEmpty.</p><br><br><br>
+  
+    <h3>4. Priority Queue</h3><br>
+    <p><strong>Definition:</strong> A queue where elements are dequeued based on priority rather than the order they were added.</p>
+    <p><strong>Principle:</strong> Elements with higher priority are dequeued before those with lower priority.</p>
+    <p><strong>Operations:</strong> Enqueue (with priority), Dequeue, Front, isEmpty.</p><br><br><br>
+  
+    <h3>5. Multi-Queue</h3><br>
+    <p><strong>Definition:</strong> A collection of multiple queues within a single data structure.</p>
+    <p><strong>Principle:</strong> Efficiently manages more than one queue simultaneously.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue for each queue, isEmpty for each queue.</p><br><br><br>
+  
+    <h3>6. Blocking Queue</h3><br>
+    <p><strong>Definition:</strong> A queue that blocks threads attempting to dequeue from an empty queue or enqueue to a full queue.</p>
+    <p><strong>Principle:</strong> Useful in multi-threaded environments to manage access.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue, isEmpty, isFull.</p><br><br><br>
+  
+    <h3>7. Fixed-size Queue</h3><br>
+    <p><strong>Definition:</strong> A queue with a predetermined fixed size, implemented using arrays.</p>
+    <p><strong>Principle:</strong> Operations are limited by the queue's size, leading to overflow if full.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty, isFull.</p><br><br><br>
+  
+    <h3>8. Concurrent Queue</h3><br>
+    <p><strong>Definition:</strong> A queue designed for concurrent operations in multi-threaded environments.</p>
+    <p><strong>Principle:</strong> Ensures safe access by multiple threads without corruption.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty, thread-safe operations.</p><br><br><br>
+  
+    <h3>9. Immutable Queue</h3><br>
+    <p><strong>Definition:</strong> A queue variant where every operation creates a new version.</p>
+    <p><strong>Principle:</strong> Maintains immutability, useful in functional programming.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue, Front, versioning functions.</p><br><br><br>
+  
+    <h3>10. Two Queues in One Array</h3><br>
+    <p><strong>Definition:</strong> Two queues share a single array, growing from opposite ends.</p>
+    <p><strong>Principle:</strong> Optimizes space usage by allowing two queues to coexist.</p>
+    <p><strong>Operations:</strong> Enqueue, Dequeue for each queue, isEmpty for each queue.</p><br><br><br>
+
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl3')">Previous</span>
+        <span class="nav-btn" onclick="showSection('apps1')">Next</span>
+    </div>
+</section>
+  
+<section id="apps1">
+    <h2>Queue Overflow and Underflow</h2><br>
+  
+    <h3>Queue Overflow</h3><br>
+    <p><strong>Definition:</strong> Queue overflow happens when you try to add more items to a queue than it can hold.</p>
+    <p><strong>Example:</strong> Imagine a queue at a ticket counter. If the queue has a maximum capacity and you keep adding people, there will come a point when you can't add any more people because the queue is already full. If you try to add another person, they will be left out, creating a situation called queue overflow. In programming, this results in a queue overflow error.</p><br><br>
+  
+    <h3>Queue Underflow</h3><br>
+    <p><strong>Definition:</strong> Queue underflow occurs when you try to remove an item from an empty queue.</p>
+    <p><strong>Example:</strong> Using the same ticket counter analogy, if you have an empty queue and you try to let someone leave, there is no one to remove from the queue. This situation causes an error known as queue underflow. In programming, this error happens when a dequeue operation is attempted on an empty queue.</p><br><br>
+  
+    <h3>Summary</h3><br>
+    <ul>
+      <li><strong>Queue Overflow:</strong> Trying to add items to a full queue.</li>
+      <li><strong>Queue Underflow:</strong> Trying to remove items from an empty queue.</li>
+    </ul><br><br>
+  
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl4')">Previous</span>
+        <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+    </div>
+</section>
+
+<section id="quiz">
+    <h2>Test Your Knowledge on Queues</h2>
+    <div id="quiz-container">
+        <div class="question">
+            <p><strong>1. What is a queue?</strong></p>
+            <label><input type="radio" name="q1" value="A"> A collection of elements that follows the LIFO principle.</label><br>
+            <label><input type="radio" name="q1" value="B"> A collection of elements that follows the FIFO principle.</label><br>
+            <label><input type="radio" name="q1" value="C"> A data structure that allows random access to elements.</label><br>
+            <label><input type="radio" name="q1" value="D"> A type of linear search algorithm.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>2. Which operation adds an element to the end of the queue?</strong></p>
+            <label><input type="radio" name="q2" value="A"> Pop</label><br>
+            <label><input type="radio" name="q2" value="B"> Push</label><br>
+            <label><input type="radio" name="q2" value="C"> Enqueue</label><br>
+            <label><input type="radio" name="q2" value="D"> Dequeue</label><br>
+        </div>
+        <div class="question">
+            <p><strong>3. Which operation removes the front element from the queue?</strong></p>
+            <label><input type="radio" name="q3" value="A"> Push</label><br>
+            <label><input type="radio" name="q3" value="B"> Pop</label><br>
+            <label><input type="radio" name="q3" value="C"> Enqueue</label><br>
+            <label><input type="radio" name="q3" value="D"> Dequeue</label><br>
+        </div>
+        <div class="question">
+            <p><strong>4. What will be the front element after enqueueing 5, 10, and 15 onto an empty queue?</strong></p>
+            <label><input type="radio" name="q4" value="A"> 5</label><br>
+            <label><input type="radio" name="q4" value="B"> 10</label><br>
+            <label><input type="radio" name="q4" value="C"> 15</label><br>
+            <label><input type="radio" name="q4" value="D"> Queue will be empty.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>5. Which data structure is most suitable for implementing a queue?</strong></p>
+            <label><input type="radio" name="q5" value="A"> Array</label><br>
+            <label><input type="radio" name="q5" value="B"> Linked List</label><br>
+            <label><input type="radio" name="q5" value="C"> Both A and B</label><br>
+            <label><input type="radio" name="q5" value="D"> Tree</label><br>
+        </div>
+        <div class="question">
+            <p><strong>6. What happens if you try to dequeue an element from an empty queue?</strong></p>
+            <label><input type="radio" name="q6" value="A"> The front element is removed.</label><br>
+            <label><input type="radio" name="q6" value="B"> It throws an underflow error.</label><br>
+            <label><input type="radio" name="q6" value="C"> It returns null.</label><br>
+            <label><input type="radio" name="q6" value="D"> Nothing happens.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>7. What is the time complexity of the enqueue operation in a queue implemented using an array?</strong></p>
+            <label><input type="radio" name="q7" value="A"> O(1)</label><br>
+            <label><input type="radio" name="q7" value="B"> O(n)</label><br>
+            <label><input type="radio" name="q7" value="C"> O(log n)</label><br>
+            <label><input type="radio" name="q7" value="D"> O(n^2)</label><br>
+        </div>
+        <div class="question">
+            <p><strong>8. Which of the following applications can use a queue?</strong></p>
+            <label><input type="radio" name="q8" value="A"> Print job scheduling</label><br>
+            <label><input type="radio" name="q8" value="B"> Task scheduling</label><br>
+            <label><input type="radio" name="q8" value="C"> Handling requests in a server</label><br>
+            <label><input type="radio" name="q8" value="D"> All of the above</label><br>
+        </div>
+        <div class="question">
+            <p><strong>9. What is a common use case for queues in programming?</strong></p>
+            <label><input type="radio" name="q9" value="A"> To store elements for searching</label><br>
+            <label><input type="radio" name="q9" value="B"> To manage print jobs</label><br>
+            <label><input type="radio" name="q9" value="C"> To store data in a database</label><br>
+            <label><input type="radio" name="q9" value="D"> To sort data</label><br>
+        </div>
+        <div class="question">
+            <p><strong>10. In which situation would you prefer using a queue over a stack?</strong></p>
+            <label><input type="radio" name="q10" value="A"> When you need to process items in the order they arrive.</label><br>
+            <label><input type="radio" name="q10" value="B"> When you need to reverse items.</label><br>
+            <label><input type="radio" name="q10" value="C"> When items need to be stored persistently.</label><br>
+            <label><input type="radio" name="q10" value="D"> When you need to access elements in a random order.</label><br>
+        </div>
+    </div>
+    <button id="submit">Submit</button>
+    <div id="result"></div>
+    <div id="analytics"></div>
+    <div id="warning" style="color: red;"></div>
+    
+</section>
+
+<script>
+    document.getElementById('submit').addEventListener('click', function() {
+        const questions = document.querySelectorAll('.question');
+        let score = 0;
+        const totalQuestions = questions.length;
+        let results = [];
+        let explanations = [];
+    
+        // Check if all questions are answered
+        let allAnswered = true;
+        questions.forEach((question, index) => {
+            const selected = question.querySelector('input[type="radio"]:checked');
+            if (!selected) {
+                allAnswered = false;
+            } else {
+                const answer = selected.value;
+                // Assuming correct answers are stored in an array for validation
+                const correctAnswers = ['A', 'B', 'A', 'C', 'C', 'B', 'D', 'A', 'B', 'C']; // Adjust according to your correct answers
+                const explanationsData = [
+                    "A queue is a collection of elements that follows the FIFO principle (First In, First Out).",
+                    "The enqueue operation adds an element to the back of the queue.",
+                    "The dequeue operation removes the front element from the queue.",
+                    "The first element added (e.g., 10) will be the first to be removed.",
+                    "Both arrays and linked lists can be used to implement queues.",
+                    "Dequeuing from an empty queue typically throws an underflow error.",
+                    "The time complexity for the enqueue operation in a queue using an array is O(1).",
+                    "Queues can be used for scheduling processes and managing requests.",
+                    "Queues are commonly used in breadth-first search algorithms.",
+                    "Queues are preferred when maintaining order of processing is important."
+                ];
+    
+                results.push({ question: index + 1, selected: answer });
+                if (answer === correctAnswers[index]) {
+                    score++;
+                    explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
+                } else {
+                    explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
+                }
+            }
+        });
+    
+        if (!allAnswered) {
+            document.getElementById('warning').innerText = "Please answer all questions before submitting.";
+            return; // Stop execution if not all questions are answered
+        } else {
+            document.getElementById('warning').innerText = ""; // Clear the warning
+        }
+    
+        // Display the score
+        document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
+    
+        // Display detailed analytics
+        const analyticsDiv = document.getElementById('analytics');
+        analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
+        explanations.forEach(item => {
+            const colorClass = item.correct ? 'correct' : 'incorrect';
+            const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
+            analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
+        });
+    });
+    
+    // Function to show the selected section and hide the others
+    function showSection(sectionId) {
+        var sections = document.querySelectorAll('section');
+        sections.forEach(function(section) {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    function openInNewTabArray() {
+        window.open('https://brk8789.github.io/Brk_visualizations/Basics/Queuearray/QueueArray.html', '_blank');
+    }
+    
+    function openInNewTab() {
+        window.open('https://brk8789.github.io/Brk_visualizations/Basics/queuearr/queuearr.html', '_blank');
+    }
+    
+    function openInNewTabLl() {
+        window.open('https://brk8789.github.io/Brk_visualizations/Basics/QueueLL/QueueLL.html', '_blank');
+    }
+    </script>
+    
+</body>
+</html>
