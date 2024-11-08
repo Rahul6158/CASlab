@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We Are Working On It</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #b3cde3, #079de8);
+            color: #fefefe;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #f7fbfc;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.5;
+            color: #e1eaf0;
+        }
+
+        /* Animation for the loading dots */
+        .dots {
+            display: inline-block;
+        }
+
+        .dot {
+            animation: blink 1s infinite;
+            font-size: 1.5em;
+            color: #dceefc;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            h1 { font-size: 1.5em; }
+            p { font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>We're working on it, sorry 😔...</h1>
+        <p>Please forgive us</p><br>
+        <p>visualizations will be updated soon, Come some other time.</p>
+        <p class="dots">
+            <span class="dot">.</span>
+            <span class="dot">.</span>
+            <span class="dot">.</span>
+        </p>
+    </div>
+</body>
+</html>

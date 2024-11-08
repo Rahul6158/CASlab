@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Data Structure</title>
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Array Data Structure</h2>
+    <ul>
+        <li><a href="#" onclick="showSection('intro1')">Introduction to Array</a></li>
+        <li><a href="#" onclick="showSection('intro2')">Key Operations in Array</a></li>
+        <li><a href="#" onclick="showSection('impl1')">Types of Arrays</a></li>
+        <li><a href="#" onclick="showSection('intro3')">Implementation of Array</a></li>
+        <li><a href="#" onclick="showSection('impl4')">Static array operations Implementation</a></li>
+        <li><a href="#" onclick="showSection('impl5')">Multidimentional Array Operations Implementation</a></li>
+        <li><a href="#" onclick="showSection('impl2')">Array Overflow and underflow</a></li>
+        <li><a href="#" onclick="showSection('impl3')">Advantages and Disadvantages of an Array</a></li>
+        <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+
+        <li><div id="btn">
+            <!-- <button onclick="openInNewTab()">Open Array Visualizations</button>
+            <button onclick="openInNewTab1()">Multi-Dimensional Array Visualizations</button><br><br> -->
+        </div></li>
+    </ul>
+</div>
+
+
+<div class="content">
+
+<section id="intro1" class="active">
+    <h2>What is an Array</h2>
+    <p>An <strong>array</strong> is a linear data structure that holds a collection of elements in a contiguous block of memory. Each element is accessed using an index, making it efficient for storing and retrieving data.</p><br>
+    
+    <img src="arr_ex.png" alt="array example" ><br><br>
+    
+    <h3>Understanding Arrays:</h3><br>
+    <p>Arrays store elements of the same data type in a sequential manner, allowing easy access to any element using its index. This structure is widely used due to its simplicity and speed of access.</p>
+    <ul>
+        <li>Each element is identified by its <strong>index</strong>, starting from 0 up to (n-1) for an array of size n.</li>
+        <li>Arrays have a <strong>fixed size</strong> once they are created (static arrays).</li>
+    </ul>
+    <p><strong>Example</strong>: An array can be visualized as a row of storage boxes, where each box can hold a value, and the box’s position indicates its index.</p>
+    <img src="arrayex1.jpg" alt="array example (storage box)">
+    <br><br>
+
+    <h3>Working with Arrays</h3><br>
+    <p>Arrays allow us to store multiple items of the same type in a single structure, which is particularly useful for managing large datasets efficiently.</p><br>
+
+    <ul>
+        <li><strong>Array Structure:</strong><br>
+            Arrays are sequential and indexed, meaning each item is positioned next to the previous one in memory. This layout helps in direct access to any element.</li><br>
+        <li><strong>Index Access:</strong><br>
+            Each element is accessible using its index, providing quick read and write operations, which are essential for many algorithms.</li><br>
+    </ul><br>
+    
+    <h3>Real-World Examples of Arrays</h3>
+    <p>Arrays are used in numerous applications where sequential data storage is required. Some examples include:</p>
+    <br><ul>
+        <li><strong>Storing Scores:</strong> Arrays are used to store scores or marks in various exams.</li><br>
+        <li><strong>Image Pixels:</strong> Images are represented as multi-dimensional arrays where each pixel has specific values.</li><br>
+        <li><strong>Data Tables:</strong> In databases, rows of records can be represented as arrays for processing.</li><br>
+        <li><strong>Matrix Operations:</strong> Arrays are widely used in mathematical computations like matrices.</li><br>
+        <li><strong>Sensor Data:</strong> Continuous data collected from sensors is often stored in arrays.</li><br>
+    </ul><br>
+
+    <div class="navigation-buttons">
+        <span></span>
+        <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+    </div>
+</section>
+        
+<section id="intro2">
+    <h2>Key Operations of an Array</h2><br>
+    <ol>
+        <li>
+            <strong>Access</strong>: The operation used to access an element at a specific index in the array. Array elements are accessed directly using their index, allowing for fast retrieval.
+        </li><br>
+        <li>
+            <strong>Insert</strong>: The operation to add an element at a specific index in the array. For static arrays, insertion may require shifting elements to make space.
+        </li><br>
+        <li>
+            <strong>Update</strong>: The operation that allows you to change the value of an element at a specified index.
+        </li><br>
+        <li>
+            <strong>Delete</strong>: The operation to remove an element from a specific index in the array. After deletion, elements may need to be shifted to fill the empty space.
+        </li><br>
+        <li>
+            <strong>Length</strong>: The operation that returns the total number of elements in the array.
+        </li><br>
+    </ol><br><br>
+    
+    <h3>A Real-World Example</h3><br>
+    <ul>
+        <li><strong>Access</strong>: Retrieve an element at a certain index. <br> Example: Looking up a specific page in a book by its page number. <br>
+            <img src="arr_access.jpeg" alt="array Access"> <br>
+        </li><br>
+        <li><strong>Insert</strong>: Add a new element at a specific position in an array. <br> Example: Adding a new contact at a specific position in a phone contact list. <br>
+            <img src="conct_list.png" alt="array insertion"> <br>
+        </li><br>
+        <li><strong>Update</strong>: Change the value of an element at a specific index. <br> Example: Updating an old phone number with a new one in the contact list. <br>
+            <img src="editcntct.png" alt="array Updation"><br>
+        </li><br>
+        <li><strong>Delete</strong>: Remove an element at a specific index. <br> Example: Deleting an outdated contact from the list. <br>
+            <img src="delcntct.webp" alt="array Delete"><br>
+        </li><br>
+        <li><strong>Length</strong>: Find out how many elements are currently in the array. <br> Example: Checking the number of songs in a playlist. <br>
+            <img src="songplylist.webp" alt="array Length"><br>
+        </li><br>
+    </ul><br><br><br>
+
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+        <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+    </div>
+</section>
+
+<section id="impl1">
+    <h2>Types of Arrays</h2>
+    <p>Arrays come in various types, each serving different purposes depending on the requirements:</p><br>
+    <ol>
+        <li><strong>Static Array (1D Array):</strong> An array with a fixed size that cannot be changed after initialization.
+            <br><br><ul style="list-style-type: disc;">
+                <li><strong>Usage:</strong> Best when the number of elements is predetermined and unchanging.</li>
+                <li><strong>Drawbacks:</strong> May lead to memory waste if not all allocated space is utilized.</li>
+            </ul>
+        </li><br><br>
+        <li><strong>Dynamic Array:</strong> An array that adjusts its size dynamically as elements are added, typically expanding by moving elements to a new, larger array when needed.
+            <br><br><ul style="list-style-type: disc;">
+                <li><strong>Usage:</strong> Flexible and suitable when the number of elements is variable.</li>
+                <li><strong>Drawbacks:</strong> Requires extra memory and time during resizing, potentially impacting performance.</li>
+            </ul>
+        </li><br><br>
+        <li><strong>Multi-dimensional Array:</strong> Arrays that consist of more than one dimension, like 2D or 3D arrays. They can represent matrices, grids, or data in multiple dimensions.
+            <br><br><ul style="list-style-type: disc;">
+                <li><strong>Usage:</strong> Useful for applications like mathematical computations, graphics, and complex data representation.</li>
+                <li><strong>Drawbacks:</strong> Consumes more memory and can be more complex to navigate, especially as dimensions increase.</li>
+            </ul>
+        </li><br>
+    </ol><br><br>
+
+    <h3>Comparison of Array Types: Static vs Dynamic vs Multi-dimensional</h3><br>
+    <div id="table-overflow">
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Static Array (1D Array)</th>
+                    <th>Dynamic Array</th>
+                    <th>Multi-dimensional Array</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Memory Allocation</td>
+                    <td>Fixed size, allocated at the start.</td>
+                    <td>Flexible size, allocated as needed.</td>
+                    <td>Fixed size per dimension, allocated in blocks.</td>
+                </tr>
+                <tr>
+                    <td>Space Efficiency</td>
+                    <td>Efficient if the size matches the exact need.</td>
+                    <td>Can waste memory during resizing but adapts to needs.</td>
+                    <td>Requires more memory, increasing with dimensions.</td>
+                </tr>
+                <tr>
+                    <td>Resize Operations</td>
+                    <td>No resizing, fixed once created.</td>
+                    <td>Resizes by creating a new array and copying elements.</td>
+                    <td>No resizing, fixed structure with multiple dimensions.</td>
+                </tr>
+                <tr>
+                    <td>Access Time Complexity</td>
+                    <td>O(1), as each element can be accessed by index.</td>
+                    <td>O(1), each element is accessible by index.</td>
+                    <td>O(1) for each element access, but multi-step indexing may slow access.</td>
+                </tr>
+                <tr>
+                    <td>Insertion Time Complexity</td>
+                    <td>O(n), if inserting in the middle (shift required).</td>
+                    <td>Amortized O(1) for appending; O(n) if resizing required.</td>
+                    <td>O(n) or more, depending on dimension size and location of insertion.</td>
+                </tr>
+                <tr>
+                    <td>Deletion Time Complexity</td>
+                    <td>O(n), due to shifting elements.</td>
+                    <td>O(n), may involve shifting or resizing.</td>
+                    <td>O(n) or more, depending on dimension size and location of deletion.</td>
+                </tr>
+                <tr>
+                    <td>Memory Overhead</td>
+                    <td>Minimal, as no extra space is needed beyond array size.</td>
+                    <td>Higher, due to potential empty space and resizing.</td>
+                    <td>High, as each additional dimension increases memory usage.</td>
+                </tr>
+                <tr>
+                    <td>Implementation Simplicity</td>
+                    <td>Simple, since no resizing or extra management needed.</td>
+                    <td>More complex due to resizing and reallocation.</td>
+                    <td>Complex, especially with multiple indices and dimension handling.</td>
+                </tr>
+                <tr>
+                    <td>Cache Efficiency</td>
+                    <td>High, as memory is contiguous.</td>
+                    <td>High, but may vary due to reallocations.</td>
+                    <td>Lower, as multidimensional layout may reduce cache performance.</td>
+                </tr>
+                <tr>
+                    <td>Best Suited For</td>
+                    <td>When data size is known and fixed.</td>
+                    <td>When data size is unknown or frequently changes.</td>
+                    <td>Applications needing multi-dimensional data, like matrices or grids.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div><br><br>
+
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+        <span class="nav-btn" onclick="showSection('intro3')">Next</span>
+    </div>
+</section>
+
+<section id="intro3">
+    <h2>Array's Implementation</h2>
+    <p>In C, arrays must be declared before use by specifying their name, type, and size. This allocates memory for the array. Let's look at how different types of arrays—static, multi-dimensional, and dynamic—are declared, initialized, and accessed in C.</p>
+    <br><br>
+    <h3>Array Declaration Syntax</h3><br>
+    <pre><code>data_type array_name[size];</code></pre>
+    <p>This is the basic syntax for declaring an array in C. However, multi-dimensional arrays and dynamic arrays follow slightly different rules, which we will discuss below.</p>
+<br><br>
+    <h3>Array Types</h3><br>
+    <div id="table-overflow">
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Static Array</th>
+                <th>Multi-Dimensional Array</th>
+                <th>Dynamic Array</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Declaration</strong></td>
+                <td><code>data_type array_name[size];</code></td>
+                <td><code>data_type array_name[size1][size2]...[sizeN];</code></td>
+                <td><code>data_type *array_name;</code><br><code>array_name = (data_type*) malloc(size * sizeof(data_type));</code></td>
+            </tr>
+            <tr>
+                <td><strong>Initialization</strong></td>
+                <td><code>data_type array_name[size] = {value1, value2, ...};</code></td>
+                <td><code>data_type array_name[size1][size2] = {{val1, val2}, {val3, val4}};</code></td>
+                <td><code>for (int i = 0; i < size; i++) { array_name[i] = value; }</code></td>
+            </tr>
+            <tr>
+                <td><strong>Accessing</strong></td>
+                <td><code>array_name[index];</code></td>
+                <td><code>array_name[index1][index2];</code></td>
+                <td><code>array_name[index];</code></td>
+            </tr>
+        </tbody>
+    </table>
+</div><br><br><br>
+    <h3>1. Static Array in C</h3>
+    <p>A static array is one with a fixed size, which must be specified at the time of declaration. It is allocated memory at compile-time.</p>
+<br><br>
+    <h3>Example</h3>
+    <pre><code>// Static Array Example
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr_int[5];  // integer array
+    char arr_char[5];  // character array
+    return 0;
+}</code></pre><br>
+    <h4>Output:</h4>
+    <p>There is no visible output as the array is just declared, but memory is allocated for the arrays.</p>
+    <br><br><br>
+    <h3>2. Multi-Dimensional Arrays in C</h3>
+    <p>Multi-dimensional arrays in C can be used to store data in more than one dimension, such as matrices. They are declared with multiple indices.</p>
+<br>
+    <h3>Example</h3>
+    <pre><code>// Multi-Dimensional Array Example
+#include &lt;stdio.h&gt;
+
+int main() {
+    int matrix[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    printf("Element at matrix[1][1]: %d\n", matrix[1][1]);  // Output: 5
+    return 0;
+}</code></pre><br>
+    <h4>Output:</h4>
+    <pre>Element at matrix[1][1]: 5</pre><br><br><br>
+
+    <h3>3. Dynamic Array in C</h3>
+    <p>A dynamic array is an array whose size can be altered during runtime using dynamic memory allocation. This is useful when the number of elements is unknown at compile time.</p>
+    <br>
+    <h3>Example</h3>
+    <pre><code>// Dynamic Array Example
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    int size = 5;
+    int *arr = (int*) malloc(size * sizeof(int));
+
+    for (int i = 0; i < size; i++) {
+        arr[i] = i * 10;  // Initialize dynamic array
+    }
+
+    for (int i = 0; i < size; i++) {
+        printf("Element at arr[%d]: %d\n", i, arr[i]);
+    }
+
+    free(arr);  // Free the allocated memory
+    return 0;
+}</code></pre><br>
+    <h4>Output:</h4>
+    <pre>Element at arr[0]: 0
+Element at arr[1]: 10
+Element at arr[2]: 20
+Element at arr[3]: 30
+Element at arr[4]: 40</pre>
+<br><br>
+<h3>Comparison Of Complexities</h3>
+<div id="table-overflow">
+<table border="1">
+    <tr>
+        <th>Operation</th>
+        <th>Static Array</th>
+        <th>Multidimensional Array</th>
+        <th>Dynamic Array</th>
+    </tr>
+    <tr>
+        <td>Access by Index</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+        <td>O(1)</td>
+    </tr>
+    <tr>
+        <td>Insertion at End</td>
+        <td>O(n)</td>
+        <td>O(n * m)</td>
+        <td>O(1) (amortized)</td>
+    </tr>
+    <tr>
+        <td>Insertion at Position</td>
+        <td>O(n)</td>
+        <td>O(n * m)</td>
+        <td>O(n)</td>
+    </tr>
+    <tr>
+        <td>Deletion</td>
+        <td>O(n)</td>
+        <td>O(n * m)</td>
+        <td>O(n)</td>
+    </tr>
+    <tr>
+        <td>Space Complexity</td>
+        <td>O(n)</td>
+        <td>O(n * m)</td>
+        <td>O(n)</td>
+    </tr>
+</table>
+
+</div>
+    <br><br><br>
+    <h3>Comparison of Array Types</h3>
+    <p>Here is a quick comparison of the different types of arrays:</p>
+    <div id="table-overflow">
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Static Array</th>
+                <th>Multi-Dimensional Array</th>
+                <th>Dynamic Array</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Memory Allocation</td>
+                <td>Fixed size, allocated at compile-time.</td>
+                <td>Fixed size, allocated at compile-time.</td>
+                <td>Flexible size, allocated during runtime using <code>malloc</code>.</td>
+            </tr>
+            <tr>
+                <td>Size</td>
+                <td>Cannot change once declared.</td>
+                <td>Fixed number of rows and columns, defined at compile-time.</td>
+                <td>Size can be changed dynamically using memory allocation functions.</td>
+            </tr>
+            <tr>
+                <td>Usage</td>
+                <td>When the number of elements is known in advance.</td>
+                <td>For storing data in more than one dimension (e.g., matrices).</td>
+                <td>When the number of elements is not known and may change.</td>
+            </tr>
+            <tr>
+                <td>Memory Management</td>
+                <td>Automatically managed.</td>
+                <td>Automatically managed for each dimension.</td>
+                <td>Requires manual management (e.g., freeing memory with <code>free()</code>).</td>
+            </tr>
+        </tbody>
+    </table>
+</div><br><br><br>
+
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+        <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+    </div>
+</section>
+
+<section id="impl4">
+    <h2>Implementation of Static (1D Array) Array Operations</h2>
+    <br>
+    <h3>1. Array Declaration and Initialization</h3>
+    <p>First, let's declare and initialize a simple array in C:</p>
+    <br>
+    <pre><code>
+// C Program to declare and initialize an array
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {1, 2, 3, 4, 5};  // Array initialization with values
+
+    // Printing the initialized array
+    for(int i = 0; i &lt; 5; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+    return 0;
+}
+    </code></pre>
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0] = 1
+arr[1] = 2
+arr[2] = 3
+arr[3] = 4
+arr[4] = 5
+    </code></pre>
+<br><br><br>
+    <h3>2. Array Accessing</h3>
+    <p>Accessing individual elements of the array by index:</p>
+<br>
+    <pre><code>
+// C Program to access array elements
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+    
+    // Accessing an element
+    printf("Element at arr[2]: %d\n", arr[2]);  // Accessing the element at index 2
+    
+    return 0;
+}
+    </code></pre>
+    <p><strong>Output:</strong></p>
+    <pre><code>
+Element at arr[2]: 30
+    </code></pre>
+<br><br><br>
+    <h3>3. Array Insertion (at a specific index)</h3>
+    <p>Inserting an element at a specific position:</p>
+<br>
+    <pre><code>
+// C Program to insert an element at a specific index
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[6] = {10, 20, 30, 40, 50};  // Initial array
+    int pos = 2, val = 25;
+
+    // Shifting elements to the right
+    for(int i = 4; i >= pos; i--) {
+        arr[i + 1] = arr[i];
+    }
+    arr[pos] = val;  // Inserting the new value
+
+    // Printing the modified array
+    for(int i = 0; i &lt; 6; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+
+    return 0;
+}
+    </code></pre>
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0] = 10
+arr[1] = 20
+arr[2] = 25
+arr[3] = 30
+arr[4] = 40
+arr[5] = 50
+    </code></pre>
+<br><br><br>
+    <h3>4. Array Deletion (at a specific index)</h3>
+    <p>Deleting an element at a specific position:</p>
+<br>
+    <pre><code>
+// C Program to delete an element at a specific index
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+    int pos = 2;  // Index to delete
+
+    // Shifting elements to the left
+    for(int i = pos; i &lt; 4; i++) {
+        arr[i] = arr[i + 1];
+    }
+
+    // Printing the modified array
+    for(int i = 0; i &lt; 4; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+
+    return 0;
+}
+    </code></pre>
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0] = 10
+arr[1] = 20
+arr[2] = 40
+arr[3] = 50
+    </code></pre>
+<br><br><br>
+    <h3>5. Array Searching (Linear Search)</h3>
+    <p>Performing a linear search to find an element:</p>
+<br>
+    <pre><code>
+// C Program to search an element in an array using linear search
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+    int search = 30, found = 0;
+
+    // Linear search
+    for(int i = 0; i &lt; 5; i++) {
+        if(arr[i] == search) {
+            printf("Element %d found at index %d\n", search, i);
+            found = 1;
+            break;
+        }
+    }
+
+    if(!found) {
+        printf("Element %d not found.\n", search);
+    }
+
+    return 0;
+}
+    </code></pre>
+    <p><strong>Output:</strong></p>
+    <pre><code>
+Element 30 found at index 2
+    </code></pre>
+<br><br><br>
+    <h3>6. Array Sorting (Bubble Sort)</h3>
+    <p>Sorting the array using bubble sort algorithm:</p>
+<br>
+    <pre><code>
+// C Program to sort an array using bubble sort
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {50, 40, 10, 30, 20};
+    int temp;
+
+    // Bubble Sort
+    for(int i = 0; i &lt; 4; i++) {
+        for(int j = 0; j &lt; 4 - i; j++) {
+            if(arr[j] &gt; arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    // Printing sorted array
+    for(int i = 0; i &lt; 5; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+
+    return 0;
+}
+    </code></pre>
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0] = 10
+arr[1] = 20
+arr[2] = 30
+arr[3] = 40
+arr[4] = 50
+    </code></pre>
+<br><br>
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl3')">Previous</span>
+        <span class="nav-btn" onclick="showSection('impl5')">Next</span>
+    </div>
+</section>
+
+<section id="impl5">
+    <h2>Implementation of Multidimensional Array Operations</h2>
+<br>
+    <h3>1. Multidimensional Array Declaration and Initialization</h3>
+    <p>First, let's declare and initialize a 2D array in C:</p>
+    <br>
+    <pre><code>
+// C Program to declare and initialize a multidimensional array
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+
+    // Printing the initialized 2D array
+    for(int i = 0; i &lt; 2; i++) {
+        for(int j = 0; j &lt; 3; j++) {
+            printf("arr[%d][%d] = %d\n", i, j, arr[i][j]);
+        }
+    }
+    return 0;
+}
+    </code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0][0] = 1
+arr[0][1] = 2
+arr[0][2] = 3
+arr[1][0] = 4
+arr[1][1] = 5
+arr[1][2] = 6
+    </code></pre>
+<br><br><br>
+    <h3>2. Accessing Elements of a Multidimensional Array</h3>
+    <p>Accessing specific elements using row and column indices:</p>
+<br>
+    <pre><code>
+// C Program to access an element of a 2D array
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[2][3] = {
+        {10, 20, 30},
+        {40, 50, 60}
+    };
+
+    // Accessing an element
+    printf("Element at arr[1][2]: %d\n", arr[1][2]);  // Accessing the element at row 1, column 2
+    
+    return 0;
+}
+    </code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>
+Element at arr[1][2]: 60
+    </code></pre>
+<br><br><br>
+    <h3>3. Insertion in a Multidimensional Array</h3>
+    <p>Inserting a new element into a 2D array (modifying an existing element):</p>
+<br>
+    <pre><code>
+// C Program to modify a specific element in a 2D array
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[2][3] = {
+        {10, 20, 30},
+        {40, 50, 60}
+    };
+
+    // Modifying the element at position [1][1]
+    arr[1][1] = 100;
+
+    // Printing the modified 2D array
+    for(int i = 0; i &lt; 2; i++) {
+        for(int j = 0; j &lt; 3; j++) {
+            printf("arr[%d][%d] = %d\n", i, j, arr[i][j]);
+        }
+    }
+    return 0;
+}
+    </code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0][0] = 10
+arr[0][1] = 20
+arr[0][2] = 30
+arr[1][0] = 40
+arr[1][1] = 100
+arr[1][2] = 60
+    </code></pre>
+<br><br><br>
+    <h3>4. Deletion in a Multidimensional Array</h3>
+    <p>Deleting an element from a 2D array (this operation is tricky as we can’t literally delete an element in a fixed-size array, but we can set it to a default value):</p>
+<br>
+    <pre><code>
+// C Program to set an element to a default value (simulating deletion)
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[2][3] = {
+        {10, 20, 30},
+        {40, 50, 60}
+    };
+
+    // Setting the element at [0][1] to 0 (simulating deletion)
+    arr[0][1] = 0;
+
+    // Printing the modified 2D array
+    for(int i = 0; i &lt; 2; i++) {
+        for(int j = 0; j &lt; 3; j++) {
+            printf("arr[%d][%d] = %d\n", i, j, arr[i][j]);
+        }
+    }
+    return 0;
+}
+    </code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0][0] = 10
+arr[0][1] = 0
+arr[0][2] = 30
+arr[1][0] = 40
+arr[1][1] = 50
+arr[1][2] = 60
+    </code></pre>
+<br><br><br>
+    <h3>5. Searching in a Multidimensional Array</h3>
+    <p>Searching for an element in a 2D array (linear search):</p>
+<br>
+    <pre><code>
+// C Program to search an element in a 2D array using linear search
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[2][3] = {
+        {10, 20, 30},
+        {40, 50, 60}
+    };
+    int search = 30, found = 0;
+
+    // Linear search
+    for(int i = 0; i &lt; 2; i++) {
+        for(int j = 0; j &lt; 3; j++) {
+            if(arr[i][j] == search) {
+                printf("Element %d found at arr[%d][%d]\n", search, i, j);
+                found = 1;
+                break;
+            }
+        }
+    }
+
+    if(!found) {
+        printf("Element %d not found.\n", search);
+    }
+
+    return 0;
+}
+    </code></pre>
+
+    <p><strong>Output:</strong></p>
+    <pre><code>
+Element 30 found at arr[0][2]
+    </code></pre>
+<br><br><br>
+    <h3>6. Sorting a Multidimensional Array (Sorting Rows)</h3>
+    <p>Sorting each row of the 2D array using bubble sort:</p>
+<br>
+    <pre><code>
+// C Program to sort rows of a 2D array using bubble sort
+#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[2][3] = {
+        {30, 10, 20},
+        {60, 40, 50}
+    };
+    int temp;
+
+    // Sorting each row
+    for(int i = 0; i &lt; 2; i++) {
+        for(int j = 0; j &lt; 2; j++) {
+            for(int k = 0; k &lt; 2 - j; k++) {
+                if(arr[i][k] &gt; arr[i][k + 1]) {
+                    temp = arr[i][k];
+                    arr[i][k] = arr[i][k + 1];
+                    arr[i][k + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Printing sorted 2D array
+    for(int i = 0; i &lt; 2; i++) {
+        for(int j = 0; j &lt; 3; j++) {
+            printf("arr[%d][%d] = %d\n", i, j, arr[i][j]);
+        }
+    }
+    return 0;
+}
+    </code></pre>
+<br>
+    <p><strong>Output:</strong></p>
+    <pre><code>
+arr[0][0] = 10
+arr[0][1] = 20
+arr[0][2] = 30
+arr[1][0] = 40
+arr[1][1] = 50
+arr[1][2] = 60
+    </code></pre>
+<br><br>
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl4')">Previous</span>
+        <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+    </div>
+</section>
+
+<section id="impl2">
+    <h2>Array Storage Concepts</h2>
+    <br>
+    <h3>1. Array Overflow</h3>
+    <p>In programming, when an array exceeds its allocated storage or reaches its capacity, it's commonly referred to as <strong>"array overflow"</strong> or <strong>"buffer overflow."</strong> This happens when data is written outside the bounds of the array's allocated memory. It can lead to undefined behavior, memory corruption, or program crashes.</p>
+<br>
+    <h3>Example of Array Overflow:</h3>
+    <pre><code>int arr[5] = {1, 2, 3, 4, 5};
+arr[5] = 6;  // This is an array overflow, as the index 5 is out of bounds.</code></pre>
+    <br><br>
+    <h3>2. Empty Array</h3>
+    <p>An array is considered <strong>"empty"</strong> when it has no elements or no data is stored in it. It can either be declared with a size of zero or initialized without values. In some cases, if the array is defined but not explicitly initialized, it may contain garbage values.</p>
+<br>
+    <h3>Example of Empty Array:</h3>
+    <pre><code>int arr[5] = {};  // This is an empty array with no values assigned.</code></pre>
+<br><br>
+    <p>In some languages like C, accessing an empty array or attempting to insert data outside its bounds can result in errors or undefined behavior. An empty array can also refer to one with a size of zero or an array whose elements hold default values.</p>
+<br><br>
+    <h3>Summary:</h3><br>
+    <ul>
+        <li><strong>Array Overflow:</strong> Occurs when you write outside the bounds of an array, potentially leading to crashes or data corruption.</li><br>
+        <li><strong>Empty Array:</strong> An array that has no elements or is initialized without any data. It may also refer to an array with default or garbage values.</li><br>
+    </ul><br><br>
+    
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl5')">Previous</span>
+        <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+    </div>
+</section>
+    
+<section id="impl3">
+    <h2>Advantages and Disadvantages of an Array</h2><br>
+    
+    <div id="table-overflow">
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Advantage</th>
+                    <th>Disadvantage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. <strong>Fast access:</strong> Array elements can be accessed using an index, making it fast for retrieving or updating values.</td>
+                    <td>1. <strong>Fixed size:</strong> Once an array is defined, its size cannot be changed. This may result in unused memory or difficulty handling dynamic data.</td>
+                </tr>
+                <tr>
+                    <td>2. <strong>Memory efficiency:</strong> Arrays allocate a contiguous block of memory, making it more efficient for storage compared to other data structures.</td>
+                    <td>2. <strong>Array overflow:</strong> If an array is not resized and exceeds its limit, it leads to overflow, causing errors and potential crashes.</td>
+                </tr>
+                <tr>
+                    <td>3. <strong>Easy to implement:</strong> Arrays are simple to declare and use, making them a great option for beginners in programming.</td>
+                    <td>3. <strong>Insertion/Deletion cost:</strong> Inserting or deleting elements in the middle of an array requires shifting elements, which can be costly in terms of time complexity (O(n)).</td>
+                </tr>
+                <tr>
+                    <td>4. <strong>Contiguous memory:</strong> Arrays store elements in contiguous memory locations, which can improve cache performance.</td>
+                    <td>4. <strong>Wasted space:</strong> If the array size is not properly planned, you may waste memory if the array isn’t filled completely.</td>
+                </tr>
+                <tr>
+                    <td>5. <strong>Index-based access:</strong> Elements can be accessed directly via indices, which results in constant-time (O(1)) lookup.</td>
+                    <td>5. <strong>Fixed data type:</strong> Arrays are of a single data type. This limits flexibility, as elements must all be the same type.</td>
+                </tr>
+                <tr>
+                    <td>6. <strong>Low overhead:</strong> Arrays have low memory overhead since no extra pointers or metadata are needed, unlike linked lists.</td>
+                    <td>6. <strong>Resizing limitations:</strong> If a dynamic array needs to be resized, it can be inefficient to copy all elements to a larger memory location.</td>
+                </tr>
+                <tr>
+                    <td>7. <strong>Better for known data:</strong> Arrays are ideal when you know the exact number of elements ahead of time.</td>
+                    <td>7. <strong>Array size limitations:</strong> There are platform-dependent limitations on the maximum size of an array.</td>
+                </tr>
+                <tr>
+                    <td>8. <strong>Support for multi-dimensional arrays:</strong> Arrays can be easily extended to represent multidimensional data.</td>
+                    <td>8. <strong>Memory fragmentation:</strong> If arrays are frequently resized, fragmentation may occur, leading to inefficient memory usage.</td>
+                </tr>
+                <tr>
+                    <td>9. <strong>Simple algorithms:</strong> Many algorithms are designed to operate efficiently on arrays, making them a good fit for various tasks.</td>
+                    <td>9. <strong>Limited flexibility:</strong> Once the array is created, it cannot easily accommodate new types of operations.</td>
+                </tr>
+                <tr>
+                    <td>10. <strong>Fast iteration:</strong> Arrays allow for fast iteration through elements using loops or other methods.</td>
+                    <td>10. <strong>Hard to scale:</strong> Arrays are not ideal for applications that require dynamic scaling or frequent changes in size.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div><br><br>
+
+    <div class="navigation-buttons">
+        <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+        <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+    </div>
+</section>
+
+
+<section id="quiz">
+    <h2>Test Your Knowledge on Arrays</h2>
+    <div id="quiz-container">
+        <div class="question">
+            <p><strong>1. What is an array?</strong></p>
+            <label><input type="radio" name="q1" value="A"> A collection of elements that can be accessed randomly.</label><br>
+            <label><input type="radio" name="q1" value="B"> A collection of elements that follows the LIFO principle.</label><br>
+            <label><input type="radio" name="q1" value="C"> A data structure that allows random access to elements only in sorted order.</label><br>
+            <label><input type="radio" name="q1" value="D"> A linear search algorithm for searching elements.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>2. What is the time complexity of accessing an element by index in an array?</strong></p>
+            <label><input type="radio" name="q2" value="A"> O(1)</label><br>
+            <label><input type="radio" name="q2" value="B"> O(n)</label><br>
+            <label><input type="radio" name="q2" value="C"> O(log n)</label><br>
+            <label><input type="radio" name="q2" value="D"> O(n^2)</label><br>
+        </div>
+        <div class="question">
+            <p><strong>3. What is the space complexity of an array with n elements?</strong></p>
+            <label><input type="radio" name="q3" value="A"> O(1)</label><br>
+            <label><input type="radio" name="q3" value="B"> O(n)</label><br>
+            <label><input type="radio" name="q3" value="C"> O(log n)</label><br>
+            <label><input type="radio" name="q3" value="D"> O(n^2)</label><br>
+        </div>
+        <div class="question">
+            <p><strong>4. How can you add an element to the end of an array?</strong></p>
+            <label><input type="radio" name="q4" value="A"> Using the 'append' method in Python.</label><br>
+            <label><input type="radio" name="q4" value="B"> Using the 'push' method in C++.</label><br>
+            <label><input type="radio" name="q4" value="C"> By directly assigning to the last index.</label><br>
+            <label><input type="radio" name="q4" value="D"> You can't add elements to an array once created.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>5. What is the main drawback of using arrays?</strong></p>
+            <label><input type="radio" name="q5" value="A"> Fixed size, cannot grow dynamically.</label><br>
+            <label><input type="radio" name="q5" value="B"> They consume too much memory.</label><br>
+            <label><input type="radio" name="q5" value="C"> They are slower to access compared to lists.</label><br>
+            <label><input type="radio" name="q5" value="D"> They can only store one type of element.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>6. What will happen if you try to access an index outside the bounds of an array?</strong></p>
+            <label><input type="radio" name="q6" value="A"> It throws an exception or error.</label><br>
+            <label><input type="radio" name="q6" value="B"> It returns null.</label><br>
+            <label><input type="radio" name="q6" value="C"> It automatically creates the index.</label><br>
+            <label><input type="radio" name="q6" value="D"> It wraps around to the first element.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>7. What is the time complexity of inserting an element in an array at the beginning?</strong></p>
+            <label><input type="radio" name="q7" value="A"> O(1)</label><br>
+            <label><input type="radio" name="q7" value="B"> O(n)</label><br>
+            <label><input type="radio" name="q7" value="C"> O(log n)</label><br>
+            <label><input type="radio" name="q7" value="D"> O(n^2)</label><br>
+        </div>
+        <div class="question">
+            <p><strong>8. Which of the following uses arrays?</strong></p>
+            <label><input type="radio" name="q8" value="A"> Implementing a stack or queue.</label><br>
+            <label><input type="radio" name="q8" value="B"> Storing a fixed-size list of elements.</label><br>
+            <label><input type="radio" name="q8" value="C"> Sorting algorithms like QuickSort or MergeSort.</label><br>
+            <label><input type="radio" name="q8" value="D"> All of the above</label><br>
+        </div>
+        <div class="question">
+            <p><strong>9. Which of the following is NOT a valid array operation?</strong></p>
+            <label><input type="radio" name="q9" value="A"> Traversing through elements.</label><br>
+            <label><input type="radio" name="q9" value="B"> Inserting at any position.</label><br>
+            <label><input type="radio" name="q9" value="C"> Accessing elements using an index.</label><br>
+            <label><input type="radio" name="q9" value="D"> Changing the size dynamically.</label><br>
+        </div>
+        <div class="question">
+            <p><strong>10. When would you use an array over other data structures?</strong></p>
+            <label><input type="radio" name="q10" value="A"> When you need random access to elements by index.</label><br>
+            <label><input type="radio" name="q10" value="B"> When you need a dynamic data structure.</label><br>
+            <label><input type="radio" name="q10" value="C"> When you need to store unordered data.</label><br>
+            <label><input type="radio" name="q10" value="D"> When you want to perform frequent insertions and deletions.</label><br>
+        </div>
+    </div>
+    <button id="submit">Submit</button>
+    <div id="result"></div>
+    <div id="analytics"></div>
+    <div id="warning" style="color: red;"></div>
+</section>
+
+
+<script>
+    document.getElementById('submit').addEventListener('click', function() {
+        const questions = document.querySelectorAll('.question');
+        let score = 0;
+        const totalQuestions = questions.length;
+        let results = [];
+        let explanations = [];
+    
+        // Check if all questions are answered
+        let allAnswered = true;
+        questions.forEach((question, index) => {
+            const selected = question.querySelector('input[type="radio"]:checked');
+            if (!selected) {
+                allAnswered = false;
+            } else {
+                const answer = selected.value;
+                // Correct answers and explanations
+                const correctAnswers = ['A', 'A', 'B', 'A', 'A', 'A', 'B', 'D', 'D', 'A']; // Correct answers
+                const explanationsData = [
+                    "An array is a collection of elements stored at contiguous memory locations and can be accessed using indices.",
+                    "Accessing an element by index is O(1) because you can directly access it using its index.",
+                    "The space complexity of an array is O(n), where n is the number of elements.",
+                    "In Python, the append method adds an element to the end of a list (array). In C++, you can use push_back.",
+                    "Arrays have a fixed size, which cannot grow or shrink dynamically.",
+                    "Accessing an index outside the array bounds typically results in an exception.",
+                    "Inserting an element at the beginning of an array involves shifting all elements, making it O(n).",
+                    "Arrays can be used for implementing stacks, queues, or storing fixed-size data.",
+                    "Arrays cannot dynamically resize like other data structures.",
+                    "Arrays are preferred when you need random access to elements by index."
+                ];
+    
+                results.push({ question: index + 1, selected: answer });
+                if (answer === correctAnswers[index]) {
+                    score++;
+                    explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
+                } else {
+                    explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
+                }
+            }
+        });
+    
+        if (!allAnswered) {
+            document.getElementById('warning').innerText = "Please answer all questions before submitting.";
+            return; // Stop execution if not all questions are answered
+        } else {
+            document.getElementById('warning').innerText = ""; // Clear the warning
+        }
+    
+        // Display the score
+        document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
+    
+        // Display detailed analytics
+        const analyticsDiv = document.getElementById('analytics');
+        analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
+        explanations.forEach(item => {
+            const colorClass = item.correct ? 'correct' : 'incorrect';
+            const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
+            analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
+        });
+    });
+    
+    // Function to show the selected section and hide the others
+    function showSection(sectionId) {
+        var sections = document.querySelectorAll('section');
+        sections.forEach(function(section) {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    // Handle next and previous buttons
+    let currentSection = 0;
+    const sections = document.querySelectorAll('section');
+    const totalSections = sections.length;
+
+    function showNextSection() {
+        if (currentSection < totalSections - 1) {
+            currentSection++;
+            showSection('section-' + (currentSection + 1));
+        }
+    }
+
+    function showPreviousSection() {
+        if (currentSection > 0) {
+            currentSection--;
+            showSection('section-' + (currentSection + 1));
+        }
+    }
+
+    // Attach event listeners to next/previous buttons (adjust as needed)
+    document.getElementById('next-btn').addEventListener('click', showNextSection);
+    document.getElementById('prev-btn').addEventListener('click', showPreviousSection);
+
+    function openInNewTabArray() {
+        window.open('array1/arr_viz.html', '_blank');
+    }
+
+    function openInNewTab() {
+        window.open('array1/arr_viz.html', '_blank');
+    }
+
+    function openInNewTabLl() {
+        window.open('array1/arr_viz.html', '_blank');
+    }
+</script>
+
+    
+</body>
+</html>
