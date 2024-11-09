@@ -994,82 +994,85 @@ int main() {
             <div id="warning" style="color: red;"></div>
         </section>
         
-        <script>
-document.getElementById('submit').addEventListener('click', function() {
-    const questions = document.querySelectorAll('.question');
-    let score = 0;
-    const totalQuestions = questions.length;
-    let results = [];
-    let explanations = [];
-
-    // Check if all questions are answered
-    let allAnswered = true;
-    questions.forEach((question, index) => {
-        const selected = question.querySelector('input[type="radio"]:checked');
-        if (!selected) {
-            allAnswered = false;
-        } else {
-            const answer = selected.value;
-            // Assuming correct answers are stored in an array for validation
-            const correctAnswers = ['B', 'B', 'B', 'C', 'C', 'B', 'A', 'D', 'B', 'B']; // Adjust according to your correct answers
-            const explanationsData = [
-                "A stack is a collection of elements that follows the LIFO principle.",
-                "The push operation adds an element to the top of the stack.",
-                "The pop operation removes the top element from the stack.",
-                "The last element pushed (15) will be the top element.",
-                "Both arrays and linked lists can be used to implement stacks.",
-                "Popping from an empty stack typically throws an underflow error.",
-                "The time complexity for the push operation in a stack using an array is O(1).",
-                "Stacks can be used for undo functionality, expression evaluation, and function calls.",
-                "Stacks are commonly used in recursive algorithms.",
-                "Stacks are preferred when reversing items."
-            ];
-
-            results.push({ question: index + 1, selected: answer });
-            if (answer === correctAnswers[index]) {
-                score++;
-                explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
-            } else {
-                explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
-            }
-        }
-    });
-
-    if (!allAnswered) {
-        document.getElementById('warning').innerText = "Please answer all questions before submitting.";
-        return; // Stop execution if not all questions are answered
-    } else {
-        document.getElementById('warning').innerText = ""; // Clear the warning
-    }
-
-    document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
-
-    // Display detailed analytics
-    const analyticsDiv = document.getElementById('analytics');
-    analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
-    explanations.forEach(item => {
-        const colorClass = item.correct ? 'correct' : 'incorrect';
-        const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
-        analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
-    });
-});
-
-              // Function to show the selected section and hide the others
-        function showSection(sectionId) {
-            var sections = document.querySelectorAll('section');
-            sections.forEach(function(section) {
-                section.classList.remove('active');
+ <script>
+            document.getElementById('submit').addEventListener('click', function() {
+                const questions = document.querySelectorAll('.question');
+                let score = 0;
+                const totalQuestions = questions.length;
+                let results = [];
+                let explanations = [];
+            
+                // Check if all questions are answered
+                let allAnswered = true;
+                questions.forEach((question, index) => {
+                    const selected = question.querySelector('input[type="radio"]:checked');
+                    if (!selected) {
+                        allAnswered = false;
+                    } else {
+                        const answer = selected.value;
+                        // Correct answers and explanations
+                        const correctAnswers = ['B', 'B', 'B', 'C', 'C', 'B', 'A', 'D', 'B', 'B']; // Adjust according to your correct answers
+                        const explanationsData = [
+                            "A stack is a collection of elements that follows the LIFO principle.",
+                            "The push operation adds an element to the top of the stack.",
+                            "The pop operation removes the top element from the stack.",
+                            "The last element pushed (15) will be the top element.",
+                            "Both arrays and linked lists can be used to implement stacks.",
+                            "Popping from an empty stack typically throws an underflow error.",
+                            "The time complexity for the push operation in a stack using an array is O(1).",
+                            "Stacks can be used for undo functionality, expression evaluation, and function calls.",
+                            "Stacks are commonly used in recursive algorithms.",
+                            "Stacks are preferred when reversing items."
+                        ];
+            
+                        results.push({ question: index + 1, selected: answer });
+                        if (answer === correctAnswers[index]) {
+                            score++;
+                            explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
+                        } else {
+                            explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
+                        }
+                    }
+                });
+            
+                if (!allAnswered) {
+                    document.getElementById('warning').innerText = "Please answer all questions before submitting.";
+                    return; // Stop execution if not all questions are answered
+                } else {
+                    document.getElementById('warning').innerText = ""; // Clear the warning
+                }
+            
+                document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
+            
+                // Display detailed analytics
+                const analyticsDiv = document.getElementById('analytics');
+                analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
+                explanations.forEach(item => {
+                    const colorClass = item.correct ? 'correct' : 'incorrect';
+                    const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
+                    analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
+                });
             });
-            document.getElementById(sectionId).classList.add('active');
-        }
-        function openInNewTab() {
-            window.open('https://brk8789.github.io/Brk_visualizations/Basics/stack/stack.html', '_blank');
-        }
-        function openInNewTabLl() {
-            window.open('https://brk8789.github.io/Brk_visualizations/Basics/implementation-linked-list/linkedlist.html', '_blank');
-        }
-    </script>
-
+            
+            // Function to show the selected section and scroll to it
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                const section = document.getElementById(sectionId);
+                section.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+            }
+            
+            function openInNewTab() {
+                window.open('https://brk8789.github.io/Brk_visualizations/Basics/stack/stack.html', '_blank');
+            }
+            
+            function openInNewTabLl() {
+                window.open('https://brk8789.github.io/Brk_visualizations/Basics/implementation-linked-list/linkedlist.html', '_blank');
+            }
+            </script>
 </body>
 
 </html>
