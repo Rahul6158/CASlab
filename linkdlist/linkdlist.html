@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List Data Structure</title>
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+</style>
+
+</head>
+
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Linked List Data Structure</h2>
+    <ul>
+        <li><a href="#" onclick="showSection('intro1')">Introduction to Linked List</a></li>
+        <li><a href="#" onclick="showSection('intro2')">Key Operations in Linked List</a></li>
+        <li><a href="#" onclick="showSection('impl1')">Types of Linked Lists</a></li>
+        <li><a href="#" onclick="showSection('intro3')">Implementation of Linked List</a></li>
+        <li><a href="#" onclick="showSection('impl4')">Singly Linked List Operations Implementation</a></li>
+        <li><a href="#" onclick="showSection('impl2')">Doubly Linked List Operations Implementation</a></li>
+        <li><a href="#" onclick="showSection('impl6')">Linked List Overflow and Underflow</a></li>
+        <li><a href="#" onclick="showSection('impl3')">Advantages and Disadvantages of Linked List</a></li>
+        <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+
+        <li><div id="btn">
+            <button type="button" class="action" onclick="openCourse('linkedlist1/ll_viz.html')">Linked List Visualizations</button>
+        </div></li>
+    </ul>
+</div>
+
+
+<div class="content">
+
+    <section id="intro1" class="active">
+        <h2>What is a Linked List</h2>
+        <p>A <strong>Linked List</strong> is a linear data structure where elements (nodes) are stored in a non-contiguous manner. Each node contains data and a reference (or link) to the next node in the sequence.</p><br>
+        
+        <img src="linkdlistex.jpg" alt="linked list example"><br><br>
+        
+        <h3>Understanding Linked Lists:</h3><br>
+        <p>In a linked list, each element (node) points to the next, forming a chain of nodes. Unlike arrays, linked lists do not require contiguous memory locations for storing elements, making them dynamic in size.</p>
+        <ul>
+            <li>Each element in the list is represented by a <strong>node</strong>, which consists of two parts: the data and a reference (link) to the next node.</li>
+            <li>Linked lists are <strong>dynamic</strong>, meaning they can grow or shrink in size as elements are added or removed.</li>
+        </ul>
+        <p><strong>Example</strong>: A linked list can be visualized as a chain of nodes, where each node contains a value and a reference to the next node.</p>
+        <img src="linked-list.png" alt="linked list example (nodes)">
+        <br><br>
+    
+        <h3>Working with Linked Lists</h3><br>
+        <p>Linked lists are particularly useful for applications where the size of the data structure needs to change dynamically.</p><br>
+    
+        <ul>
+            <li><strong>Linked List Structure:</strong><br>
+                In a linked list, each node contains data and a link to the next node, making insertion and deletion operations efficient as compared to arrays.</li><br>
+            <li><strong>Node Access:</strong><br>
+                To access an element, we must traverse the list starting from the head node until the desired node is reached. This results in linear time complexity for access.</li><br>
+        </ul><br>
+        
+        <h3>Real-World Examples of Linked Lists</h3>
+        <p>Linked lists are used in many applications where dynamic data structures are required. Some examples include:</p>
+        <br><ul>
+            <li><strong>Memory Management:</strong> Linked lists are used in memory management for storing free memory blocks.</li><br>
+            <li><strong>Navigation Systems:</strong> Linked lists are used for representing paths in navigation systems, where each node is a point on the route.</li><br>
+            <li><strong>Undo Functionality:</strong> In text editors or applications, undo functionality can be implemented using linked lists to store previous states.</li><br>
+            <li><strong>Queue and Stack Implementations:</strong> Linked lists can be used to implement queue and stack data structures.</li><br>
+            <li><strong>Database Management:</strong> Linked lists are sometimes used in databases to store records or manage transactions.</li><br>
+        </ul><br>
+    
+        <div class="navigation-buttons">
+            <span></span>
+            <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+        </div>
+    </section>
+         
+    <section id="intro2">
+        <h2>Key Operations of a Linked List</h2><br>
+        <ol>
+            <li>
+                <strong>Access</strong>: The operation used to access an element in the linked list by traversing from the head node until the desired node is reached. Unlike arrays, access time is linear.
+            </li><br>
+            <li>
+                <strong>Insert</strong>: The operation to add a new node at a specific position in the linked list. This may involve adjusting the links of the surrounding nodes.
+            </li><br>
+            <li>
+                <strong>Update</strong>: The operation that allows you to change the data in a node at a specific position in the list.
+            </li><br>
+            <li>
+                <strong>Delete</strong>: The operation to remove a node from the linked list at a specific position. The links of the adjacent nodes must be updated.
+            </li><br>
+            <li>
+                <strong>Length</strong>: The operation to calculate the total number of nodes in the linked list by traversing the entire list.
+            </li><br>
+        </ol><br><br>
+        
+        <h3>A Real-World Example</h3><br>
+        <ul>
+            <li><strong>Access</strong>: Retrieve an element from a specific position in the list. <br> Example: Finding a specific book in a library by its shelf position. <br>
+            </li><br>
+            <li><strong>Insert</strong>: Add a new node at a specific position in the linked list. <br> Example: Adding a new product to an online shopping cart at a particular position. <br>
+                <br>
+            </li><br>
+            <li><strong>Update</strong>: Change the value of a node at a specific position. <br> Example: Updating the price of a product in an inventory list. <br>
+                <br>
+            </li><br>
+            <li><strong>Delete</strong>: Remove a node from the linked list at a specific position. <br> Example: Removing a movie from a playlist. <br>
+                <br>
+            </li><br>
+            <li><strong>Length</strong>: Find out how many elements (nodes) are in the linked list. <br> Example: Checking how many chapters are in a book or how many songs are in a playlist. <br>
+            </li><br>
+        </ul><br>
+    
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+        </div>
+    </section>    
+
+    <section id="impl1">
+        <h2>Types of Linked Lists</h2>
+        <p>Linked lists come in various types, each serving different purposes depending on the requirements:</p><br>
+        <ol>
+            <li><strong>Singly Linked List:</strong> A linked list in which each node points to the next node, with the last node pointing to null (end of the list).
+                <br><br><ul style="list-style-type: disc;">
+                    <li><strong>Usage:</strong> Best when the traversal is linear, and only forward navigation is required.</li>
+                    <li><strong>Drawbacks:</strong> Cannot traverse backward, making reverse operations difficult.</li>
+                    <img src="Singlelinkedlist.png" alt="Singly Link-edlist Example">
+                </ul>
+            </li><br><br>
+            <li><strong>Doubly Linked List:</strong> A linked list where each node contains two pointers: one pointing to the next node and another pointing to the previous node, allowing traversal in both directions.
+                <br><br><ul style="list-style-type: disc;">
+                    <li><strong>Usage:</strong> Useful for applications that require traversal in both directions, such as navigation systems or undo functionalities.</li>
+                    <li><strong>Drawbacks:</strong> Requires extra memory for the backward pointer, which can increase memory usage.</li>
+                    <li><strong>node in a doubly linked list:</strong>In a doubly linked list, each node contains three parts: the **data**, the **next pointer** to the next node, and the **previous pointer** to the previous node. This structure allows traversal in both directions, making operations like deletion more efficient but requiring extra memory for the additional pointer. </li>
+                    <img src="doubly-linked-list-node.png" alt="Doubly Linked List node">
+                    <li><strong> Example:</strong> <br><img src="doubly-linked-lst.jpg" alt="Doubly linked list example"> </li>
+
+                </ul>
+            </li><br><br>
+            <li><strong>Circular Linked List:</strong> A linked list where the last node points back to the first node, creating a circular loop of nodes.
+                <br><br><ul style="list-style-type: disc;">
+                    <li><strong>Usage:</strong> Ideal for applications that require continuous, repetitive operations, such as round-robin scheduling.</li>
+                    <li><strong>Drawbacks:</strong> May require additional checks to avoid infinite loops and ensure termination in traversal.</li>
+                    <img src="circulatl9inkdlist.webp" alt="Circular Linkedlist Example">
+                </ul>
+            </li><br>
+        </ol><br><br>
+    
+        <h3>Comparison of Linked List Types: Singly vs Doubly vs Circular</h3><br>
+        <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Singly Linked List</th>
+                        <th>Doubly Linked List</th>
+                        <th>Circular Linked List</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Memory Allocation</td>
+                        <td>One pointer per node (next pointer).</td>
+                        <td>Two pointers per node (next and previous).</td>
+                        <td>Similar to singly or doubly, but the last node points to the first node.</td>
+                    </tr>
+                    <tr>
+                        <td>Traversal Direction</td>
+                        <td>Only forward.</td>
+                        <td>Both forward and backward.</td>
+                        <td>Can be traversed in a circular manner from any node.</td>
+                    </tr>
+                    <tr>
+                        <td>Insertion Time Complexity</td>
+                        <td>O(1) if position is known.</td>
+                        <td>O(1) if position is known.</td>
+                        <td>O(1) if the insertion point is known.</td>
+                    </tr>
+                    <tr>
+                        <td>Deletion Time Complexity</td>
+                        <td>O(1) if node to be deleted is known.</td>
+                        <td>O(1) if node to be deleted is known.</td>
+                        <td>O(1) if node to be deleted is known.</td>
+                    </tr>
+                    <tr>
+                        <td>Memory Overhead</td>
+                        <td>Minimal, one pointer per node.</td>
+                        <td>Higher, as it needs two pointers per node.</td>
+                        <td>Similar to singly or doubly, but adds complexity due to circular structure.</td>
+                    </tr>
+                    <tr>
+                        <td>Access Time Complexity</td>
+                        <td>O(n) to traverse to a specific node.</td>
+                        <td>O(n) to traverse to a specific node.</td>
+                        <td>O(n) to traverse, but no end to the list (circular).</td>
+                    </tr>
+                    <tr>
+                        <td>Implementation Simplicity</td>
+                        <td>Simple, with a single pointer per node.</td>
+                        <td>More complex due to backward traversal.</td>
+                        <td>Moderately complex, requiring circular link management.</td>
+                    </tr>
+                    <tr>
+                        <td>Best Suited For</td>
+                        <td>When only forward traversal is required.</td>
+                        <td>When bidirectional traversal is needed.</td>
+                        <td>When a circular traversal is needed, such as in round-robin algorithms.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><br><br>
+    
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+            <span class="nav-btn" onclick="showSection('intro3')">Next</span>
+        </div>
+    </section>
+
+    <section id="intro3">
+        <h2>Linked List's Implementation</h2>
+        <p>In C, linked lists are dynamic data structures that consist of a sequence of elements called nodes. Each node contains data and a reference (or link) to the next node in the sequence. Linked lists can be singly linked, doubly linked, or circular linked, each with its specific use case. Let's look at how different types of linked lists—singly linked, doubly linked, and circular—are declared, initialized, and accessed in C.</p>
+        <br><br>
+        <h3>Linked List Declaration Syntax</h3><br>
+        <pre><code>struct Node <br> { <br> data_type data; <br> struct Node* next; <br> };<br></code></pre>
+        <p>This is the basic syntax for declaring a node structure for a linked list in C. However, singly linked, doubly linked, and circular linked lists follow different structures and methods for node linkage, which we will discuss below.</p>
+        <br><br>
+        <h3>Linked List Types</h3><br>
+        <div id="table-overflow">
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Singly Linked List</th>
+                    <th>Doubly Linked List</th>
+                    <th>Circular Linked List</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Declaration</strong></td>
+                    <td><code>struct Node { data_type data; struct Node* next; };</code></td>
+                    <td><code>struct Node { data_type data; struct Node* next; struct Node* prev; };</code></td>
+                    <td><code>struct Node { data_type data; struct Node* next; }; (head points to the last node)</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Initialization</strong></td>
+                    <td><code>struct Node* head = NULL;</code></td>
+                    <td><code>struct Node* head = NULL;</code></td>
+                    <td><code>struct Node* head = NULL;</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Accessing</strong></td>
+                    <td><code>node_name = head;</code><br><code>while (node_name != NULL) { ... }</code></td>
+                    <td><code>node_name = head;</code><br><code>while (node_name != NULL) { ... }</code></td>
+                    <td><code>node_name = head;</code><br><code>while (node_name->next != head) { ... }</code></td>
+                </tr>
+            </tbody>
+        </table>
+        </div><br><br><br>
+    
+        <h3>1. Singly Linked List in C</h3>
+        <p>A singly linked list is a list where each node contains a reference to the next node in the sequence. The last node points to NULL to mark the end of the list.</p>
+        <br><br>
+        <h3>Example</h3>
+        <pre><code>// Singly Linked List Example
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+    
+    int main() {
+        struct Node* head = NULL;
+        struct Node* second = NULL;
+        struct Node* third = NULL;
+    
+        // Allocate memory for nodes
+        head = (struct Node*)malloc(sizeof(struct Node));
+        second = (struct Node*)malloc(sizeof(struct Node));
+        third = (struct Node*)malloc(sizeof(struct Node));
+    
+        // Initialize data
+        head->data = 10;
+        head->next = second;
+    
+        second->data = 20;
+        second->next = third;
+    
+        third->data = 30;
+        third->next = NULL;
+    
+        // Traverse the list
+        struct Node* current = head;
+        while (current != NULL) {
+            printf("%d -> ", current->data);
+            current = current->next;
+        }
+        printf("NULL\n");
+    
+        return 0;
+    }</code></pre><br>
+        <h4>Output:</h4>
+        <pre>10 -> 20 -> 30 -> NULL</pre><br><br><br>
+    
+        <h3>2. Doubly Linked List in C</h3>
+        <p>A doubly linked list is a list where each node contains references to both the next and the previous nodes, making it easier to traverse in both directions.</p>
+        <br>
+        <h3>Example</h3>
+        <pre><code>// Doubly Linked List Example
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+        struct Node* prev;
+    };
+    
+    int main() {
+        struct Node* head = NULL;
+        struct Node* second = NULL;
+        struct Node* third = NULL;
+    
+        // Allocate memory for nodes
+        head = (struct Node*)malloc(sizeof(struct Node));
+        second = (struct Node*)malloc(sizeof(struct Node));
+        third = (struct Node*)malloc(sizeof(struct Node));
+    
+        // Initialize data
+        head->data = 10;
+        head->next = second;
+        head->prev = NULL;
+    
+        second->data = 20;
+        second->next = third;
+        second->prev = head;
+    
+        third->data = 30;
+        third->next = NULL;
+        third->prev = second;
+    
+        // Traverse the list forward
+        struct Node* current = head;
+        while (current != NULL) {
+            printf("%d <-> ", current->data);
+            current = current->next;
+        }
+        printf("NULL\n");
+    
+        // Traverse the list backward
+        current = third;
+        while (current != NULL) {
+            printf("%d <-> ", current->data);
+            current = current->prev;
+        }
+        printf("NULL\n");
+    
+        return 0;
+    }</code></pre><br>
+        <h4>Output:</h4>
+        <pre>10 <-> 20 <-> 30 <-> NULL
+    30 <-> 20 <-> 10 <-> NULL</pre><br><br><br>
+    
+        <h3>3. Circular Linked List in C</h3>
+        <p>A circular linked list is similar to a singly or doubly linked list, but the last node points back to the first node, making it circular.</p>
+        <br>
+        <h3>Example</h3>
+        <pre><code>// Circular Linked List Example
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+    
+    int main() {
+        struct Node* head = NULL;
+        struct Node* second = NULL;
+        struct Node* third = NULL;
+    
+        // Allocate memory for nodes
+        head = (struct Node*)malloc(sizeof(struct Node));
+        second = (struct Node*)malloc(sizeof(struct Node));
+        third = (struct Node*)malloc(sizeof(struct Node));
+    
+        // Initialize data
+        head->data = 10;
+        head->next = second;
+    
+        second->data = 20;
+        second->next = third;
+    
+        third->data = 30;
+        third->next = head;  // Circular link
+    
+        // Traverse the circular list
+        struct Node* current = head;
+        do {
+            printf("%d -> ", current->data);
+            current = current->next;
+        } while (current != head);
+    
+        printf("(back to head)\n");
+    
+        return 0;
+    }</code></pre><br>
+        <h4>Output:</h4>
+        <pre>10 -> 20 -> 30 -> (back to head)</pre>
+        <br><br>
+    
+        <h3>Comparison Of Complexities</h3>
+        <div id="table-overflow">
+        <table border="1">
+            <tr>
+                <th>Operation</th>
+                <th>Singly Linked List</th>
+                <th>Doubly Linked List</th>
+                <th>Circular Linked List</th>
+            </tr>
+            <tr>
+                <td>Access by Index</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+            </tr>
+            <tr>
+                <td>Insertion at End</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Insertion at Position</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+            </tr>
+            <tr>
+                <td>Deletion</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Space Complexity</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+            </tr>
+        </table>
+        </div><br><br><br>
+    
+        <h3>Comparison of Linked List Types</h3>
+        <p>Here is a quick summary of the characteristics of different types of linked lists:</p>
+        <ul>
+            <li>Singly Linked List: Simple, but can only be traversed in one direction.</li>
+            <li>Doubly Linked List: Allows traversal in both directions but uses extra memory for the 'prev' pointer.</li>
+            <li>Circular Linked List: Useful for applications that need to loop back, like a round-robin scheduler.</li>
+        </ul>
+
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+        </div>  
+    </section>
+
+    <section id="impl4">
+        <h2>Implementation of Singly Linked List Operations</h2>
+    <br>
+        <h3>1. Singly Linked List Creation and Display</h3>
+        <p>First, let's create and display a singly linked list in C:</p>
+        <br>
+        <pre><code>
+    // C Program to create and display a singly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+    
+    // Function to display the linked list
+    void displayList(struct Node* head) {
+        struct Node* current = head;
+        while (current != NULL) {
+            printf("Node data: %d\n", current->data);
+            current = current->next;
+        }
+    }
+    
+    int main() {
+        // Creating nodes
+        struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+    
+        // Initializing nodes
+        head->data = 10;
+        head->next = second;
+        second->data = 20;
+        second->next = third;
+        third->data = 30;
+        third->next = NULL;
+    
+        // Display the linked list
+        displayList(head);
+    
+        return 0;
+    }
+        </code></pre>
+    
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Node data: 10
+    Node data: 20
+    Node data: 30
+        </code></pre>
+    <br><br><br>
+        <h3>2. Accessing an Element in Singly Linked List</h3>
+        <p>Accessing a specific element using its position:</p>
+    <br>
+        <pre><code>
+    // C Program to access an element of a singly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+    
+    // Function to access an element
+    void accessElement(struct Node* head, int position) {
+        struct Node* current = head;
+        int index = 0;
+    
+        while (current != NULL) {
+            if (index == position) {
+                printf("Element at position %d: %d\n", position, current->data);
+                return;
+            }
+            index++;
+            current = current->next;
+        }
+        printf("Position %d not found in the list.\n", position);
+    }
+    
+    int main() {
+        struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+    
+        head->data = 10;
+        head->next = second;
+        second->data = 20;
+        second->next = third;
+        third->data = 30;
+        third->next = NULL;
+    
+        // Access an element
+        accessElement(head, 2);
+    
+        return 0;
+    }
+        </code></pre>
+    
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Element at position 2: 30
+        </code></pre>
+    <br><br><br>
+        <h3>3. Insertion in Singly Linked List</h3>
+        <p>Inserting a new node at a specific position:</p>
+    <br>
+        <pre><code>
+    // C Program to insert a node in a singly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+    
+    // Function to insert a node
+    void insertNode(struct Node** head, int data, int position) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = data;
+    
+        if (position == 0) {
+            newNode->next = *head;
+            *head = newNode;
+            return;
+        }
+    
+        struct Node* current = *head;
+        for (int i = 0; i < position - 1 && current != NULL; i++) {
+            current = current->next;
+        }
+    
+        if (current == NULL) {
+            printf("Position out of range.\n");
+            free(newNode);
+            return;
+        }
+    
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+    
+    int main() {
+        struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+    
+        head->data = 10;
+        head->next = second;
+        second->data = 20;
+        second->next = third;
+        third->data = 30;
+        third->next = NULL;
+    
+        // Insert a new node
+        insertNode(&head, 15, 1);
+    
+        // Display the updated list
+        struct Node* current = head;
+        while (current != NULL) {
+            printf("Node data: %d\n", current->data);
+            current = current->next;
+        }
+    
+        return 0;
+    }
+        </code></pre>
+    
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Node data: 10
+    Node data: 15
+    Node data: 20
+    Node data: 30
+        </code></pre>
+    <br><br><br>
+        <h3>4. Deletion in Singly Linked List</h3>
+        <p>Deleting a node at a specific position:</p>
+    <br>
+        <pre><code>
+    // C Program to delete a node from a singly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+    
+    // Function to delete a node
+    void deleteNode(struct Node** head, int position) {
+        if (*head == NULL) return;
+    
+        struct Node* temp = *head;
+    
+        if (position == 0) {
+            *head = temp->next;
+            free(temp);
+            return;
+        }
+    
+        struct Node* prev = NULL;
+        for (int i = 0; i < position && temp != NULL; i++) {
+            prev = temp;
+            temp = temp->next;
+        }
+    
+        if (temp == NULL) return;
+    
+        prev->next = temp->next;
+        free(temp);
+    }
+    
+    int main() {
+        struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+    
+        head->data = 10;
+        head->next = second;
+        second->data = 20;
+        second->next = third;
+        third->data = 30;
+        third->next = NULL;
+    
+        // Delete a node
+        deleteNode(&head, 1);
+    
+        // Display the updated list
+        struct Node* current = head;
+        while (current != NULL) {
+            printf("Node data: %d\n", current->data);
+            current = current->next;
+        }
+    
+        return 0;
+    }
+        </code></pre>
+    
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Node data: 10
+    Node data: 30
+        </code></pre>
+    <br><br><br>
+        <h3>5. Searching in Singly Linked List</h3>
+        <p>Searching for a node with a specific value:</p>
+    <br>
+        <pre><code>
+    // C Program to search for a node in a singly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+    
+    // Function to search for a node
+    void searchNode(struct Node* head, int key) {
+        struct Node* current = head;
+        int position = 0;
+    
+        while (current != NULL) {
+            if (current->data == key) {
+                printf("Element %d found at position %d.\n", key, position);
+                return;
+            }
+            position++;
+            current = current->next;
+        }
+        printf("Element %d not found in the list.\n", key);
+    }
+    
+    int main() {
+        struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+    
+        head->data = 10;
+        head->next = second;
+        second->data = 20;
+        second->next = third;
+        third->data = 30;
+        third->next = NULL;
+    
+        // Search for a node
+        searchNode(head, 20);
+    
+        return 0;
+    }
+        </code></pre>
+    
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Element 20 found at position 1.
+        </code></pre>
+    <br><br>
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('intro3')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+        </div>
+    </section>
+    
+    <section id="impl2"> 
+        <h2>Implementation of Doubly Linked List Operations</h2>
+        <br>
+        <h3>1. Doubly Linked List Creation</h3>
+        <p>First, let's declare and initialize a simple doubly linked list in C:</p>
+        <br>
+        <pre><code>
+    // C Program to declare and initialize a doubly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* prev;
+        struct Node* next;
+    };
+    
+    int main() {
+        struct Node* head = NULL;
+        struct Node* second = NULL;
+        struct Node* third = NULL;
+    
+        // Allocating memory for nodes
+        head = (struct Node*)malloc(sizeof(struct Node));
+        second = (struct Node*)malloc(sizeof(struct Node));
+        third = (struct Node*)malloc(sizeof(struct Node));
+    
+        // Initializing data and setting links
+        head->data = 1;
+        head->prev = NULL;
+        head->next = second;
+    
+        second->data = 2;
+        second->prev = head;
+        second->next = third;
+    
+        third->data = 3;
+        third->prev = second;
+        third->next = NULL;
+    
+        // Printing the doubly linked list
+        struct Node* current = head;
+        while(current != NULL) {
+            printf("Node data: %d\n", current->data);
+            current = current->next;
+        }
+        return 0;
+    }
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Node data: 1
+    Node data: 2
+    Node data: 3
+        </code></pre>
+        <br><br><br>
+        <h3>2. Doubly Linked List Traversal</h3>
+        <p>Traversing the doubly linked list in forward and backward directions:</p>
+        <br>
+        <pre><code>
+    // C Program to traverse and print doubly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* prev;
+        struct Node* next;
+    };
+    
+    void traverseForward(struct Node* head) {
+        struct Node* current = head;
+        printf("Forward Traversal:\n");
+        while(current != NULL) {
+            printf("Node data: %d\n", current->data);
+            current = current->next;
+        }
+    }
+    
+    void traverseBackward(struct Node* tail) {
+        struct Node* current = tail;
+        printf("Backward Traversal:\n");
+        while(current != NULL) {
+            printf("Node data: %d\n", current->data);
+            current = current->prev;
+        }
+    }
+    
+    int main() {
+        struct Node* head = NULL;
+        struct Node* second = NULL;
+        struct Node* third = NULL;
+    
+        head = (struct Node*)malloc(sizeof(struct Node));
+        second = (struct Node*)malloc(sizeof(struct Node));
+        third = (struct Node*)malloc(sizeof(struct Node));
+    
+        head->data = 10;
+        head->prev = NULL;
+        head->next = second;
+    
+        second->data = 20;
+        second->prev = head;
+        second->next = third;
+    
+        third->data = 30;
+        third->prev = second;
+        third->next = NULL;
+    
+        traverseForward(head);
+        traverseBackward(third);
+    
+        return 0;
+    }
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Forward Traversal:
+    Node data: 10
+    Node data: 20
+    Node data: 30
+    
+    Backward Traversal:
+    Node data: 30
+    Node data: 20
+    Node data: 10
+        </code></pre>
+        <br><br><br>
+        <h3>3. Doubly Linked List Insertion (at a specific position)</h3>
+        <p>Inserting a new node at a specific position in the doubly linked list:</p>
+        <br>
+        <pre><code>
+    // C Program to insert a node at a specific position in doubly linked list
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        struct Node* prev;
+        struct Node* next;
+    };
+    
+    void insertAtPosition(struct Node** head, int data, int position) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        struct Node* current = *head;
+        int i = 0;
+    
+        newNode->data = data;
+        newNode->prev = NULL;
+        newNode->next = NULL;
+    
+        if(position == 0) {
+            newNode->next = *head;
+            if(*head != NULL) (*head)->prev = newNode;
+            *head = newNode;
+            return;
+        }
+    
+        while(i < position - 1 && current != NULL) {
+            current = current->next;
+            i++;
+        }
+    
+        if(current != NULL) {
+            newNode->next = current->next;
+            if(current->next != NULL) current->next->prev = newNode;
+            current->next = newNode;
+            newNode->prev = current;
+        } else {
+            printf("Position out of range\n");
+        }
+    }
+    
+    int main() {
+        struct Node* head = NULL;
+        struct Node* second = NULL;
+        struct Node* third = NULL;
+    
+        head = (struct Node*)malloc(sizeof(struct Node));
+        second = (struct Node*)malloc(sizeof(struct Node));
+        third = (struct Node*)malloc(sizeof(struct Node));
+    
+        head->data = 10;
+        head->prev = NULL;
+        head->next = second;
+    
+        second->data = 20;
+        second->prev = head;
+        second->next = third;
+    
+        third->data = 30;
+        third->prev = second;
+        third->next = NULL;
+    
+        // Inserting 25 at position 2
+        insertAtPosition(&head, 25, 2);
+    
+        // Printing the doubly linked list after insertion
+        struct Node* current = head;
+        while(current != NULL) {
+            printf("Node data: %d\n", current->data);
+            current = current->next;
+        }
+    
+        return 0;
+    }
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+    Node data: 10
+    Node data: 20
+    Node data: 25
+    Node data: 30
+        </code></pre>
+        <br><br><br>
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl4')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl6')">Next</span>
+        </div>
+        <!-- Continue with deletion, searching, sorting, and reversal sections similar to this -->
+    </section>
+     
+    <section id="impl6">
+        <h2>Linked List Overflow and Underflow</h2><br>
+        
+        <p>
+            Linked lists, like any other data structure, are not immune to challenges such as overflow and underflow. These issues often arise due to improper memory allocation or mismanagement during operations like insertion and deletion. Below, we discuss what these terms mean in the context of linked lists:
+        </p>
+        
+        <h3>Linked List Overflow</h3>
+        <p>
+            Overflow in a linked list occurs when the system runs out of memory to allocate for new nodes. Although linked lists are dynamic in nature, they rely on the system’s heap memory. If there is insufficient memory available, the program cannot create a new node, resulting in an overflow error.
+        </p>
+        <ul>
+            <li><strong>Causes:</strong></li>
+            <ul>
+                <li>Insufficient heap memory due to memory constraints or leaks.</li>
+                <li>Infinite node creation in a poorly implemented loop or recursive function.</li>
+            </ul>
+            <li><strong>Prevention:</strong></li>
+            <ul>
+                <li>Monitor memory usage and ensure proper deallocation of unused nodes.</li>
+                <li>Implement safeguards to limit the number of nodes based on available memory.</li>
+            </ul>
+        </ul>
+        
+        <h3>Linked List Underflow</h3>
+        <p>
+            Underflow in a linked list occurs when an operation is attempted on an empty list, such as trying to delete a node or access elements. This typically results in runtime errors or undefined behavior.
+        </p>
+        <ul>
+            <li><strong>Causes:</strong></li>
+            <ul>
+                <li>Attempting to remove nodes from an already empty list.</li>
+                <li>Accessing elements in an uninitialized or cleared linked list.</li>
+            </ul>
+            <li><strong>Prevention:</strong></li>
+            <ul>
+                <li>Check if the list is empty before performing operations like deletion or traversal.</li>
+                <li>Use conditionals to handle edge cases gracefully when the list is empty.</li>
+            </ul>
+        </ul>
+    
+        <p>
+            Proper management of linked lists through error handling and memory monitoring can effectively mitigate overflow and underflow issues, ensuring robust and efficient applications.
+        </p>
+        
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+        </div>
+    </section>
+    
+    <section id="impl3">
+        <h2>Advantages and Disadvantages of a Linked List</h2><br>
+        
+        <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Advantage</th>
+                        <th>Disadvantage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. <strong>Dynamic size:</strong> Linked lists can grow or shrink in size dynamically, making them suitable for handling variable data sizes.</td>
+                        <td>1. <strong>Memory overhead:</strong> Each node requires extra memory for storing pointers, increasing the overall memory usage compared to arrays.</td>
+                    </tr>
+                    <tr>
+                        <td>2. <strong>Efficient insertion/deletion:</strong> Adding or removing nodes in a linked list is efficient, especially in the middle or at the ends (O(1) for certain cases).</td>
+                        <td>2. <strong>Sequential access:</strong> Linked lists do not support direct access to elements; traversal is required, resulting in O(n) time complexity for lookups.</td>
+                    </tr>
+                    <tr>
+                        <td>3. <strong>No wasted memory:</strong> Unlike arrays, linked lists use exactly the memory needed for the data, avoiding wastage from fixed sizes.</td>
+                        <td>3. <strong>Cache performance:</strong> Linked lists may suffer from poor cache performance since nodes are scattered in memory.</td>
+                    </tr>
+                    <tr>
+                        <td>4. <strong>Flexible data type:</strong> Linked lists can store elements of different data types, offering more flexibility than arrays.</td>
+                        <td>4. <strong>Complexity:</strong> Managing pointers and implementing linked lists require more effort and are prone to errors like dangling pointers or memory leaks.</td>
+                    </tr>
+                    <tr>
+                        <td>5. <strong>Efficient use of memory:</strong> Memory is allocated as required, avoiding the need for pre-allocation.</td>
+                        <td>5. <strong>Traversal overhead:</strong> Traversing a linked list to search for an element can be slow compared to index-based access in arrays.</td>
+                    </tr>
+                    <tr>
+                        <td>6. <strong>Insertion flexibility:</strong> New nodes can be inserted at any position without needing to shift existing elements.</td>
+                        <td>6. <strong>Additional pointers:</strong> Maintaining extra pointers (next and prev in doubly linked lists) can increase the complexity of the structure.</td>
+                    </tr>
+                    <tr>
+                        <td>7. <strong>Efficient resizing:</strong> A linked list can expand or contract without copying elements to a new location, unlike resizing arrays.</td>
+                        <td>7. <strong>Difficult to reverse:</strong> Reversing a linked list is more complex compared to reversing an array.</td>
+                    </tr>
+                    <tr>
+                        <td>8. <strong>Multi-type storage:</strong> Nodes can store complex objects or structures, allowing for more diverse use cases.</td>
+                        <td>8. <strong>Fragmentation risk:</strong> Over time, scattered memory allocation may lead to fragmentation and inefficient memory usage.</td>
+                    </tr>
+                    <tr>
+                        <td>9. <strong>Ease of implementation for stacks/queues:</strong> Linked lists are ideal for implementing stack and queue data structures.</td>
+                        <td>9. <strong>Higher maintenance cost:</strong> Updating or debugging linked lists is more challenging compared to simpler data structures like arrays.</td>
+                    </tr>
+                    <tr>
+                        <td>10. <strong>No size limitations:</strong> Linked lists do not have the size limitations imposed by arrays on certain platforms.</td>
+                        <td>10. <strong>Slower iteration:</strong> Iterating through elements in a linked list is slower compared to arrays, due to pointer dereferencing.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><br><br>
+    
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl6')">Previous</span>
+            <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+        </div>
+    </section>
+    
+    <section id="quiz">
+        <h2>Test Your Knowledge on Linked Lists</h2>
+        <div id="quiz-container">
+            <div class="question">
+                <p><strong>1. What is a linked list?</strong></p>
+                <label><input type="radio" name="q1" value="A"> A data structure consisting of nodes connected by pointers.</label><br>
+                <label><input type="radio" name="q1" value="B"> A collection of elements stored at contiguous memory locations.</label><br>
+                <label><input type="radio" name="q1" value="C"> A hierarchical data structure used for sorting.</label><br>
+                <label><input type="radio" name="q1" value="D"> A random collection of elements.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>2. What is the main advantage of a linked list over an array?</strong></p>
+                <label><input type="radio" name="q2" value="A"> Fixed size.</label><br>
+                <label><input type="radio" name="q2" value="B"> Dynamic size and efficient insertion/deletion.</label><br>
+                <label><input type="radio" name="q2" value="C"> Faster traversal.</label><br>
+                <label><input type="radio" name="q2" value="D"> Requires less memory.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>3. Which type of linked list allows traversal in both directions?</strong></p>
+                <label><input type="radio" name="q3" value="A"> Singly linked list.</label><br>
+                <label><input type="radio" name="q3" value="B"> Doubly linked list.</label><br>
+                <label><input type="radio" name="q3" value="C"> Circular linked list.</label><br>
+                <label><input type="radio" name="q3" value="D"> None of the above.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>4. How do you represent the end of a singly linked list?</strong></p>
+                <label><input type="radio" name="q4" value="A"> A special symbol indicating termination.</label><br>
+                <label><input type="radio" name="q4" value="B"> A NULL pointer.</label><br>
+                <label><input type="radio" name="q4" value="C"> A circular reference to the head node.</label><br>
+                <label><input type="radio" name="q4" value="D"> The last node stores a special value.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>5. What is a limitation of a linked list?</strong></p>
+                <label><input type="radio" name="q5" value="A"> Requires contiguous memory allocation.</label><br>
+                <label><input type="radio" name="q5" value="B"> Inefficient random access to elements.</label><br>
+                <label><input type="radio" name="q5" value="C"> Fixed size.</label><br>
+                <label><input type="radio" name="q5" value="D"> Cannot store heterogeneous data.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>6. What does the "head" pointer in a linked list represent?</strong></p>
+                <label><input type="radio" name="q6" value="A"> The first node of the linked list.</label><br>
+                <label><input type="radio" name="q6" value="B"> A pointer to the middle node of the linked list.</label><br>
+                <label><input type="radio" name="q6" value="C"> The last node of the linked list.</label><br>
+                <label><input type="radio" name="q6" value="D"> A NULL pointer indicating the end of the list.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>7. What type of linked list has nodes that point to themselves?</strong></p>
+                <label><input type="radio" name="q7" value="A"> Circular linked list.</label><br>
+                <label><input type="radio" name="q7" value="B"> Doubly linked list.</label><br>
+                <label><input type="radio" name="q7" value="C"> Singly linked list.</label><br>
+                <label><input type="radio" name="q7" value="D"> None of the above.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>8. How do you insert a new node at the beginning of a linked list?</strong></p>
+                <label><input type="radio" name="q8" value="A"> Create a new node and set it as the head of the list.</label><br>
+                <label><input type="radio" name="q8" value="B"> Create a new node and append it at the end of the list.</label><br>
+                <label><input type="radio" name="q8" value="C"> Create a new node and link it to the second node.</label><br>
+                <label><input type="radio" name="q8" value="D"> None of the above.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>9. Which operation is not efficient in a linked list?</strong></p>
+                <label><input type="radio" name="q9" value="A"> Insertion at the beginning.</label><br>
+                <label><input type="radio" name="q9" value="B"> Deletion of the first node.</label><br>
+                <label><input type="radio" name="q9" value="C"> Random access of elements.</label><br>
+                <label><input type="radio" name="q9" value="D"> Insertion at the end of the list.</label><br>
+            </div>
+            <div class="question">
+                <p><strong>10. In a doubly linked list, what is the advantage of having both forward and backward pointers?</strong></p>
+                <label><input type="radio" name="q10" value="A"> It allows traversal in both directions.</label><br>
+                <label><input type="radio" name="q10" value="B"> It reduces the memory usage.</label><br>
+                <label><input type="radio" name="q10" value="C"> It simplifies the insertion of elements.</label><br>
+                <label><input type="radio" name="q10" value="D"> It speeds up access time.</label><br>
+            </div>
+        </div>
+        <button id="submit">Submit</button>
+        <div id="result"></div>
+        <div id="analytics"></div>
+        <div id="warning" style="color: red;"></div>
+    </section>
+    
+
+
+<script>
+    document.getElementById('submit').addEventListener('click', function() {
+        const questions = document.querySelectorAll('.question');
+        let score = 0;
+        const totalQuestions = questions.length;
+        let results = [];
+        let explanations = [];
+    
+        // Check if all questions are answered
+        let allAnswered = true;
+        questions.forEach((question, index) => {
+            const selected = question.querySelector('input[type="radio"]:checked');
+            if (!selected) {
+                allAnswered = false;
+            } else {
+                const answer = selected.value;
+                // Correct answers and explanations
+                const correctAnswers = ['A', 'A', 'B', 'A', 'A', 'A', 'B', 'D', 'D', 'A']; // Correct answers
+                const explanationsData = [
+                    "An array is a collection of elements stored at contiguous memory locations and can be accessed using indices.",
+                    "Accessing an element by index is O(1) because you can directly access it using its index.",
+                    "The space complexity of an array is O(n), where n is the number of elements.",
+                    "In Python, the append method adds an element to the end of a list (array). In C++, you can use push_back.",
+                    "Arrays have a fixed size, which cannot grow or shrink dynamically.",
+                    "Accessing an index outside the array bounds typically results in an exception.",
+                    "Inserting an element at the beginning of an array involves shifting all elements, making it O(n).",
+                    "Arrays can be used for implementing stacks, queues, or storing fixed-size data.",
+                    "Arrays cannot dynamically resize like other data structures.",
+                    "Arrays are preferred when you need random access to elements by index."
+                ];
+    
+                results.push({ question: index + 1, selected: answer });
+                if (answer === correctAnswers[index]) {
+                    score++;
+                    explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
+                } else {
+                    explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
+                }
+            }
+        });
+    
+        if (!allAnswered) {
+            document.getElementById('warning').innerText = "Please answer all questions before submitting.";
+            return; // Stop execution if not all questions are answered
+        } else {
+            document.getElementById('warning').innerText = ""; // Clear the warning
+        }
+    
+        // Display the score
+        document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
+    
+        // Display detailed analytics
+        const analyticsDiv = document.getElementById('analytics');
+        analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
+        explanations.forEach(item => {
+            const colorClass = item.correct ? 'correct' : 'incorrect';
+            const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
+            analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
+        });
+    });
+    
+    // Function to show the selected section and hide the others
+    function showSection(sectionId) {
+        var sections = document.querySelectorAll('section');
+        sections.forEach(function(section) {
+            section.classList.remove('active');
+        });
+        const section = document.getElementById(sectionId);
+        section.classList.add('active');
+        section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+    }
+
+    // Handle next and previous buttons
+    let currentSection = 0;
+    const sections = document.querySelectorAll('section');
+    const totalSections = sections.length;
+
+    function showNextSection() {
+        if (currentSection < totalSections - 1) {
+            currentSection++;
+            showSection('section-' + (currentSection + 1));
+        }
+    }
+
+    function showPreviousSection() {
+        if (currentSection > 0) {
+            currentSection--;
+            showSection('section-' + (currentSection + 1));
+        }
+    }
+
+    // Attach event listeners to next/previous buttons
+    document.getElementById('next-btn').addEventListener('click', showNextSection);
+    document.getElementById('prev-btn').addEventListener('click', showPreviousSection);
+
+    function openInNewTabArray() {
+        window.open('array1/arr_viz.html', '_blank');
+    }
+
+    function openInNewTab() {
+        window.open('array1/arr_viz.html', '_blank');
+    }
+
+    function openInNewTabLl() {
+        window.open('array1/arr_viz.html', '_blank');
+    }
+
+    function openCourse(url) {
+      window.open(url, '_blank');
+    }
+</script>
+  
+</body>
+</html>
