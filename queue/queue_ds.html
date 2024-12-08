@@ -34,7 +34,7 @@
     }
 
     h2 {
-/*         font-family: cursive; */
+        font-family: cursive;
         color: white;
         text-align: center;
         margin-bottom: 15px;
@@ -297,6 +297,26 @@ button:hover{
     background-color: #4CAF50;
 }
 
+/* Button */
+.action {
+    user-select: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.25rem;
+    background-color: #007acc;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action:hover {
+    background-color: #005a99;
+}
+
+
 </style>
 
 </head>
@@ -317,9 +337,9 @@ button:hover{
             <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
             
             <li><div id="btn">
-                <button onclick="openInNewTabArray()">Open Queue using Array Visualizations</button>
-                <button onclick="openInNewTab()">Queue Using Array Simple Version</button>
-                <button onclick="openInNewTabLl()">Open Queue Using Linked List Visualizations</button><br><br>
+                <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Basics/Queuearray/QueueArray.html')">Queue using Array </button><br>
+                <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Basics/queuearr/queuearr.html')">Queue Using Array Simple Version</button><br>
+                <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Basics/QueueLL/QueueLL.html')">Queue Using Linked List</button><br><br>
             </div></li>
         </ul>
     </div>
@@ -930,145 +950,16 @@ button:hover{
 
 <section id="quiz">
     <h2>Test Your Knowledge on Queues</h2>
-    <div id="quiz-container">
-        <div class="question">
-            <p><strong>1. What is a queue?</strong></p>
-            <label><input type="radio" name="q1" value="A"> A collection of elements that follows the LIFO principle.</label><br>
-            <label><input type="radio" name="q1" value="B"> A collection of elements that follows the FIFO principle.</label><br>
-            <label><input type="radio" name="q1" value="C"> A data structure that allows random access to elements.</label><br>
-            <label><input type="radio" name="q1" value="D"> A type of linear search algorithm.</label><br>
+    <h4 style="text-align: center;">This test consists of 15 multiple choice questions. <br>
+        You will have 15 minutes time to complete the test. <br>click on the below to start the test <br>
+</h4><br>
+        <h3 style="text-align: center;">All the best 👍🏼...</h3>
+        <div id="btn">
+        <button type="button" class="action" onclick="openCourse('queue_test.html')">Start Writing</button>
         </div>
-        <div class="question">
-            <p><strong>2. Which operation adds an element to the end of the queue?</strong></p>
-            <label><input type="radio" name="q2" value="A"> Pop</label><br>
-            <label><input type="radio" name="q2" value="B"> Push</label><br>
-            <label><input type="radio" name="q2" value="C"> Enqueue</label><br>
-            <label><input type="radio" name="q2" value="D"> Dequeue</label><br>
-        </div>
-        <div class="question">
-            <p><strong>3. Which operation removes the front element from the queue?</strong></p>
-            <label><input type="radio" name="q3" value="A"> Push</label><br>
-            <label><input type="radio" name="q3" value="B"> Pop</label><br>
-            <label><input type="radio" name="q3" value="C"> Enqueue</label><br>
-            <label><input type="radio" name="q3" value="D"> Dequeue</label><br>
-        </div>
-        <div class="question">
-            <p><strong>4. What will be the front element after enqueueing 5, 10, and 15 onto an empty queue?</strong></p>
-            <label><input type="radio" name="q4" value="A"> 5</label><br>
-            <label><input type="radio" name="q4" value="B"> 10</label><br>
-            <label><input type="radio" name="q4" value="C"> 15</label><br>
-            <label><input type="radio" name="q4" value="D"> Queue will be empty.</label><br>
-        </div>
-        <div class="question">
-            <p><strong>5. Which data structure is most suitable for implementing a queue?</strong></p>
-            <label><input type="radio" name="q5" value="A"> Array</label><br>
-            <label><input type="radio" name="q5" value="B"> Linked List</label><br>
-            <label><input type="radio" name="q5" value="C"> Both A and B</label><br>
-            <label><input type="radio" name="q5" value="D"> Tree</label><br>
-        </div>
-        <div class="question">
-            <p><strong>6. What happens if you try to dequeue an element from an empty queue?</strong></p>
-            <label><input type="radio" name="q6" value="A"> The front element is removed.</label><br>
-            <label><input type="radio" name="q6" value="B"> It throws an underflow error.</label><br>
-            <label><input type="radio" name="q6" value="C"> It returns null.</label><br>
-            <label><input type="radio" name="q6" value="D"> Nothing happens.</label><br>
-        </div>
-        <div class="question">
-            <p><strong>7. What is the time complexity of the enqueue operation in a queue implemented using an array?</strong></p>
-            <label><input type="radio" name="q7" value="A"> O(1)</label><br>
-            <label><input type="radio" name="q7" value="B"> O(n)</label><br>
-            <label><input type="radio" name="q7" value="C"> O(log n)</label><br>
-            <label><input type="radio" name="q7" value="D"> O(n^2)</label><br>
-        </div>
-        <div class="question">
-            <p><strong>8. Which of the following applications can use a queue?</strong></p>
-            <label><input type="radio" name="q8" value="A"> Print job scheduling</label><br>
-            <label><input type="radio" name="q8" value="B"> Task scheduling</label><br>
-            <label><input type="radio" name="q8" value="C"> Handling requests in a server</label><br>
-            <label><input type="radio" name="q8" value="D"> All of the above</label><br>
-        </div>
-        <div class="question">
-            <p><strong>9. What is a common use case for queues in programming?</strong></p>
-            <label><input type="radio" name="q9" value="A"> To store elements for searching</label><br>
-            <label><input type="radio" name="q9" value="B"> To manage print jobs</label><br>
-            <label><input type="radio" name="q9" value="C"> To store data in a database</label><br>
-            <label><input type="radio" name="q9" value="D"> To sort data</label><br>
-        </div>
-        <div class="question">
-            <p><strong>10. In which situation would you prefer using a queue over a stack?</strong></p>
-            <label><input type="radio" name="q10" value="A"> When you need to process items in the order they arrive.</label><br>
-            <label><input type="radio" name="q10" value="B"> When you need to reverse items.</label><br>
-            <label><input type="radio" name="q10" value="C"> When items need to be stored persistently.</label><br>
-            <label><input type="radio" name="q10" value="D"> When you need to access elements in a random order.</label><br>
-        </div>
-    </div>
-    <button id="submit">Submit</button>
-    <div id="result"></div>
-    <div id="analytics"></div>
-    <div id="warning" style="color: red;"></div>
-    
 </section>
 
 <script>
-    document.getElementById('submit').addEventListener('click', function() {
-        const questions = document.querySelectorAll('.question');
-        let score = 0;
-        const totalQuestions = questions.length;
-        let results = [];
-        let explanations = [];
-    
-        // Check if all questions are answered
-        let allAnswered = true;
-        questions.forEach((question, index) => {
-            const selected = question.querySelector('input[type="radio"]:checked');
-            if (!selected) {
-                allAnswered = false;
-            } else {
-                const answer = selected.value;
-                // Assuming correct answers are stored in an array for validation
-                const correctAnswers = ['A', 'B', 'A', 'C', 'C', 'B', 'D', 'A', 'B', 'C']; // Adjust according to your correct answers
-                const explanationsData = [
-                    "A queue is a collection of elements that follows the FIFO principle (First In, First Out).",
-                    "The enqueue operation adds an element to the back of the queue.",
-                    "The dequeue operation removes the front element from the queue.",
-                    "The first element added (e.g., 10) will be the first to be removed.",
-                    "Both arrays and linked lists can be used to implement queues.",
-                    "Dequeuing from an empty queue typically throws an underflow error.",
-                    "The time complexity for the enqueue operation in a queue using an array is O(1).",
-                    "Queues can be used for scheduling processes and managing requests.",
-                    "Queues are commonly used in breadth-first search algorithms.",
-                    "Queues are preferred when maintaining order of processing is important."
-                ];
-    
-                results.push({ question: index + 1, selected: answer });
-                if (answer === correctAnswers[index]) {
-                    score++;
-                    explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
-                } else {
-                    explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
-                }
-            }
-        });
-    
-        if (!allAnswered) {
-            document.getElementById('warning').innerText = "Please answer all questions before submitting.";
-            return; // Stop execution if not all questions are answered
-        } else {
-            document.getElementById('warning').innerText = ""; // Clear the warning
-        }
-    
-        // Display the score
-        document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
-    
-        // Display detailed analytics
-        const analyticsDiv = document.getElementById('analytics');
-        analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
-        explanations.forEach(item => {
-            const colorClass = item.correct ? 'correct' : 'incorrect';
-            const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
-            analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
-        });
-    });
     
     // Function to show the selected section and hide the others
     function showSection(sectionId) {
@@ -1090,6 +981,9 @@ button:hover{
     function openInNewTabLl() {
         window.open('https://brk8789.github.io/Brk_visualizations/Basics/QueueLL/QueueLL.html', '_blank');
     }
+
+    function openCourse(url) {
+        window.open(url, '_blank');}
     </script>
     
 </body>
