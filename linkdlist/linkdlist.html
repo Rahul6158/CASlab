@@ -34,7 +34,7 @@
     }
 
     h2 {
-/*         font-family: cursive; */
+        font-family: cursive;
         color: white;
         text-align: center;
         margin-bottom: 15px;
@@ -297,6 +297,26 @@ button:hover{
     background-color: #4CAF50;
 }
 
+/* Button */
+.action {
+    user-select: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.25rem;
+    background-color: #007acc;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action:hover {
+    background-color: #005a99;
+}
+
+
 </style>
 
 </head>
@@ -317,7 +337,7 @@ button:hover{
         <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
 
         <li><div id="btn">
-            <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Basics/implementation-linked-list/linkedlist.html')">Linked List Visualizations</button>
+            <button type="button" class="action" onclick="openCourse('linkedlist1/ll_viz.html')">Linked List Visualizations</button>
         </div></li>
     </ul>
 </div>
@@ -1404,148 +1424,19 @@ button:hover{
     </section>
     
     <section id="quiz">
-        <h2>Test Your Knowledge on Linked Lists</h2>
-        <div id="quiz-container">
-            <div class="question">
-                <p><strong>1. What is a linked list?</strong></p>
-                <label><input type="radio" name="q1" value="A"> A data structure consisting of nodes connected by pointers.</label><br>
-                <label><input type="radio" name="q1" value="B"> A collection of elements stored at contiguous memory locations.</label><br>
-                <label><input type="radio" name="q1" value="C"> A hierarchical data structure used for sorting.</label><br>
-                <label><input type="radio" name="q1" value="D"> A random collection of elements.</label><br>
+        <h2>Test Your Knowledge on Linked List</h2>
+        <h4 style="text-align: center;">This test consists of 15 multiple choice questions. <br>
+            You will have 15 minutes time to complete the test. <br>click on the below Button to start the test <br>
+ </h4><br>
+            <h3 style="text-align: center;">All the best 👍🏼...</h3>
+            <div id="btn">
+            <button type="button" class="action" onclick="openCourse('linkedlist_test.html')">Start Writing</button>
             </div>
-            <div class="question">
-                <p><strong>2. What is the main advantage of a linked list over an array?</strong></p>
-                <label><input type="radio" name="q2" value="A"> Fixed size.</label><br>
-                <label><input type="radio" name="q2" value="B"> Dynamic size and efficient insertion/deletion.</label><br>
-                <label><input type="radio" name="q2" value="C"> Faster traversal.</label><br>
-                <label><input type="radio" name="q2" value="D"> Requires less memory.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>3. Which type of linked list allows traversal in both directions?</strong></p>
-                <label><input type="radio" name="q3" value="A"> Singly linked list.</label><br>
-                <label><input type="radio" name="q3" value="B"> Doubly linked list.</label><br>
-                <label><input type="radio" name="q3" value="C"> Circular linked list.</label><br>
-                <label><input type="radio" name="q3" value="D"> None of the above.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>4. How do you represent the end of a singly linked list?</strong></p>
-                <label><input type="radio" name="q4" value="A"> A special symbol indicating termination.</label><br>
-                <label><input type="radio" name="q4" value="B"> A NULL pointer.</label><br>
-                <label><input type="radio" name="q4" value="C"> A circular reference to the head node.</label><br>
-                <label><input type="radio" name="q4" value="D"> The last node stores a special value.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>5. What is a limitation of a linked list?</strong></p>
-                <label><input type="radio" name="q5" value="A"> Requires contiguous memory allocation.</label><br>
-                <label><input type="radio" name="q5" value="B"> Inefficient random access to elements.</label><br>
-                <label><input type="radio" name="q5" value="C"> Fixed size.</label><br>
-                <label><input type="radio" name="q5" value="D"> Cannot store heterogeneous data.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>6. What does the "head" pointer in a linked list represent?</strong></p>
-                <label><input type="radio" name="q6" value="A"> The first node of the linked list.</label><br>
-                <label><input type="radio" name="q6" value="B"> A pointer to the middle node of the linked list.</label><br>
-                <label><input type="radio" name="q6" value="C"> The last node of the linked list.</label><br>
-                <label><input type="radio" name="q6" value="D"> A NULL pointer indicating the end of the list.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>7. What type of linked list has nodes that point to themselves?</strong></p>
-                <label><input type="radio" name="q7" value="A"> Circular linked list.</label><br>
-                <label><input type="radio" name="q7" value="B"> Doubly linked list.</label><br>
-                <label><input type="radio" name="q7" value="C"> Singly linked list.</label><br>
-                <label><input type="radio" name="q7" value="D"> None of the above.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>8. How do you insert a new node at the beginning of a linked list?</strong></p>
-                <label><input type="radio" name="q8" value="A"> Create a new node and set it as the head of the list.</label><br>
-                <label><input type="radio" name="q8" value="B"> Create a new node and append it at the end of the list.</label><br>
-                <label><input type="radio" name="q8" value="C"> Create a new node and link it to the second node.</label><br>
-                <label><input type="radio" name="q8" value="D"> None of the above.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>9. Which operation is not efficient in a linked list?</strong></p>
-                <label><input type="radio" name="q9" value="A"> Insertion at the beginning.</label><br>
-                <label><input type="radio" name="q9" value="B"> Deletion of the first node.</label><br>
-                <label><input type="radio" name="q9" value="C"> Random access of elements.</label><br>
-                <label><input type="radio" name="q9" value="D"> Insertion at the end of the list.</label><br>
-            </div>
-            <div class="question">
-                <p><strong>10. In a doubly linked list, what is the advantage of having both forward and backward pointers?</strong></p>
-                <label><input type="radio" name="q10" value="A"> It allows traversal in both directions.</label><br>
-                <label><input type="radio" name="q10" value="B"> It reduces the memory usage.</label><br>
-                <label><input type="radio" name="q10" value="C"> It simplifies the insertion of elements.</label><br>
-                <label><input type="radio" name="q10" value="D"> It speeds up access time.</label><br>
-            </div>
-        </div>
-        <button id="submit">Submit</button>
-        <div id="result"></div>
-        <div id="analytics"></div>
-        <div id="warning" style="color: red;"></div>
     </section>
     
 
 
 <script>
-    document.getElementById('submit').addEventListener('click', function() {
-        const questions = document.querySelectorAll('.question');
-        let score = 0;
-        const totalQuestions = questions.length;
-        let results = [];
-        let explanations = [];
-    
-        // Check if all questions are answered
-        let allAnswered = true;
-        questions.forEach((question, index) => {
-            const selected = question.querySelector('input[type="radio"]:checked');
-            if (!selected) {
-                allAnswered = false;
-            } else {
-                const answer = selected.value;
-                // Correct answers and explanations
-                const correctAnswers = ['A', 'A', 'B', 'A', 'A', 'A', 'B', 'D', 'D', 'A']; // Correct answers
-                const explanationsData = [
-                    "An array is a collection of elements stored at contiguous memory locations and can be accessed using indices.",
-                    "Accessing an element by index is O(1) because you can directly access it using its index.",
-                    "The space complexity of an array is O(n), where n is the number of elements.",
-                    "In Python, the append method adds an element to the end of a list (array). In C++, you can use push_back.",
-                    "Arrays have a fixed size, which cannot grow or shrink dynamically.",
-                    "Accessing an index outside the array bounds typically results in an exception.",
-                    "Inserting an element at the beginning of an array involves shifting all elements, making it O(n).",
-                    "Arrays can be used for implementing stacks, queues, or storing fixed-size data.",
-                    "Arrays cannot dynamically resize like other data structures.",
-                    "Arrays are preferred when you need random access to elements by index."
-                ];
-    
-                results.push({ question: index + 1, selected: answer });
-                if (answer === correctAnswers[index]) {
-                    score++;
-                    explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
-                } else {
-                    explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
-                }
-            }
-        });
-    
-        if (!allAnswered) {
-            document.getElementById('warning').innerText = "Please answer all questions before submitting.";
-            return; // Stop execution if not all questions are answered
-        } else {
-            document.getElementById('warning').innerText = ""; // Clear the warning
-        }
-    
-        // Display the score
-        document.getElementById('result').innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
-    
-        // Display detailed analytics
-        const analyticsDiv = document.getElementById('analytics');
-        analyticsDiv.innerHTML = '<h3>Analytics:</h3>';
-        explanations.forEach(item => {
-            const colorClass = item.correct ? 'correct' : 'incorrect';
-            const correctnessText = item.correct ? 'Correct!' : 'Incorrect!';
-            analyticsDiv.innerHTML += `<p class="${colorClass}">Question ${item.question}: ${correctnessText} - ${item.explanation}</p>`;
-        });
-    });
-    
     // Function to show the selected section and hide the others
     function showSection(sectionId) {
         var sections = document.querySelectorAll('section');
@@ -1595,6 +1486,8 @@ button:hover{
     function openCourse(url) {
       window.open(url, '_blank');
     }
+    function openCourse(url) {
+        window.open(url, '_blank');}
 </script>
   
 </body>
