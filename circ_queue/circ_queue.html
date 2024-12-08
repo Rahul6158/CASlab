@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+    <title>Circular Queue Data Structure</title>
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+#roundabout{
+    display: flex;
+    justify-content: space-around;
+}
+
+.definition {
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #e8f5e9;
+        }
+
+/* Button */
+.action {
+    user-select: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.25rem;
+    background-color: #007acc;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action:hover {
+    background-color: #005a99;
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Circular Queue Data Structure</h2>
+        <ul>
+            <li><a href="#" onclick="showSection('intro1')">Introduction to Circular Queue</a></li>
+            <li><a href="#" onclick="showSection('intro2')">Key Operations in Circular Queue</a></li>
+            <li><a href="#" onclick="showSection('impl1')">Implementation of Circular Queue</a></li>
+            <li><a href="#" onclick="showSection('impl2')">Implementation of Circular Queue using Array</a></li>
+            <li><a href="#" onclick="showSection('impl3')">Implementation of Circular Queue using Linked List</a></li>
+            <li><a href="#" onclick="showSection('impl4')">Circular Queue Variants</a></li>
+            <li><a href="#" onclick="showSection('apps1')">Circular Queue Overflow and Underflow</a></li>
+            <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+            
+            <li>
+                <div id="btn">
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Basics/circular_queue/circ_que.html')">Circular Queue Vizualizations</button>    
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+    
+
+    <div class="content">
+        <section id="intro1" class="active">
+            <h2>What is a Circular Queue?</h2>
+            <p>A <strong>circular queue</strong> is a linear data structure that follows the <strong>First-In-First-Out (FIFO)</strong> principle, but unlike a regular queue, the last position is connected back to the first position, forming a circle. This makes it more efficient in utilizing memory by reusing the vacant spaces at the front.</p><br>
+        
+            <img src="lin_circ.png" alt="circular queue example"><br><br>
+            
+            <h3>Principle of Circular Queue:</h3><br>
+            <p>The circular queue operates based on the <strong>FIFO (First-In-First-Out)</strong> principle, but with a circular connection. This means:</p>
+            <ul>
+                <li>The <strong>first</strong> element added to the queue will be the <strong>first</strong> one to be removed.</li>
+                <li>The rear pointer wraps around to the front when it reaches the end of the queue, ensuring efficient use of space.</li>
+            </ul>
+            <p><strong>Example</strong>: Imagine a revolving door at an entrance. As people enter, they eventually come back to the starting point if space is not used optimally.</p>
+            <img src="giphy.gif" alt="circular queue visualization">
+            <br><br>
+        
+            <h3>Understanding the Circular Queue Process</h3><br>
+            <p>A circular queue is a structure used to store data with rules for adding and removing items: First In, First Out (FIFO). Let’s break down how a circular queue works.</p><br>
+        
+            <ul>
+                <li><strong>Circular Queue Structure:</strong><br>
+                    A circular queue can be visualized as a circle where items are added at the rear and removed from the front. When the rear reaches the end, it wraps around to the beginning of the queue.</li><br>
+                    <img src="circ_queue.webp" alt="circular queue">
+                <li><strong>Front and Rear of the Circular Queue:</strong><br>
+                    The front of the queue is where the first item is located and can be removed, while the rear is where new items are added. When the rear pointer reaches the end of the queue, it wraps back to the front if there is space.</li><br>
+            </ul><br>
+            
+            <h3>Real-Time Examples of Circular Queue</h3>
+            <p>Circular queues are frequently used in various real-world applications where efficient memory usage is required along with FIFO operations. Some examples include:</p>
+            <br><ul>
+                <li><strong>CPU Scheduling:</strong> Operating systems use circular queues to schedule tasks in a time-sharing system.</li><br>
+                <li><strong>Memory Buffers:</strong> Circular buffers are used in streaming and networking for efficient data storage and processing.</li><br>
+                <li><strong>Traffic Management Systems:</strong> Circular queues manage traffic lights and vehicle rotations in a roundabout.</li><br>
+                <li><strong>Data Streaming:</strong> Circular buffers are used for continuous audio or video streaming without interruptions.</li><br>
+                <li><strong>Call Center Systems:</strong> Calls are queued in a circular manner, ensuring each caller gets attention even when the queue loops.</li><br>
+            </ul><br>
+        
+            <div class="navigation-buttons">
+                <span></span>
+                <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+            </div>
+        </section>
+        
+        
+        <section id="intro2">
+            <h2>Key Operations of a Circular Queue:</h2><br>
+            <ol>
+                <li>
+                    <strong>Enqueue</strong>: The operation used to add an item to the rear of the circular queue. If the rear reaches the end of the queue, it wraps around to the beginning, ensuring efficient use of available space.
+                </li><br>
+                <li>
+                    <strong>Dequeue</strong>: The operation used to remove the item from the front of the circular queue. Once an item is dequeued, the next item in line becomes the new front.
+                </li><br>
+                <li>
+                    <strong>Peek (or Front)</strong>: The operation that allows you to view the item at the front of the circular queue without removing it.
+                </li><br>
+                <li>
+                    <strong>IsEmpty</strong>: A check that determines whether the circular queue has any items in it. This operation returns true if the queue is empty and false otherwise.
+                </li><br>
+                <li>
+                    <strong>IsFull</strong>: A check that determines whether the circular queue is full. In a circular queue, this occurs when the rear pointer wraps around and meets the front pointer.
+                </li><br>
+                <li>
+                    <strong>Size</strong>: The operation that returns the number of items currently in the circular queue.
+                </li><br>
+            </ol><br><br>
+            
+            <h3>A Real-World Example</h3><br>
+            <img src="roundabout.jpeg" alt="roundabout image"><br>
+            <div class="definition">
+                <p>
+                    A <strong>roundabout</strong> is a circular road where vehicles move around a central island in one direction. It helps control traffic flow at intersections without using traffic lights. Drivers enter the roundabout, go around the circle, and exit at their desired road. Vehicles already in the roundabout have the right of way.
+                </p>
+            </div><br><br>
+            <ul>
+                <li><strong>Enqueue</strong>: Add an element to the rear of the circular queue. <br> Example: Adding cars to a roundabout queue, filling up each available exit sequentially.</li><br>
+                <li><strong>Dequeue</strong>: Remove the element at the front of the circular queue. <br> Example: A car exiting the roundabout from the current front position.</li><br>
+                <li><strong>Peek/Front</strong>: View the element at the front of the circular queue without removing it. <br> Example: Checking which car is next to exit the roundabout.</li><br>
+                <li><strong>IsEmpty</strong>: Check if the circular queue is empty. <br> Example: If there are no cars in the roundabout.</li><br>
+                <li><strong>IsFull</strong>: Check if the circular queue is full (when all positions in the roundabout are occupied). <br> Example: The roundabout cannot take in more cars because all positions are filled.</li><br>
+                
+                <div id="roundabout">
+                <img src="hk-strike.gif" alt="roundabout example">
+                </div>
+            </ul><br><br><br>
+
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+            </div>
+        </section>
+        
+        
+
+        <section id="impl1">
+
+            <h2>Implementation of Circular Queue</h2>
+            <p>A circular queue can be implemented in various ways, primarily using:</p><br>
+            <ol>
+                <li><strong>Array:</strong> A fixed-size array can be used to store queue elements, where the rear wraps around to the beginning when the end of the array is reached.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Efficient for known maximum size, with no wasted space due to wrapping behavior.</li>
+                        <li><strong>Drawbacks:</strong> Managing the circular logic can be slightly more complex, and resizing requires extra handling.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Linked List:</strong> A dynamic approach using nodes, where the rear node points to the front node, forming a circular structure. This allows seamless wrapping behavior.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Flexible and dynamic, can grow or shrink as needed.</li>
+                        <li><strong>Drawbacks:</strong> Slightly higher memory overhead and complexity due to managing node pointers and the circular link.</li>
+                    </ul>
+                </li><br>
+            </ol><br><br>
+            
+            <h3>Comparison of Circular Queue Implementation: Array vs Linked List</h3><br>
+            <div id="table-overflow">
+                <table border="1" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Circular Queue Using Array</th>
+                            <th>Circular Queue Using Linked List</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Memory Allocation</td>
+                            <td>Fixed size (must define size at the start).</td>
+                            <td>Dynamic size (grows and shrinks as needed).</td>
+                        </tr>
+                        <tr>
+                            <td>Space Efficiency</td>
+                            <td>Efficient due to wrapping behavior, no unused space when implemented correctly.</td>
+                            <td>More space-efficient but requires extra memory for pointers.</td>
+                        </tr>
+                        <tr>
+                            <td>Overflow Condition</td>
+                            <td>Occurs if the queue is full (front and rear pointers meet with no free space).</td>
+                            <td>No overflow unless system memory is exhausted.</td>
+                        </tr>
+                        <tr>
+                            <td>Underflow Condition</td>
+                            <td>Occurs if the queue is empty when trying to dequeue an element.</td>
+                            <td>Occurs if the queue is empty when trying to dequeue an element.</td>
+                        </tr>
+                        <tr>
+                            <td>Time Complexity for Enqueue</td>
+                            <td>O(1), wrapping ensures efficient addition at the rear.</td>
+                            <td>O(1), a new node is added at the rear with proper linking.</td>
+                        </tr>
+                        <tr>
+                            <td>Time Complexity for Dequeue</td>
+                            <td>O(1), removing the front element and updating the pointer.</td>
+                            <td>O(1), removing the front node and updating the link.</td>
+                        </tr>
+                        <tr>
+                            <td>Time Complexity for Peek</td>
+                            <td>O(1), accessing the front element directly.</td>
+                            <td>O(1), accessing the front node directly.</td>
+                        </tr>
+                        <tr>
+                            <td>Resize Operations</td>
+                            <td>Requires resizing when the queue exceeds the initial capacity.</td>
+                            <td>No need for resizing, dynamically adjusts size by adding or removing nodes.</td>
+                        </tr>
+                        <tr>
+                            <td>Memory Overhead</td>
+                            <td>Minimal overhead since only the array itself is stored.</td>
+                            <td>Higher memory overhead because each node needs extra memory for the pointer.</td>
+                        </tr>
+                        <tr>
+                            <td>Implementation Simplicity</td>
+                            <td>More complex than a simple queue, requiring wrapping logic for pointers.</td>
+                            <td>Requires additional handling of circular links, slightly more complex.</td>
+                        </tr>
+                        <tr>
+                            <td>Random Access</td>
+                            <td>Allows random access to elements via index, though not typical in circular queue operations.</td>
+                            <td>No random access, traversal needed to access middle elements.</td>
+                        </tr>
+                        <tr>
+                            <td>Cache Efficiency</td>
+                            <td>Better cache performance due to contiguous memory allocation.</td>
+                            <td>Poorer cache performance since nodes are scattered in memory.</td>
+                        </tr>
+                        <tr>
+                            <td>Flexibility</td>
+                            <td>Fixed size unless resized dynamically, which requires extra handling.</td>
+                            <td>Fully flexible, grows/shrinks automatically with operations.</td>
+                        </tr>
+                        <tr>
+                            <td>Best Suited For</td>
+                            <td>When the maximum size is known and memory usage must be efficient.</td>
+                            <td>When the number of elements frequently changes or is unknown.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+            </div>
+        </section>
+        
+
+        <section id="impl2">
+            <h2>Implementing a Circular Queue Using an Array</h2><br><br>
+
+            <div id="btn"><button onclick="openInNewTab()">Open Circular Queue Visualizations</button></div>
+            <br><br>
+            <p>A circular queue is an advanced version of a queue that overcomes the limitation of the array-based queue by efficiently utilizing memory. Unlike a linear queue, it uses a circular increment to manage the front and rear pointers, wrapping around when necessary. We'll implement four main operations: <strong>enqueue</strong> (to add an item), <strong>dequeue</strong> (to remove an item), <strong>peek</strong> (to check the front item), and <strong>isEmpty</strong> (to check if the queue is empty). Additionally, we'll handle conditions for a full or empty queue.</p>
+            <br><br>
+            <h3>Step-by-Step Approach:</h3><br>
+            <ol>
+                <li>Initialize an array to represent the queue, with <code>front</code> and <code>rear</code> indices.</li>
+                <li>Ensure circular movement of <code>front</code> and <code>rear</code> using modulo operation (<code>%</code>).</li>
+                <li>Implement enqueue, dequeue, peek, and isEmpty operations, ensuring proper handling of queue conditions.</li>
+            </ol>
+            <br><br>
+            <h3>Combined Circular Queue Operations Algorithm</h3><br>
+            <ol>
+                <li>Initialize the circular queue with a specified capacity.</li>
+                <li>For <strong>enqueue</strong>: Check if the queue is full. If not, increment the <code>rear</code> in a circular manner and add the item at the rear.</li>
+                <li>For <strong>dequeue</strong>: Check if the queue is empty. If not, return the item at the <code>front</code> and increment the <code>front</code> in a circular manner.</li>
+                <li>For <strong>peek</strong>: Check if the queue is empty. If not, return the item at the <code>front</code>.</li>
+                <li>For <strong>isEmpty</strong>: Check if <code>size</code> is zero; if yes, return true; otherwise, return false.</li>
+            </ol>
+            <br><br>
+            <h3>Implementation Example</h3><br>
+            <p>Here is a simple C program to demonstrate the array implementation of a circular queue:</p><br>
+
+            <pre>
+            <code>
+            #include &lt;limits.h&gt;
+            #include &lt;stdio.h&gt;
+            #include &lt;stdlib.h&gt;
+
+            // Structure to represent a circular queue
+            struct CircularQueue {
+                int front, rear, size;
+                unsigned capacity;
+                int* array;
+            };
+
+            // Function to create a circular queue of given capacity
+            struct CircularQueue* createCircularQueue(unsigned capacity) {
+                struct CircularQueue* queue = (struct CircularQueue*)malloc(sizeof(struct CircularQueue));
+                queue-&gt;capacity = capacity;
+                queue-&gt;front = queue-&gt;size = 0;
+                queue-&gt;rear = capacity - 1; // rear starts at the end
+                queue-&gt;array = (int*)malloc(queue-&gt;capacity * sizeof(int));
+                return queue;
+            }
+
+            // Enqueue operation
+            void enqueue(struct CircularQueue* queue, int item) {
+                if (queue-&gt;size == queue-&gt;capacity) return; // Check if queue is full
+                queue-&gt;rear = (queue-&gt;rear + 1) % queue-&gt;capacity; // Circular increment
+                queue-&gt;array[queue-&gt;rear] = item;
+                queue-&gt;size++;
+                printf("%d enqueued to queue\n", item);
+            }
+
+            // Dequeue operation
+            int dequeue(struct CircularQueue* queue) {
+                if (queue-&gt;size == 0) return INT_MIN; // Check if queue is empty
+                int item = queue-&gt;array[queue-&gt;front];
+                queue-&gt;front = (queue-&gt;front + 1) % queue-&gt;capacity; // Circular increment
+                queue-&gt;size--;
+                return item;
+            }
+
+            // Peek operation
+            int peek(struct CircularQueue* queue) {
+                if (queue-&gt;size == 0) return INT_MIN; // Check if queue is empty
+                return queue-&gt;array[queue-&gt;front];
+            }
+
+            // isEmpty operation
+            int isEmpty(struct CircularQueue* queue) {
+                return (queue-&gt;size == 0); // Return true if queue is empty
+            }
+
+            // Main function to test the circular queue operations
+            int main() {
+                struct CircularQueue* queue = createCircularQueue(5); // Create a circular queue of capacity 5
+
+                enqueue(queue, 10);
+                enqueue(queue, 20);
+                enqueue(queue, 30);
+
+                printf("%d dequeued from queue\n", dequeue(queue)); // Dequeue item from queue
+
+                enqueue(queue, 40);
+                enqueue(queue, 50);
+                enqueue(queue, 60); // Should wrap around
+
+                printf("Front item is %d\n", peek(queue));
+
+                return 0;
+            }
+            </code>
+            </pre><br>
+
+            <h3>Output</h3><br>
+            <pre><code>
+            10 enqueued to queue
+            20 enqueued to queue
+            30 enqueued to queue
+            10 dequeued from queue
+            40 enqueued to queue
+            50 enqueued to queue
+            60 enqueued to queue
+            Front item is 20
+            </code></pre><br><br>
+            <a href="https://www.onlinegdb.com/">Click here for Online compiler</a><br><br>
+            <br><br>
+
+            <h3>Code Explanation:</h3><br>
+            <ol>
+                <li>Similar to a regular queue, except the <code>front</code> and <code>rear</code> wrap around using modulo operations (<code>%</code>).</li>
+            </ol>
+
+            <br><br>
+            <h3>Complexity Analysis:</h3><br>
+            <h4>Time Complexity:</h4><br>
+            <ul>
+                <li>Enqueue: O(1)</li>
+                <li>Dequeue: O(1)</li>
+                <li>Peek: O(1)</li>
+                <li>isEmpty: O(1)</li>
+            </ul>
+            <p>Auxiliary Space: O(n) (where n is the capacity of the circular queue).</p>
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+            </div>    
+        </section>
+
+
+        <section id="impl3">
+
+            <h2>Implementing a Circular Queue Using a Singly Linked List</h2><br>
+            <div id="btn">
+            <button onclick="openInNewTabQueue()">Open Circular Queue Using Linked List Visualizations</button><br></div><br>
+            
+            <p>A circular queue is a type of queue where the last element points back to the first element, creating a circular structure. This avoids the problem of a queue becoming "full" even when there is space, as in a linear queue. The front and rear pointers move in a circular manner when adding or removing elements.</p>
+            
+            <p>The main advantage of using a linked list for a circular queue is that it provides dynamic memory allocation while ensuring that the queue can be filled and emptied in a circular fashion, making efficient use of available memory.</p>
+            <br><br>
+            <h3>Circular Queue Operations</h3><br>
+            <ul>
+            <li><strong>enqueue():</strong> Insert a new element at the rear of the queue, updating the rear pointer in a circular manner.</li>
+            <li><strong>dequeue():</strong> Remove and return the front element of the queue, adjusting the front pointer.</li>
+            <li><strong>peek():</strong> Return the front element without removing it.</li>
+            <li><strong>display():</strong> Print all elements in the queue in a circular order.</li>
+            </ul><br><br>
+            
+            <div id="impl3">
+            <h4>Operations and their Algorithms:</h4><br>
+            <p>
+                1. <strong>Initialize Queue:</strong> Create an empty queue with front and rear pointers set to null.<br><br>
+            
+                2. <strong>Enqueue Operation:</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;a) Create a new node.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b) Set the node's data to the given value.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;c) If the queue is empty, set both front and rear pointers to the new node.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;d) If not empty, link the new node to the current rear node, and update the rear pointer. The rear node will link to the front node to maintain the circular structure.<br><br>
+            
+                3. <strong>Dequeue Operation:</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;a) Check if the queue is empty. If empty, return an underflow message.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b) Use a temporary pointer to store the front node.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;c) Move the front pointer to the next node. If the queue becomes empty, set both front and rear to null.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;d) Free the memory of the temporary node.<br><br>
+            
+                4. <strong>Peek Operation:</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;a) Check if the queue is empty. If empty, return an error.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b) Otherwise, return the data of the front node.<br><br>
+            
+                5. <strong>Display Operation:</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;a) Initialize a temporary pointer to the front of the queue.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b) Traverse the queue using the temporary pointer until it reaches the front node again.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;c) Print the data of each node during traversal.<br><br>
+            
+                <strong>Time Complexity:</strong> O(1) for enqueue and dequeue operations.<br>
+                <strong>Space Complexity:</strong> O(N) where N is the number of elements in the queue.
+            </p>
+            </div>
+            <br><br>
+            <h3>Implementation Code</h3><br>
+            <pre>
+            <code>
+            // C program to implement a circular queue using singly linked list
+            #include &lt;limits.h&gt;
+            #include &lt;stdio.h&gt;
+            #include &lt;stdlib.h&gt;
+            
+            // Struct representing a node in the linked list
+            typedef struct Node {
+            int data;
+            struct Node* next;
+            } Node;
+            
+            Node* createNode(int new_data) {
+            Node* new_node = (Node*)malloc(sizeof(Node));
+            new_node->data = new_data;
+            new_node->next = NULL;
+            return new_node;
+            }
+            
+            // Struct to implement circular queue using a singly linked list
+            typedef struct Queue {
+            Node* front;
+            Node* rear;
+            } Queue;
+            
+            // Constructor to initialize the queue
+            void initializeQueue(Queue* queue) { 
+                queue->front = queue->rear = NULL; 
+            }
+            
+            // Function to check if the queue is empty
+            int isEmpty(Queue* queue) {
+                return queue->front == NULL; // If front is NULL, the queue is empty
+            }
+            
+            // Function to enqueue an element onto the queue
+            void enqueue(Queue* queue, int new_data) {
+                Node* new_node = createNode(new_data);
+                if (!new_node) {
+                    printf("\nQueue Overflow");
+                    return;
+                }
+                if (queue->rear == NULL) { // If the queue is empty
+                    queue->front = queue->rear = new_node;
+                    new_node->next = queue->front; // Make the queue circular
+                } else {
+                    queue->rear->next = new_node; // Link the new node to the current rear
+                    queue->rear = new_node; // Update the rear to the new node
+                    queue->rear->next = queue->front; // Rear points to front to maintain the circular structure
+                }
+            }
+            
+            // Function to remove the front element from the queue
+            void dequeue(Queue* queue) {
+                if (isEmpty(queue)) {
+                    printf("\nQueue Underflow\n");
+                    return;
+                } else {
+                    Node* temp = queue->front; // Assign current front to a temporary variable
+                    if (queue->front == queue->rear) { // If there is only one element
+                        queue->front = queue->rear = NULL; // Make the queue empty
+                    } else {
+                        queue->front = queue->front->next; // Update front to the next node
+                        queue->rear->next = queue->front; // Update rear to point to the new front
+                    }
+                    free(temp); // Deallocate memory of the old front node
+                }
+            }
+            
+            // Function to return the front element of the queue
+            int peek(Queue* queue) {
+                if (!isEmpty(queue))
+                    return queue->front->data; // Return front element if queue is not empty
+                else {
+                    printf("\nQueue is empty");
+                    return INT_MIN; // Return a sentinel value if queue is empty
+                }
+            }
+            
+            // Driver program to test the circular queue implementation
+            int main() {
+                Queue queue;
+                initializeQueue(&queue);
+            
+                // Enqueue elements onto the queue
+                enqueue(&queue, 11);
+                enqueue(&queue, 22);
+                enqueue(&queue, 33);
+                enqueue(&queue, 44);
+            
+                // Print front element of the queue
+                printf("Front element is %d\n", peek(&queue));
+            
+                // Remove two elements from the front
+                printf("Removing two elements...\n");
+                dequeue(&queue);
+                dequeue(&queue);
+            
+                // Print front element of the queue
+                printf("Front element is %d\n", peek(&queue));
+            
+                return 0;
+            }
+            </code>
+            </pre><br><br>
+            
+            <h3>Output</h3><br>
+            <pre><code>
+            <p>Front element is 11<br>Front element is 33</p>
+            </code></pre><br><br>
+            
+            <h3>Complexity Analysis</h3><br>
+            <p><strong>Time Complexity:</strong><br> O(1) for enqueue and dequeue operations as we do not traverse the list; operations are performed using the current pointer.<br>
+            <strong>Auxiliary Space:</strong><br> O(N), where N is the size of the queue.</p>
+            <br><br>
+            <h3>Summary</h3>
+            <p>In this implementation, we define a <code>Node</code> struct to represent each node in the linked list and a <code>Queue</code> struct that utilizes this node struct to implement the circular queue. The front and rear attributes of the <code>Queue</code> struct point to the first and last nodes of the queue, respectively, with the rear node pointing to the front to form a circular structure.</p>
+            <p>To add an item to the queue, we create a new node with the specified item, link it as the next node after the current rear, and update the rear to the new node, ensuring the circular structure by linking the rear to the front.</p>
+            <p>To remove an item from the queue, we update the front of the queue to the next node and return the data from the original front node. If the queue becomes empty, we set both front and rear to null.</p>
+            <br><br>
+            <h3>Benefits of Using
+
+        a Circular Queue</h3>
+            <ul>
+            <li>Efficient use of memory by reusing space as elements are dequeued.</li>
+            <li>No need to shift elements like in a regular queue, resulting in faster operations.</li>
+            </ul>
+            <br><br>
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+            </div>
+        </section>
+
+    
+        <section id="impl4">
+            <h2>Circular Queue Variants</h2><br>
+          
+            <h3>1. Simple Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A basic circular queue that follows the First-In-First-Out (FIFO) principle, with its end connected back to the front to reuse space.</p>
+            <p><strong>Principle:</strong> The first element added is the first one to be removed, but the queue wraps around when it reaches its end.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty, isFull.</p><br><br><br>
+          
+            <h3>2. Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A queue where the end of the queue is connected back to the front, making efficient use of space.</p>
+            <p><strong>Principle:</strong> Once the queue is full, the next enqueue operation starts from the beginning.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty.</p><br><br><br>
+          
+            <h3>3. Deque (Circular Double-ended Queue)</h3><br>
+            <p><strong>Definition:</strong> A circular queue where elements can be added and removed from both ends.</p>
+            <p><strong>Principle:</strong> Supports both FIFO and LIFO operations in a circular structure.</p>
+            <p><strong>Operations:</strong> EnqueueFront, EnqueueBack, DequeueFront, DequeueBack, isEmpty.</p><br><br><br>
+          
+            <h3>4. Priority Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A circular queue where elements are dequeued based on priority rather than the order they were added.</p>
+            <p><strong>Principle:</strong> Elements with higher priority are dequeued before those with lower priority, while maintaining circular nature.</p>
+            <p><strong>Operations:</strong> Enqueue (with priority), Dequeue, Front, isEmpty.</p><br><br><br>
+          
+            <h3>5. Multi-Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A collection of multiple circular queues within a single data structure.</p>
+            <p><strong>Principle:</strong> Efficiently manages more than one circular queue simultaneously.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue for each queue, isEmpty for each queue.</p><br><br><br>
+          
+            <h3>6. Blocking Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A circular queue that blocks threads attempting to dequeue from an empty queue or enqueue to a full queue.</p>
+            <p><strong>Principle:</strong> Useful in multi-threaded environments to manage access and prevent race conditions.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue, isEmpty, isFull.</p><br><br><br>
+          
+            <h3>7. Fixed-size Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A circular queue with a fixed size, implemented using arrays, where the capacity is predetermined.</p>
+            <p><strong>Principle:</strong> Operations are limited by the queue's size, and overflow occurs if full.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty, isFull.</p><br><br><br>
+          
+            <h3>8. Concurrent Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A circular queue designed for concurrent operations in multi-threaded environments.</p>
+            <p><strong>Principle:</strong> Ensures safe access by multiple threads without data corruption in a circular structure.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue, Front, isEmpty, thread-safe operations.</p><br><br><br>
+          
+            <h3>9. Immutable Circular Queue</h3><br>
+            <p><strong>Definition:</strong> A circular queue variant where every operation creates a new version, ensuring immutability.</p>
+            <p><strong>Principle:</strong> Maintains immutability, useful in functional programming with circular queues.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue, Front, versioning functions.</p><br><br><br>
+          
+            <h3>10. Two Circular Queues in One Array</h3><br>
+            <p><strong>Definition:</strong> Two circular queues share a single array, growing from opposite ends, to optimize space usage.</p>
+            <p><strong>Principle:</strong> Maximizes space utilization by allowing two circular queues to coexist in one array.</p>
+            <p><strong>Operations:</strong> Enqueue, Dequeue for each queue, isEmpty for each queue.</p><br><br><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl3')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps1')">Next</span>
+            </div>
+        </section>
+        
+        <section id="apps1">
+            <h2>Circular Queue Overflow and Underflow</h2><br>
+        
+            <h3>Circular Queue Overflow</h3><br>
+            <p><strong>Definition:</strong> Circular queue overflow occurs when you try to add more items to a circular queue than it can hold, even when there is space available in the queue due to its circular nature.</p>
+            <p><strong>Example:</strong> Imagine a circular queue at a ticket counter. When the queue is full, the rear pointer has wrapped around and is pointing to the front element. If you attempt to add a new person to the queue, but there is no space left, this causes a situation called circular queue overflow. In programming, this results in a queue overflow error when you try to add an item when the queue is full, even though it may appear to have space because of its circular structure.</p><br><br>
+        
+            <h3>Circular Queue Underflow</h3><br>
+            <p><strong>Definition:</strong> Circular queue underflow occurs when you try to remove an item from a circular queue that is empty.</p>
+            <p><strong>Example:</strong> Using the same ticket counter analogy, imagine that the queue is empty and you try to remove a person. Since there are no people in the queue, this causes an error known as circular queue underflow. In programming, this happens when you attempt a dequeue operation on an empty queue, resulting in an underflow error.</p><br><br>
+        
+            <h3>Summary</h3><br>
+            <ul>
+            <li><strong>Circular Queue Overflow:</strong> Trying to add items to a circular queue when it is full.</li>
+            <li><strong>Circular Queue Underflow:</strong> Trying to remove items from a circular queue when it is empty.</li>
+            </ul><br><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl4')">Previous</span>
+                <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+            </div>
+        </section>
+
+        <section id="quiz">
+            <h2>Test Your Knowledge on Circular Queue</h2>
+            <h4 style="text-align: center;">This test consists of 15 multiple choice questions. <br>
+                You will have 15 minutes time to complete the test. <br>click on the below Button to start the test <br>
+     </h4><br>
+                <h3 style="text-align: center;">All the best 👍🏼...</h3>
+                <div id="btn">
+                <button type="button" class="action" onclick="openCourse('circularqueue_test.html')">Start Writing</button>
+                </div>
+        </section>        
+        <script>
+
+            // Function to show the selected section and hide the others
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                const section = document.getElementById(sectionId);
+                section.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+            }
+        
+            // Handle next and previous buttons
+            let currentSection = 0;
+            const sections = document.querySelectorAll('section');
+            const totalSections = sections.length;
+        
+            function showNextSection() {
+                if (currentSection < totalSections - 1) {
+                    currentSection++;
+                    showSection('section-' + (currentSection + 1));
+                }
+            }
+        
+            function showPreviousSection() {
+                if (currentSection > 0) {
+                    currentSection--;
+                    showSection('section-' + (currentSection + 1));
+                }
+            }
+        
+            // Attach event listeners to next/previous buttons
+            document.getElementById('next-btn').addEventListener('click', showNextSection);
+            document.getElementById('prev-btn').addEventListener('click', showPreviousSection);
+        
+        
+            function openCourse(url) {
+              window.open(url, '_blank');
+            }
+        </script>
+                
+        
+        
+    
+</body>
+</html>
