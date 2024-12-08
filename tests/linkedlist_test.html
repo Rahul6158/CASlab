@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>Linked List Assessment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #1c1c1c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #f4f4f4;
+    }
+
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #f4f4f4;
+    }
+
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 1em;
+      color: #cfcfcf;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      color: white;
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .marks-display {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #2e7d32;
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      border: 2px solid #388e3c;
+      border-radius: 5px;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: rgba(46, 125, 50, 0.3);
+      border: 1px solid #2e7d32;
+      color: #81c784;
+      border-radius: 5px;
+    }
+
+    .correct-answer {
+      color: #76ff03;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .timer {
+      text-align: right;
+      font-size: 1.2em;
+      color: #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      color: #ff5252;
+      margin-top: 15px;
+      font-size: 1em;
+      padding: 10px;
+      background-color: rgba(255, 82, 82, 0.1);
+      border: 1px solid #ff5252;
+      border-radius: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Linked List Assessment
+  </header>
+  <main>
+    <div class="timer" id="timer">Time Left: 15:00</div>
+    <h2 style="text-align: center;">Test Your Knowledge on Linked List</h2>
+    <div id="testContainer"></div>
+    <div id="alertContainer" class="alert" style="display: none;">Please ensure all questions are answered before submitting. Each response helps us evaluate your understanding accurately!</div>
+    <button id="submitButton" class="submit-btn">Submit Answers</button>
+    <div id="marksContainer" class="marks-display" style="display: none;"></div>
+  </main>
+  <footer>
+    &copy;Dr. Bomma Rama Krishna
+  </footer>
+
+  <script>
+    const questions = [
+      { question: "What is a linked list?", options: ["A collection of nodes", "A type of tree", "An array structure"], correctIndex: 0, explanation: "A linked list is a data structure consisting of a sequence of nodes where each node contains data and a reference (or link) to the next node." },
+      { question: "What type of linked list has nodes pointing both to the next and previous nodes?", options: ["Doubly Linked List", "Singly Linked List", "Circular Linked List"], correctIndex: 0, explanation: "A doubly linked list has nodes that point both to the next and previous nodes." },
+      { question: "What operation does the head node perform in a linked list?", options: ["Points to the first node", "Stores the data", "Connects nodes"], correctIndex: 0, explanation: "The head node of a linked list points to the first node in the list." },
+      { question: "Which operation is used to insert a new node at the beginning of a linked list?", options: ["InsertAtHead", "InsertAtTail", "InsertAtPosition"], correctIndex: 0, explanation: "The InsertAtHead operation inserts a new node at the beginning of the linked list." },
+      { question: "Which of the following is a disadvantage of linked lists?", options: ["Random access is not allowed", "Slow insertion", "Waste of memory"], correctIndex: 0, explanation: "Linked lists cannot provide random access like arrays, making it slower for index-based access." },
+      { question: "In a doubly linked list, each node contains pointers to what?", options: ["Previous and Next nodes", "Only the next node", "Only the previous node"], correctIndex: 0, explanation: "Each node in a doubly linked list contains pointers to both the previous and next nodes." },
+      { question: "Which operation in a linked list is used to remove the first node?", options: ["DeleteAtHead", "DeleteAtTail", "DeleteAtPosition"], correctIndex: 0, explanation: "DeleteAtHead removes the first node of the linked list." },
+      { question: "What is the time complexity for inserting a node at the head of a linked list?", options: ["O(1)", "O(n)", "O(log n)"], correctIndex: 0, explanation: "Inserting a node at the head of a linked list is an O(1) operation, as it only involves changing a few pointers." },
+      { question: "In which scenario is a circular linked list useful?", options: ["When the list needs to be traversed repeatedly", "When random access is required", "For static storage"], correctIndex: 0, explanation: "Circular linked lists are useful for situations where the list needs to be repeatedly traversed from any node back to the first." },
+      { question: "What operation checks whether a linked list is empty?", options: ["isEmpty", "isFull", "hasNext"], correctIndex: 0, explanation: "The isEmpty operation checks whether a linked list is empty by checking if the head pointer is null." },
+      { question: "What does a tail pointer in a singly linked list point to?", options: ["Null", "Last node", "First node"], correctIndex: 0, explanation: "In a singly linked list, the tail pointer points to null, indicating the end of the list." },
+      { question: "Which of these linked list operations requires O(n) time complexity?", options: ["Searching for a node", "Inserting at the head", "Deleting at the tail"], correctIndex: 0, explanation: "Searching for a node in a linked list requires O(n) time, as each node must be checked sequentially." },
+      { question: "What happens when the head pointer of a linked list is set to null?", options: ["The list becomes empty", "The list continues to function normally", "The list is reversed"], correctIndex: 0, explanation: "Setting the head pointer to null makes the list empty, as there is no longer any reference to the first node." },
+      { question: "Which data structure is typically used to implement a stack?", options: ["Linked List", "Array", "Graph"], correctIndex: 0, explanation: "A linked list is often used to implement a stack, as elements can be easily added or removed from the top." },
+      { question: "What is the key advantage of using linked lists over arrays?", options: ["Dynamic size", "Faster access", "Ease of sorting"], correctIndex: 0, explanation: "The key advantage of linked lists is their dynamic size, allowing them to grow and shrink as needed without resizing." }
+    ];
+
+    let timerInterval;
+    let timeLeft = 15 * 60;
+
+    function startTimer() {
+      const timerElement = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          autoSubmit();
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
+    function checkAllAnswered() {
+      return questions.every((_, index) => document.querySelector(`input[name="q${index}"]:checked`));
+    }
+
+    function evaluateAnswers() {
+    let score = 0;
+    const feedbackElements = document.querySelectorAll(".feedback");
+    const correctAnswerElements = document.querySelectorAll(".correct-answer");
+    const answerStatusElements = document.querySelectorAll(".answer-status");
+
+    questions.forEach((q, index) => {
+        const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+        const correctAnswerElement = correctAnswerElements[index];
+        const feedbackElement = feedbackElements[index];
+        const answerStatusElement = answerStatusElements[index];
+
+        if (selectedOption) {
+            const isCorrect = parseInt(selectedOption.value) === q.correctIndex;
+
+            // If the answer is correct
+            if (isCorrect) {
+                score++;
+                answerStatusElement.textContent = "Correct!";
+                answerStatusElement.style.color = "#76ff03"; // Green for correct
+            } else {
+                // If the answer is wrong
+                answerStatusElement.textContent = `Wrong! The correct answer is: ${q.options[q.correctIndex]}`;
+                answerStatusElement.style.color = "#ff5252"; // Red for wrong
+            }
+        }
+
+        // Display correct answer and explanation
+        correctAnswerElement.style.display = "block";
+        feedbackElement.style.display = "block";
+    });
+
+    return score;
+}
+
+function renderQuestions() {
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+    testContainer.innerHTML = shuffledQuestions.map((q, index) => `
+    <div class="question-container">
+        <p class="question">${index + 1}. ${q.question}</p>
+        <div class="options">
+            ${q.options.map((option, i) => `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}"> ${option}
+                </label>
+            `).join("")}
+        </div>
+        <p class="answer-status" style="font-weight: bold;"></p> <!-- Added line to show answer status -->
+        <p class="correct-answer" style="display: none; color: #76ff03;">Correct Answer: ${q.options[q.correctIndex]}</p>
+        <p class="feedback" style="display: none; color: #81c784;">Explanation: ${q.explanation}</p>
+    </div>
+    `).join("");
+}
+
+function autoSubmit() {
+    const totalScore = evaluateAnswers();
+    marksContainer.textContent = `You scored ${totalScore} out of ${questions.length}!`;
+    marksContainer.style.display = "block";
+    submitButton.disabled = true;
+}
+
+
+    submitButton.addEventListener("click", () => {
+      if (!checkAllAnswered()) {
+        alertContainer.style.display = "block";
+      } else {
+        clearInterval(timerInterval);
+        alertContainer.style.display = "none";
+        autoSubmit();
+      }
+    });
+
+    renderQuestions();
+    startTimer();
+  </script>
+</body>
+</html>

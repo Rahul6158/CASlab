@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>Data Structures Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1e1e2f;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+    }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #2b2b3d;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      color: #ccc;
+    }
+
+    .card button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .card button:hover {
+      background-color: #43a047;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .card h2 {
+        font-size: 1.25rem;
+      }
+
+      .card button {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Data Structures Tests</h1>
+    <div class="test-grid">
+
+            <div class="card">
+        <h2>Array</h2>
+        <p>Test your Knowledge on Array.</p>
+        <button type="button" class="action" onclick="openCourse('Array_test.html')">Start Test</button>
+      </div>
+
+      <!-- Stack Test -->
+      <div class="card">
+        <h2>Stack</h2>
+        <p>Evaluate your understanding of Stacks.</p>
+        <button type="button" class="action" onclick="openCourse('stack_test.html')">Start Test</button>
+      </div>
+
+      <!-- Linked List Test -->
+      <div class="card">
+        <h2>Linked List</h2>
+        <p>Test your proficiency in Linked Lists.</p>
+        <button type="button" class="action" onclick="openCourse('linkedlist_test.html')">Start Test</button>
+      </div>
+
+      <!-- Queue Test -->
+      <div class="card">
+        <h2>Queue</h2>
+        <p>Check your skills in Queues and their applications.</p>
+        <button type="button" class="action" onclick="openCourse('queue_test.html')">Start Test</button>
+      </div>
+
+    <!-- Priority Queue Test -->
+    <!-- <div class="card">
+        <h2>Priority Queue</h2>
+        <p>Test your knowledge of Priority Queues with this quiz.</p>
+        <button type="button" class="action" onclick="openCourse('priorityqueue_test.html')">Start Test</button>
+      </div> -->
+
+       <!-- Circular Queue Test -->
+    <div class="card">
+      <h2>Circular Queue</h2>
+      <p>Test your knowledge of Circular Queues with this quiz.</p>
+      <button type="button" class="action" onclick="openCourse('circularqueue_test.html')">Start Test</button>
+    </div>
+
+      <!-- Binary Tree Test -->
+      <!-- <div class="card">
+        <h2>Binary Tree</h2>
+        <p>Analyze your knowledge of Binary Trees.</p>
+        <button type="button" class="action" onclick="openCourse('queue_test.html')">Start Test</button>
+      </div> -->
+
+      <!-- Graph Test -->
+      <!-- <div class="card">
+        <h2>Graph</h2>
+        <p>Master Graph data structures with this test.</p>
+        <button type="button" class="action" onclick="openCourse('queue_test.html')">Start Test</button>
+      </div> -->
+
+      <!-- Hash Table Test -->
+      <!-- <div class="card">
+        <h2>Hash Table</h2>
+        <p>Examine your understanding of Hash Tables.</p>
+        <button type="button" class="action" onclick="openCourse('queue_test.html')">Start Test</button>
+      </div> -->
+
+      <!-- Heap Test -->
+      <!-- <div class="card">
+        <h2>Heap</h2>
+        <p>Test your skills in Heap data structures.</p>
+        <button type="button" class="action" onclick="openCourse('queue_test.html')">Start Test</button>
+      </div> -->
+    </div>
+  </div>
+
+
+  <script>
+    function openCourse(url) {
+      window.open(url, '_blank');
+    }
+</script>
+
+</body>
+</html>

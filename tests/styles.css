@@ -1,0 +1,110 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e2f;
+    color: #fff;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #282c38;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  h1 {
+    text-align: center;
+  }
+
+  h3 {
+    text-align: center;
+  }
+  
+  .test-form .question {
+    margin-bottom: 20px;
+  }
+  
+  .submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #435dd8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #2d3750;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+  
+    .radio-input label {
+      width: 100%;
+    }
+  }
+  
+  /* Radio Button Styles */
+  .radio-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .radio-input * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .radio-input label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+    background-color: #2a2e3c;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .radio-input label:hover {
+    background-color: #435dd8;
+  }
+  
+  .radio-input label input[type="radio"] {
+    appearance: none;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: #202030;
+    cursor: pointer;
+  }
+  
+  .radio-input label input[type="radio"]:checked {
+    border-color: #28a745;
+    background-color: #28a745;
+  }
+  
+  .radio-input label input[type="radio"]:checked + .text {
+    color: #28a745;
+  }
+  
+  .radio-input label .text {
+    font-size: 14px;
+  }
+  

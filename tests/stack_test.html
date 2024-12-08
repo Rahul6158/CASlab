@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>Stack Assessment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #1c1c1c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #f4f4f4;
+    }
+
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #f4f4f4;
+    }
+
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 1em;
+      color: #cfcfcf;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      color: white;
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .marks-display {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #2e7d32;
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      border: 2px solid #388e3c;
+      border-radius: 5px;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: rgba(46, 125, 50, 0.3);
+      border: 1px solid #2e7d32;
+      color: #81c784;
+      border-radius: 5px;
+    }
+
+    .correct-answer {
+      color: #76ff03;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .timer {
+      text-align: right;
+      font-size: 1.2em;
+      color: #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      color: #ff5252;
+      margin-top: 15px;
+      font-size: 1em;
+      padding: 10px;
+      background-color: rgba(255, 82, 82, 0.1);
+      border: 1px solid #ff5252;
+      border-radius: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Stack Assessment
+  </header>
+  <main>
+    <div class="timer" id="timer">Time Left: 15:00</div>
+    <h2 style="text-align: center;">Test Your Knowledge of Stacks</h2>
+    <div id="testContainer"></div>
+    <div id="alertContainer" class="alert" style="display: none;">Please ensure all questions are answered before submitting. Each response helps us evaluate your understanding accurately!</div>
+    <button id="submitButton" class="submit-btn">Submit Answers</button>
+    <div id="marksContainer" class="marks-display" style="display: none;"></div>
+  </main>
+  <footer>
+    &copy;Dr. Bomma Rama Krishna
+  </footer>
+
+  <script>
+    const questions = [
+      { question: "What is a stack?", options: ["LIFO structure", "FIFO structure", "Priority Queue"], correctIndex: 0, explanation: "A stack follows the Last In, First Out (LIFO) principle, meaning the last item added is the first to be removed." },
+      { question: "What is the time complexity of a push operation in a stack?", options: ["O(1)", "O(n)", "O(log n)"], correctIndex: 0, explanation: "The push operation in a stack is performed in constant time, O(1), as it involves inserting an element at the top." },
+      { question: "Which of these is NOT an application of stacks?", options: ["Undo functionality", "Expression evaluation", "Sorting algorithms"], correctIndex: 2, explanation: "Sorting algorithms typically use more complex data structures like heaps, not stacks." },
+      { question: "Which operation removes the top element of a stack?", options: ["Pop", "Push", "Peek"], correctIndex: 0, explanation: "The pop operation removes and returns the top element of the stack." },
+      { question: "Which of the following data structures is used in function call management?", options: ["Stack", "Queue", "Linked List"], correctIndex: 0, explanation: "The call stack manages function calls by keeping track of active functions using a stack." },
+      { question: "What does the Peek operation in a stack do?", options: ["Returns the top element", "Removes the top element", "Adds a new element"], correctIndex: 0, explanation: "Peek allows you to view the top element without modifying the stack." },
+      { question: "What is the main disadvantage of using a stack?", options: ["Fixed size", "Slow operations", "Complex implementation"], correctIndex: 0, explanation: "When implemented with arrays, stacks have a fixed size, which can limit their flexibility." },
+      { question: "Which real-world example resembles a stack?", options: ["Plates in a pile", "Queue of people", "Files in a folder"], correctIndex: 0, explanation: "A stack of plates represents the LIFO principle, as the last plate added is the first to be removed." },
+      { question: "What is the time complexity of checking if a stack is empty?", options: ["O(1)", "O(n)", "O(log n)"], correctIndex: 0, explanation: "Checking if a stack is empty is a constant-time operation, O(1)." },
+      { question: "Which data structure can be used to evaluate postfix expressions?", options: ["Stack", "Queue", "Graph"], correctIndex: 0, explanation: "Stacks are ideal for evaluating postfix expressions due to their LIFO nature." },
+      { question: "How can a stack be implemented?", options: ["Array or Linked List", "Tree", "Graph"], correctIndex: 0, explanation: "Stacks can be implemented using arrays for simplicity or linked lists for dynamic sizing." },
+      { question: "What happens if you pop from an empty stack?", options: ["Underflow", "Overflow", "Exception"], correctIndex: 0, explanation: "Popping from an empty stack causes an underflow condition, indicating no elements are present." },
+      { question: "In which scenario is a stack used?", options: ["Depth-first search", "Breadth-first search", "Sorting"], correctIndex: 0, explanation: "Stacks are used in depth-first search algorithms to backtrack effectively." },
+      { question: "What operation is required to initialize a stack?", options: ["Create an empty stack", "Add an element", "Define the size"], correctIndex: 0, explanation: "To use a stack, you must first initialize it as empty." },
+      { question: "Which of these operations is not valid on a stack?", options: ["Traverse all elements", "Pop", "Push"], correctIndex: 0, explanation: "Stacks do not inherently support traversal; they are designed for LIFO operations only." }
+    ];
+
+    let timerInterval;
+    let timeLeft = 15 * 60;
+
+    function startTimer() {
+      const timerElement = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          autoSubmit();
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
+    function checkAllAnswered() {
+      return questions.every((_, index) => document.querySelector(`input[name="q${index}"]:checked`));
+    }
+
+    function evaluateAnswers() {
+    let score = 0;
+    const feedbackElements = document.querySelectorAll(".feedback");
+    const correctAnswerElements = document.querySelectorAll(".correct-answer");
+    const answerStatusElements = document.querySelectorAll(".answer-status");
+
+    questions.forEach((q, index) => {
+        const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+        const correctAnswerElement = correctAnswerElements[index];
+        const feedbackElement = feedbackElements[index];
+        const answerStatusElement = answerStatusElements[index];
+
+        if (selectedOption) {
+            const isCorrect = parseInt(selectedOption.value) === q.correctIndex;
+
+            // If the answer is correct
+            if (isCorrect) {
+                score++;
+                answerStatusElement.textContent = "Correct!";
+                answerStatusElement.style.color = "#76ff03"; // Green for correct
+            } else {
+                // If the answer is wrong
+                answerStatusElement.textContent = `Wrong! The correct answer is: ${q.options[q.correctIndex]}`;
+                answerStatusElement.style.color = "#ff5252"; // Red for wrong
+            }
+        }
+
+        // Display correct answer and explanation
+        correctAnswerElement.style.display = "block";
+        feedbackElement.style.display = "block";
+    });
+
+    return score;
+}
+
+function renderQuestions() {
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+    testContainer.innerHTML = shuffledQuestions.map((q, index) => `
+    <div class="question-container">
+        <p class="question">${index + 1}. ${q.question}</p>
+        <div class="options">
+            ${q.options.map((option, i) => `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}"> ${option}
+                </label>
+            `).join("")}
+        </div>
+        <p class="answer-status" style="font-weight: bold;"></p> <!-- Added line to show answer status -->
+        <p class="correct-answer" style="display: none; color: #76ff03;">Correct Answer: ${q.options[q.correctIndex]}</p>
+        <p class="feedback" style="display: none; color: #81c784;">Explanation: ${q.explanation}</p>
+    </div>
+    `).join("");
+}
+
+function autoSubmit() {
+    const totalScore = evaluateAnswers();
+    marksContainer.textContent = `You scored ${totalScore} out of ${questions.length}!`;
+    marksContainer.style.display = "block";
+    submitButton.disabled = true;
+}
+
+
+    submitButton.addEventListener("click", () => {
+      if (!checkAllAnswered()) {
+        alertContainer.style.display = "block";
+      } else {
+        clearInterval(timerInterval);
+        alertContainer.style.display = "none";
+        autoSubmit();
+      }
+    });
+
+    renderQuestions();
+    startTimer();
+  </script>
+</body>
+</html>

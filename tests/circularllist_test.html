@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>Circular Linked List Assessment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #1c1c1c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #f4f4f4;
+    }
+
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #f4f4f4;
+    }
+
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 1em;
+      color: #cfcfcf;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      color: white;
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .marks-display {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #2e7d32;
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      border: 2px solid #388e3c;
+      border-radius: 5px;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: rgba(46, 125, 50, 0.3);
+      border: 1px solid #2e7d32;
+      color: #81c784;
+      border-radius: 5px;
+    }
+
+    .correct-answer {
+      color: #76ff03;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .timer {
+      text-align: right;
+      font-size: 1.2em;
+      color: #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      color: #ff5252;
+      margin-top: 15px;
+      font-size: 1em;
+      padding: 10px;
+      background-color: rgba(255, 82, 82, 0.1);
+      border: 1px solid #ff5252;
+      border-radius: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Circular Linked List Assessment
+  </header>
+  <main>
+    <div class="timer" id="timer">Time Left: 15:00</div>
+    <h2 style="text-align: center;">Test Your Knowledge on Circular Linked List</h2>
+    <div id="testContainer"></div>
+    <div id="alertContainer" class="alert" style="display: none;">Please ensure all questions are answered before submitting. Each response helps us evaluate your understanding accurately!</div>
+    <button id="submitButton" class="submit-btn">Submit Answers</button>
+    <div id="marksContainer" class="marks-display" style="display: none;"></div>
+  </main>
+  <footer>
+    &copy;Dr. Bomma Rama Krishna
+  </footer>
+
+  <script>
+const questions = [
+  { question: "What is a circular linked list?", options: ["A list where the last node points to the first node", "A list where elements are stored in a fixed-size array", "A list with nodes connected randomly"], correctIndex: 0, explanation: "A circular linked list is a type of linked list in which the last node points back to the first node, forming a circle." },
+  { question: "Which of the following is a characteristic of a circular linked list?", options: ["The last node points to the first node", "Nodes are stored in contiguous memory locations", "The list has a fixed size"], correctIndex: 0, explanation: "In a circular linked list, the last node points to the first node, making the list circular." },
+  { question: "What is the time complexity for accessing an element in a circular linked list?", options: ["O(n)", "O(1)", "O(log n)"], correctIndex: 0, explanation: "In a circular linked list, you may have to traverse the entire list to access an element, which gives it O(n) time complexity." },
+  { question: "Which of the following is an advantage of a circular linked list?", options: ["Efficient circular traversal", "Faster insertion at random positions", "Faster access by index"], correctIndex: 0, explanation: "Circular linked lists allow efficient circular traversal, where the list can be traversed indefinitely without reaching a null reference." },
+  { question: "What happens when you try to access the next node from the last node in a circular linked list?", options: ["You reach the first node", "It causes an error", "You reach a null node"], correctIndex: 0, explanation: "In a circular linked list, the last node points to the first node, so accessing the next node from the last node takes you to the first node." },
+  { question: "Which operation has O(1) time complexity in a circular linked list?", options: ["Insertion at the beginning", "Searching for an element", "Accessing an element"], correctIndex: 0, explanation: "Inserting at the beginning of a circular linked list can be done in O(1) time because no traversal is needed to reach the first position." },
+  { question: "Which of the following operations requires O(n) time complexity in a circular linked list?", options: ["Searching for an element", "Inserting at the beginning", "Deleting the first node"], correctIndex: 0, explanation: "Searching for an element in a circular linked list requires O(n) time because you may need to traverse the entire list to find the element." },
+  { question: "How do you check if a circular linked list is empty?", options: ["Check if the head node is null", "Check if the last node's next points to the head", "Check if the size is 0"], correctIndex: 1, explanation: "In a circular linked list, if the last node's next points to the head node, the list is not empty. Otherwise, it is empty." },
+  { question: "What is the time complexity of deleting a node in a circular linked list?", options: ["O(1)", "O(n)", "O(log n)"], correctIndex: 0, explanation: "Deleting a node in a circular linked list, if you have a pointer to it, can be done in O(1) time. However, finding the node requires O(n) time." },
+  { question: "Which of the following is true about the head pointer in a circular linked list?", options: ["It can be any node in the list", "It points to the first node", "It always points to the last node"], correctIndex: 1, explanation: "In a circular linked list, the head pointer points to the first node in the list, and the last node's next pointer points to the head." },
+  { question: "What is the primary disadvantage of a circular linked list?", options: ["Extra memory for storing the pointer", "Difficult to implement in some programming languages", "Slow access by index"], correctIndex: 0, explanation: "Circular linked lists require an extra pointer in each node to link back to the first node, which uses extra memory." },
+  { question: "What type of linked list is typically used to implement a circular queue?", options: ["Circular linked list", "Doubly linked list", "Singly linked list"], correctIndex: 0, explanation: "A circular queue can be efficiently implemented using a circular linked list to handle wraparound behavior in a queue." },
+  { question: "Which of these operations is efficient in a circular linked list?", options: ["Insertion and deletion at both ends", "Random access to elements", "Efficient search for elements"], correctIndex: 0, explanation: "Circular linked lists are efficient for insertion and deletion at both ends, but not for random access or searching, as you have to traverse the list." },
+  { question: "How do you declare a circular linked list in most programming languages?", options: ["Node *head = null", "CircularList head = new CircularList()", "Node head = new Node()"], correctIndex: 0, explanation: "In most programming languages, you declare a circular linked list by initializing the head to null, and creating nodes that point back to the head when the list is non-empty." },
+  { question: "Which data structure is typically used to implement a circular linked list?", options: ["Linked List", "Array", "Stack"], correctIndex: 0, explanation: "A circular linked list is implemented using a linked list structure where the last node points back to the first node." }
+];
+
+    let timerInterval;
+    let timeLeft = 15 * 60;
+
+    function startTimer() {
+      const timerElement = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          autoSubmit();
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
+    function checkAllAnswered() {
+      return questions.every((_, index) => document.querySelector(`input[name="q${index}"]:checked`));
+    }
+
+    function evaluateAnswers() {
+    let score = 0;
+    const feedbackElements = document.querySelectorAll(".feedback");
+    const correctAnswerElements = document.querySelectorAll(".correct-answer");
+    const answerStatusElements = document.querySelectorAll(".answer-status");
+
+    questions.forEach((q, index) => {
+        const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+        const correctAnswerElement = correctAnswerElements[index];
+        const feedbackElement = feedbackElements[index];
+        const answerStatusElement = answerStatusElements[index];
+
+        if (selectedOption) {
+            const isCorrect = parseInt(selectedOption.value) === q.correctIndex;
+
+            // If the answer is correct
+            if (isCorrect) {
+                score++;
+                answerStatusElement.textContent = "Correct!";
+                answerStatusElement.style.color = "#76ff03"; // Green for correct
+            } else {
+                // If the answer is wrong
+                answerStatusElement.textContent = `Wrong! The correct answer is: ${q.options[q.correctIndex]}`;
+                answerStatusElement.style.color = "#ff5252"; // Red for wrong
+            }
+        }
+
+        // Display correct answer and explanation
+        correctAnswerElement.style.display = "block";
+        feedbackElement.style.display = "block";
+    });
+
+    return score;
+}
+
+function renderQuestions() {
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+    testContainer.innerHTML = shuffledQuestions.map((q, index) => `
+    <div class="question-container">
+        <p class="question">${index + 1}. ${q.question}</p>
+        <div class="options">
+            ${q.options.map((option, i) => `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}"> ${option}
+                </label>
+            `).join("")}
+        </div>
+        <p class="answer-status" style="font-weight: bold;"></p> <!-- Added line to show answer status -->
+        <p class="correct-answer" style="display: none; color: #76ff03;">Correct Answer: ${q.options[q.correctIndex]}</p>
+        <p class="feedback" style="display: none; color: #81c784;">Explanation: ${q.explanation}</p>
+    </div>
+    `).join("");
+}
+
+function autoSubmit() {
+    const totalScore = evaluateAnswers();
+    marksContainer.textContent = `You scored ${totalScore} out of ${questions.length}!`;
+    marksContainer.style.display = "block";
+    submitButton.disabled = true;
+}
+
+
+    submitButton.addEventListener("click", () => {
+      if (!checkAllAnswered()) {
+        alertContainer.style.display = "block";
+      } else {
+        clearInterval(timerInterval);
+        alertContainer.style.display = "none";
+        autoSubmit();
+      }
+    });
+
+    renderQuestions();
+    startTimer();
+  </script>
+</body>
+</html>
