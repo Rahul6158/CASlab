@@ -961,14 +961,16 @@ button:hover{
 
 <script>
     
-    // Function to show the selected section and hide the others
-    function showSection(sectionId) {
-        var sections = document.querySelectorAll('section');
-        sections.forEach(function(section) {
-            section.classList.remove('active');
-        });
-        document.getElementById(sectionId).classList.add('active');
-    }
+            // Function to show the selected section and scroll to it
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                const section = document.getElementById(sectionId);
+                section.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+            }
 
     function openInNewTabArray() {
         window.open('https://brk8789.github.io/Brk_visualizations/Basics/Queuearray/QueueArray.html', '_blank');
