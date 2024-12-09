@@ -124,17 +124,17 @@
             color: #3a6cf4;
             font
         }
-
+/* 
         section p {
             font-size: 16px;
             line-height: 1.6;
             margin-top: 10px;
-        }
+        } */
 
         section img {
             max-width: 100%; /* Responsive width */
-            height: auto; /* Maintain aspect ratio */
-            margin: 20px 0; /* Space around the image */
+            height : auto; /* Maintain aspect ratio */
+            margin : 20px 0; /* Space around the image */
         }
 
         .navigation-buttons {
@@ -223,6 +223,25 @@ th {
     background-color: #f2f2f2;
 }
 
+
+#btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
 #submit {
         background-color: #4CAF50; /* Green */
         border: none;
@@ -252,6 +271,26 @@ th {
     .incorrect {
         color: red;
     }
+
+    /* Button */
+.action {
+    user-select: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.25rem;
+    background-color: #007acc;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action:hover {
+    background-color: #005a99;
+}
+
 
     </style>
 </head>
@@ -586,162 +625,32 @@ So, just like a well-organized library helps you find books faster, a good data 
                 <span class="nav-btn" onclick="showSection('quiz')">Next</span>
             </div>
         </section>
+
         <section id="quiz">
-            <h2>Test Your Knowledge</h2>
-            <div id="quiz-container">
-                <div class="question">
-                    <p><strong>1. What is a data structure?</strong></p>
-                    <label><input type="radio" name="q1" value="A"> A method for organizing and storing data.</label><br>
-                    <label><input type="radio" name="q1" value="B"> A programming language.</label><br>
-                    <label><input type="radio" name="q1" value="C"> A type of algorithm.</label><br>
-                    <label><input type="radio" name="q1" value="D"> A hardware component.</label><br>
+            <h2>Test Your Knowledge on Basics Of Data structures</h2>
+            <h4 style="text-align: center;">This test consists of 15 multiple choice questions. <br>
+                You will have 15 minutes time to complete the test. <br>click on the below to start the test <br>
+     </h4><br>
+                <h3 style="text-align: center;">All the best 👍🏼...</h3>
+                <div id="btn">
+                <button type="button" class="action" onclick="openCourse('dsa_basics_test.html')">Start Writing</button>
                 </div>
-                <div class="question">
-                    <p><strong>2. Which of the following is NOT a linear data structure?</strong></p>
-                    <label><input type="radio" name="q2" value="A"> Array</label><br>
-                    <label><input type="radio" name="q2" value="B"> Stack</label><br>
-                    <label><input type="radio" name="q2" value="C"> Queue</label><br>
-                    <label><input type="radio" name="q2" value="D"> Graph</label><br>
-                </div>
-                <div class="question">
-                    <p><strong>3. What is a characteristic of linear data structures?</strong></p>
-                    <label><input type="radio" name="q3" value="A"> Data elements are not arranged sequentially.</label><br>
-                    <label><input type="radio" name="q3" value="B"> Data is organized in a hierarchical manner.</label><br>
-                    <label><input type="radio" name="q3" value="C"> Each element is connected to its previous and next element.</label><br>
-                    <label><input type="radio" name="q3" value="D"> Data can only be accessed in random order.</label><br>
-                </div>
-                <div class="question">
-                    <p><strong>4. Which of the following is an example of a non-linear data structure?</strong></p>
-                    <label><input type="radio" name="q4" value="A"> Linked List</label><br>
-                    <label><input type="radio" name="q4" value="B"> Array</label><br>
-                    <label><input type="radio" name="q4" value="C"> Stack</label><br>
-                    <label><input type="radio" name="q4" value="D"> Tree</label><br>
-                </div>
-                <div class="question">
-                    <p><strong>5. Which of the following is a benefit of using data structures?</strong></p>
-                    <label><input type="radio" name="q5" value="A"> They increase the size of the data.</label><br>
-                    <label><input type="radio" name="q5" value="B"> They help in efficient data access and manipulation.</label><br>
-                    <label><input type="radio" name="q5" value="C"> They are only used in database management.</label><br>
-                    <label><input type="radio" name="q5" value="D"> They eliminate the need for algorithms.</label><br>
-                </div>
-        
-                <div class="question">
-                    <p><strong>6. In a stack, which operation is used to remove an element?</strong></p>
-                    <label><input type="radio" name="q6" value="A"> Push</label><br>
-                    <label><input type="radio" name="q6" value="B"> Pop</label><br>
-                    <label><input type="radio" name="q6" value="C"> Enqueue</label><br>
-                    <label><input type="radio" name="q6" value="D"> Dequeue</label><br>
-                </div>
-        
-                <div class="question">
-                    <p><strong>7. Which of the following data structures uses LIFO (Last In First Out) principle?</strong></p>
-                    <label><input type="radio" name="q7" value="A"> Queue</label><br>
-                    <label><input type="radio" name="q7" value="B"> Stack</label><br>
-                    <label><input type="radio" name="q7" value="C"> Array</label><br>
-                    <label><input type="radio" name="q7" value="D"> Linked List</label><br>
-                </div>
-        
-                <div class="question">
-                    <p><strong>8. Which operation is performed to add an element to a queue?</strong></p>
-                    <label><input type="radio" name="q8" value="A"> Push</label><br>
-                    <label><input type="radio" name="q8" value="B"> Pop</label><br>
-                    <label><input type="radio" name="q8" value="C"> Enqueue</label><br>
-                    <label><input type="radio" name="q8" value="D"> Dequeue</label><br>
-                </div>
-        
-                <div class="question">
-                    <p><strong>9. What is the primary purpose of a linked list?</strong></p>
-                    <label><input type="radio" name="q9" value="A"> To store elements in a contiguous memory location.</label><br>
-                    <label><input type="radio" name="q9" value="B"> To facilitate efficient insertion and deletion of elements.</label><br>
-                    <label><input type="radio" name="q9" value="C"> To improve search time for elements.</label><br>
-                    <label><input type="radio" name="q9" value="D"> To allow random access of elements.</label><br>
-                </div>
-        
-                <div class="question">
-                    <p><strong>10. Which of the following statements about trees is true?</strong></p>
-                    <label><input type="radio" name="q10" value="A"> A tree is a linear data structure.</label><br>
-                    <label><input type="radio" name="q10" value="B"> In a binary tree, each node can have at most two children.</label><br>
-                    <label><input type="radio" name="q10" value="C"> Trees do not have a root node.</label><br>
-                    <label><input type="radio" name="q10" value="D"> Trees are not used for searching data.</label><br>
-                </div>
-            </div>
-            <button id="submit">Submit</button>
-            <div id="result"></div>
-            <div id="analytics"></div>
-            <div id="warning" style="color: red;"></div>
-        </section>
-        
+        </section>        
         <script>
-            document.getElementById('submit').addEventListener('click', function() {
-                const questions = document.querySelectorAll('.question');
-                let score = 0;
-                const totalQuestions = questions.length;
-                let results = [];
-                let explanations = [];
-        
-                // Check if all questions are answered
-                let allAnswered = true;
-                questions.forEach((question, index) => {
-                    const selected = question.querySelector('input[type="radio"]:checked');
-                    if (!selected) {
-                        allAnswered = false;
-                    } else {
-                        const answer = selected.value;
-                        // Assuming correct answers are stored in an array for validation
-                        const correctAnswers = ['A', 'D', 'C', 'D', 'B', 'B', 'B', 'C', 'B', 'B']; // Adjust according to your correct answers
-                        const explanationsData = [
-                            "A data structure is a way of organizing data for efficient access and modification.",
-                            "A graph is a non-linear data structure; all others are linear.",
-                            "In linear data structures, each element is connected in sequence.",
-                            "A tree is a non-linear data structure.",
-                            "Data structures allow for efficient data manipulation.",
-                            "Pop operation removes the top element in a stack.",
-                            "Stack uses LIFO principle.",
-                            "Enqueue adds an element to the back of the queue.",
-                            "Linked lists allow for efficient insertions and deletions.",
-                            "In a binary tree, each node can have at most two children."
-                        ];
-        
-                        results.push({ question: index + 1, selected: answer });
-                        if (answer === correctAnswers[index]) {
-                            score++;
-                            explanations.push({ question: index + 1, correct: true, explanation: explanationsData[index] });
-                        } else {
-                            explanations.push({ question: index + 1, correct: false, explanation: explanationsData[index] });
-                        }
-                    }
+
+            // Function to show the selected section and scroll to it
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
                 });
-        
-                if (!allAnswered) {
-                    document.getElementById('warning').innerText = "Please answer all questions before submitting.";
-                    return; // Stop execution if not all questions are answered
-                } else {
-                    document.getElementById('warning').innerText = ""; // Clear the warning
-                }
-        
-                // Display results
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `<h3>Your Score: ${score} out of ${totalQuestions}</h3>`;
-                
-                // Display analytics
-                const analyticsDiv = document.getElementById('analytics');
-                analyticsDiv.innerHTML = "<h3>Analytics:</h3>";
-                explanations.forEach(item => {
-                    if (item.correct) {
-                        analyticsDiv.innerHTML += `<p class="correct">Question ${item.question}: Correct! - ${item.explanation}</p>`;
-                    } else {
-                        analyticsDiv.innerHTML += `<p class="incorrect">Question ${item.question}: Incorrect! - ${item.explanation}</p>`;
-                    }
-                });
-            });
-              // Function to show the selected section and hide the others
-        function showSection(sectionId) {
-            var sections = document.querySelectorAll('section');
-            sections.forEach(function(section) {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
+                const section = document.getElementById(sectionId);
+                section.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+            }
+
+        function openCourse(url) {
+            window.open(url, '_blank');}
     </script>
 
 </body>
