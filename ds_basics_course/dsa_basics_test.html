@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>Basics of Data Structures Assessment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #1c1c1c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #f4f4f4;
+    }
+
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #f4f4f4;
+    }
+
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 1em;
+      color: #cfcfcf;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      color: white;
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .marks-display {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #2e7d32;
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      border: 2px solid #388e3c;
+      border-radius: 5px;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: rgba(46, 125, 50, 0.3);
+      border: 1px solid #2e7d32;
+      color: #81c784;
+      border-radius: 5px;
+    }
+
+    .correct-answer {
+      color: #76ff03;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .timer {
+      text-align: right;
+      font-size: 1.2em;
+      color: #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      color: #ff5252;
+      margin-top: 15px;
+      font-size: 1em;
+      padding: 10px;
+      background-color: rgba(255, 82, 82, 0.1);
+      border: 1px solid #ff5252;
+      border-radius: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Basics of Data Structures Assessment
+  </header>
+  <main>
+    <div class="timer" id="timer">Time Left: 15:00</div>
+    <h2 style="text-align: center;">Test Your Knowledge on Basics of Data Structures</h2>
+    <div id="testContainer"></div>
+    <div id="alertContainer" class="alert" style="display: none;">Please ensure all questions are answered before submitting. Each response helps us evaluate your understanding accurately!</div>
+    <button id="submitButton" class="submit-btn">Submit Answers</button>
+    <div id="marksContainer" class="marks-display" style="display: none;"></div>
+  </main>
+  <footer>
+    &copy;Dr. Bomma Rama Krishna
+  </footer>
+
+  <script>
+const questions = [
+  { question: "What is a data structure?", options: ["A way to organize and store data", "A programming language", "An algorithm to process data"], correctIndex: 0, explanation: "A data structure is a way to organize, manage, and store data to enable efficient access and modification." },
+  { question: "Which of the following is a linear data structure?", options: ["Array", "Tree", "Graph"], correctIndex: 0, explanation: "An array is a linear data structure where elements are stored in a sequential manner." },
+  { question: "Which of the following is a non-linear data structure?", options: ["Tree", "Array", "Stack"], correctIndex: 0, explanation: "A tree is a non-linear data structure where data is organized hierarchically." },
+  { question: "What is the main characteristic of a stack?", options: ["Last In, First Out (LIFO)", "First In, First Out (FIFO)", "Random Access"], correctIndex: 0, explanation: "A stack follows the LIFO principle, where the last element added is the first to be removed." },
+  { question: "What is the main characteristic of a queue?", options: ["First In, First Out (FIFO)", "Last In, First Out (LIFO)", "Random Access"], correctIndex: 0, explanation: "A queue follows the FIFO principle, where the first element added is the first to be removed." },
+  { question: "Which of these data structures is used to implement recursion?", options: ["Stack", "Queue", "Array"], correctIndex: 0, explanation: "A stack is used to implement recursion because it supports the LIFO order needed for function calls." },
+  { question: "Which data structure is used to represent hierarchical relationships?", options: ["Tree", "Array", "Stack"], correctIndex: 0, explanation: "A tree is used to represent hierarchical relationships, with nodes connected by edges." },
+  { question: "What is the time complexity for accessing an element in an array by index?", options: ["O(1)", "O(n)", "O(log n)"], correctIndex: 0, explanation: "Accessing an element in an array by index is an O(1) operation because it directly retrieves the memory location." },
+  { question: "What is a linked list?", options: ["A sequence of nodes connected by pointers", "A collection of indexed elements", "A hierarchical data structure"], correctIndex: 0, explanation: "A linked list is a sequence of nodes, where each node points to the next node in the sequence." },
+  { question: "Which of the following is an advantage of linked lists over arrays?", options: ["Dynamic size", "Fast access by index", "Elements stored in contiguous memory"], correctIndex: 0, explanation: "Linked lists have a dynamic size, allowing elements to be added or removed without a fixed limit." },
+  { question: "Which of the following operations is efficient in a stack?", options: ["Push and Pop", "Insert at any position", "Access by index"], correctIndex: 0, explanation: "The stack supports efficient push (insert) and pop (remove) operations due to its LIFO nature." },
+  { question: "What is the primary purpose of a hash table?", options: ["To provide fast data retrieval using keys", "To store data sequentially", "To maintain hierarchical data"], correctIndex: 0, explanation: "A hash table provides fast data retrieval by mapping keys to values using a hash function." },
+  { question: "What is a binary tree?", options: ["A tree where each node has at most two children", "A tree with unlimited children per node", "A tree with nodes arranged sequentially"], correctIndex: 0, explanation: "A binary tree is a tree structure where each node has at most two children, called the left and right child." },
+  { question: "Which of these data structures uses a key-value pair?", options: ["Hash Table", "Array", "Queue"], correctIndex: 0, explanation: "A hash table uses a key-value pair to store data, allowing efficient lookups using keys." },
+  { question: "What is the primary use of a graph in data structures?", options: ["To represent relationships between entities", "To store sequential data", "To store hierarchical data"], correctIndex: 0, explanation: "A graph is used to represent relationships between entities, where nodes represent entities and edges represent relationships." }
+];
+
+
+    let timerInterval;
+    let timeLeft = 15 * 60;
+
+    function startTimer() {
+      const timerElement = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          autoSubmit();
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
+    function checkAllAnswered() {
+      return questions.every((_, index) => document.querySelector(`input[name="q${index}"]:checked`));
+    }
+
+    function evaluateAnswers() {
+    let score = 0;
+    const feedbackElements = document.querySelectorAll(".feedback");
+    const correctAnswerElements = document.querySelectorAll(".correct-answer");
+    const answerStatusElements = document.querySelectorAll(".answer-status");
+
+    questions.forEach((q, index) => {
+        const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+        const correctAnswerElement = correctAnswerElements[index];
+        const feedbackElement = feedbackElements[index];
+        const answerStatusElement = answerStatusElements[index];
+
+        if (selectedOption) {
+            const isCorrect = parseInt(selectedOption.value) === q.correctIndex;
+
+            // If the answer is correct
+            if (isCorrect) {
+                score++;
+                answerStatusElement.textContent = "Correct!";
+                answerStatusElement.style.color = "#76ff03"; // Green for correct
+            } else {
+                // If the answer is wrong
+                answerStatusElement.textContent = `Wrong! The correct answer is: ${q.options[q.correctIndex]}`;
+                answerStatusElement.style.color = "#ff5252"; // Red for wrong
+            }
+        }
+
+        // Display correct answer and explanation
+        correctAnswerElement.style.display = "block";
+        feedbackElement.style.display = "block";
+    });
+
+    return score;
+}
+
+function renderQuestions() {
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+    testContainer.innerHTML = shuffledQuestions.map((q, index) => `
+    <div class="question-container">
+        <p class="question">${index + 1}. ${q.question}</p>
+        <div class="options">
+            ${q.options.map((option, i) => `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}"> ${option}
+                </label>
+            `).join("")}
+        </div>
+        <p class="answer-status" style="font-weight: bold;"></p> <!-- Added line to show answer status -->
+        <p class="correct-answer" style="display: none; color: #76ff03;">Correct Answer: ${q.options[q.correctIndex]}</p>
+        <p class="feedback" style="display: none; color: #81c784;">Explanation: ${q.explanation}</p>
+    </div>
+    `).join("");
+}
+
+function autoSubmit() {
+    const totalScore = evaluateAnswers();
+    marksContainer.textContent = `You scored ${totalScore} out of ${questions.length}!`;
+    marksContainer.style.display = "block";
+    submitButton.disabled = true;
+}
+
+
+    submitButton.addEventListener("click", () => {
+      if (!checkAllAnswered()) {
+        alertContainer.style.display = "block";
+      } else {
+        clearInterval(timerInterval);
+        alertContainer.style.display = "none";
+        autoSubmit();
+      }
+    });
+
+    renderQuestions();
+    startTimer();
+  </script>
+</body>
+</html>
