@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+    <title>Tree Data Structures</title>
+    
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+/* Button */
+.action {
+    user-select: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.25rem;
+    background-color: #007acc;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action:hover {
+    background-color: #005a99;
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: table-row;
+
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#btn1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-family: 'Courier New', monospace;
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+code {
+    font-family: 'Courier New', monospace;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Tree Data Structure</h2>
+        <ul>
+            <li><a href="#" onclick="showSection('intro1')">Introduction to Trees</a></li>
+            <li><a href="#" onclick="showSection('intro2')">Key operations of Trees</a></li>
+            <li><a href="#" onclick="showSection('impl1')">Implementation of Trees</a></li>
+            <li><a href="#" onclick="showSection('impl6')">Types of Trees</a></li>
+            <li><a href="#" onclick="showSection('impl2')">Binary Trees</a></li>
+            <li><a href="#" onclick="showSection('impl3')">Binary Trees Implementation</a></li>
+            <li><a href="#" onclick="showSection('impl5')">Binary Search Trees</a></li>
+            <li><a href="#" onclick="showSection('impl4')">Binary Search Trees Implementation</a></li>
+            <li><a href="#" onclick="showSection('apps0')">AVL Trees</a></li>
+            <li><a href="#" onclick="showSection('apps1')">Heap Trees</a></li>
+            <li><a href="#" onclick="showSection('apps2')">Differences between Trees</a></li>
+            <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+            
+            <li>
+                <div id="btn">
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Indexing/BTree/BTree.html')">Open Binary Tree Visualizations</button><br><br>
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Indexing/BST/BST.html')">Open Binary Search Tree Visualizations</button><br><br>
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Indexing/AVL/AVLtree.html')">Open AVL Tree Visualizations</button><br><br>
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Heap/Heaps/Heap.html')"> Open Heap Tree Visualizations</button><br><br>
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/')">For More Visualizations</button><br><br>
+
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+
+    <!-- Main Content -->
+    <div class="content">
+        <section id="intro1" class="active">
+            <h2>What is a Tree?</h2>
+            <p>A <strong>tree</strong> is a hierarchical data structure that consists of nodes connected by edges. It is used to represent relationships, such as the structure of an organization or a file system, where one element is connected to multiple elements.</p><br>
+            <img src="binst.png" alt="tree example"><br><br>
+            <h3>Structure of a Tree:</h3><br>
+            <p>A tree is composed of nodes and edges. The key components are:</p>
+            <ul>
+                <li><strong>Root:</strong> The topmost node in the tree. It does not have a parent.</li>
+                <li><strong>Child:</strong> A node directly connected to another node when moving away from the root.</li>
+                <li><strong>Parent:</strong> A node that has one or more child nodes.</li>
+                <li><strong>Leaf:</strong> A node that has no children.</li>
+            </ul>
+<br><br>
+            <h3> Basic Concepts in Tree data structure</h3><br><br>
+            <h4>Example Tree Structure:</h4><br>
+            <pre>
+                A
+               / \
+              B   C
+             / \
+            D   E
+            </pre><br>
+        
+            <h4>1. Nodes</h4>
+            <p>Nodes are the basic units of a tree. Each node contains a value (or data) and may have connections to other nodes called edges. The relationships between nodes define the tree's structure. Types of nodes include:</p>
+            <br>
+            <ul>
+                <li><strong>Parent Node:</strong> A node that has one or more child nodes connected to it.
+                    <br><em>Example:</em> In the tree above, <code>A</code> is the parent of <code>B</code> and <code>C</code>.
+                </li><br>
+                <li><strong>Child Node:</strong> A node that is connected to a parent node above it.
+                    <br><em>Example:</em> <code>B</code> and <code>C</code> are children of <code>A</code>.
+                </li><br>
+                <li><strong>Sibling Nodes:</strong> Nodes that share the same parent.
+                    <br><em>Example:</em> <code>B</code> and <code>C</code> are siblings because they both have <code>A</code> as their parent.
+                </li><br>
+                <li><strong>Root Node:</strong> The topmost node of a tree, with no parent.
+                    <br><em>Example:</em> In the example above, <code>A</code> is the root node.
+                </li><br>
+                <li><strong>Leaf Node:</strong> A node with no children.
+                    <br><em>Example:</em> <code>D</code> and <code>E</code> are leaf nodes.
+                </li><br>
+            </ul>
+    
+            <br><br>
+            <h4>2. Levels of a Tree</h4>
+            <p>Levels in a tree refer to the depth or distance of a node from the root. The root node is at <strong>Level 0</strong>, its immediate children are at <strong>Level 1</strong>, and so on.</p><br>
+            <ul>
+                <li><strong>Level 0:</strong> Contains the root node only.</li>
+                <li><strong>Level 1:</strong> Contains children of the root.</li>
+                <li><strong>Level 2:</strong> Contains children of nodes at Level 1, and so on.</li>
+            </ul>
+            <p><em>Example:</em> In the tree above, <code>A</code> is at Level 0, <code>B</code> and <code>C</code> are at Level 1, and <code>D</code> and <code>E</code> are at Level 2.</p>
+            <br><br>
+            <h4>3. Subtrees</h4>
+            <p>A subtree is any node in a tree along with all its descendants. A tree can be decomposed into multiple subtrees, each representing a smaller portion of the original structure.</p>
+            <ul>
+                <li><strong>Example:</strong> In the tree above, the subtree rooted at <code>B</code> includes nodes <code>B</code>, <code>D</code>, and <code>E</code>.</li>
+                <li><strong>Usage:</strong> Subtrees are essential in recursive algorithms and hierarchical data representation.</li>
+            </ul>
+            <br><br>
+            <h4>4. Other Fundamental Concepts</h4><br>
+            <ul>
+                <li><strong>Height of a Tree:</strong> The longest path from the root to a leaf node.
+                    <br><em>Example:</em> In the above tree, the height is 2 (from <code>A</code> to <code>D</code> or <code>E</code>).
+                </li>
+                <li><strong>Degree of a Node:</strong> The number of children a node has.
+                    <br><em>Example:</em> The degree of <code>A</code> is 2, while the degree of <code>D</code> is 0.
+                </li>
+                <li><strong>Path:</strong> A sequence of nodes connected by edges.
+                    <br><em>Example:</em> The path from <code>A</code> to <code>D</code> is <code>A -> B -> D</code>.
+                </li>
+                <li><strong>Edge:</strong> A connection between two nodes.
+                    <br><em>Example:</em> The connection between <code>A</code> and <code>B</code> is an edge.
+                </li>
+            </ul>
+            <br><br>
+            <h4>5.Tree Traversals</h4>
+            <p>Traversals are methods of visiting each node in a tree:</p>
+            <ul>
+                <li><strong>In-order Traversal:</strong> Left subtree -> Root -> Right subtree.</li>
+                <li><strong>Pre-order Traversal:</strong> Root -> Left subtree -> Right subtree.</li>
+                <li><strong>Post-order Traversal:</strong> Left subtree -> Right subtree -> Root.</li>
+                <li><strong>Level-order Traversal:</strong> Visit nodes level by level.</li>
+            </ul>
+        
+            <br><br>
+            <p><strong>Example</strong>: Imagine a family tree, where each member represents a node, and the connections between them (parent-child relationships) represent the edges.</p>
+            <img src="fam_tree_ex.jpg" alt="family tree example"><br><br>
+            
+            <h3>Understanding the Tree Process</h3><br>
+            <p>A tree organizes data in a non-linear fashion, making it suitable for representing hierarchical relationships. Let’s break down how a tree works.</p><br>
+            <ul>
+                <li><strong>Hierarchical Structure:</strong><br>
+                    A tree is visualized as a branching structure starting from the root. Nodes can have multiple children, forming various levels of hierarchy.</li><br>
+                <li><strong>Traversal:</strong><br>
+                    Traversing a tree means visiting its nodes in a specific order, such as pre-order, in-order, or post-order.</li><br>
+            </ul><br>
+            
+            <h3>Real-Time Examples of Trees</h3>
+            <p>Trees are widely used in real-world applications where hierarchical or sorted data is needed. Some examples include:</p><br>
+            <ul>
+                <li><strong>File Systems:</strong> File directories are organized as trees, where folders are parent nodes, and files or subfolders are child nodes.</li><br>
+                <li><strong>Databases:</strong> Trees like B-trees and binary search trees are used for indexing and data retrieval in databases.</li><br>
+                <li><strong>XML/HTML Parsing:</strong> Document Object Models (DOM) of XML or HTML are tree structures.</li><br>
+                <li><strong>Artificial Intelligence:</strong> Decision trees are used for machine learning and decision-making processes.</li><br>
+                <li><strong>Network Routing:</strong> Spanning trees are used in network routing algorithms to ensure data reaches its destination.</li><br>
+            </ul><br>
+        
+            <div class="navigation-buttons">
+                <span></span>
+                <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+            </div>
+        </section>
+        
+        <section id="intro2">
+            <h2>Key Operations of a Tree:</h2><br>
+            <ol>
+                <li>
+                    <strong>Insertion</strong>: Adding a new node to the tree. This operation places the node in the appropriate position while maintaining the tree's structure. 
+                </li><br>
+                <li>
+                    <strong>Deletion</strong>: Removing a node from the tree. This operation ensures the tree remains balanced and its structure is preserved.
+                </li><br>
+                <li>
+                    <strong>Traversal</strong>: Visiting all the nodes of the tree in a specific order. Common traversal methods include:
+                    <ul>
+                        <li><strong>Pre-order:</strong> Visit the root, then left subtree, followed by the right subtree.</li>
+                        <li><strong>In-order:</strong> Visit the left subtree, then root, and finally the right subtree.</li>
+                        <li><strong>Post-order:</strong> Visit the left subtree, then the right subtree, and finally the root.</li>
+                        <li><strong>Level-order:</strong> Visit nodes level by level, starting from the root.</li>
+                    </ul>
+                </li><br>
+                <li>
+                    <strong>Search</strong>: Finding a specific node in the tree. The search operation traverses the tree to locate the desired node.
+                </li><br>
+                <li>
+                    <strong>Height</strong>: Determining the height of the tree, which is the number of edges on the longest path from the root to a leaf.
+                </li><br>
+            </ol><br><br>
+            
+            <h3>A Real-World Example</h3><br>
+            <ul>
+                <li><strong>Insertion</strong>: Add a new folder or file to a directory. <br> Example: Adding a new file to a folder in a file system.</li><br>
+                <li><strong>Deletion</strong>: Remove a folder or file from a directory. <br> Example: Deleting a file from a file system.</li><br>
+                <li><strong>Traversal</strong>: Navigating through the folders in a directory structure. <br> Example: Viewing all files and subfolders within a folder.</li><br>
+                <li><strong>Search</strong>: Find a specific file or folder in a directory. <br> Example: Searching for a document in a file system.</li><br>
+                <li><strong>Height</strong>: Measure the levels in a hierarchy. <br> Example: The depth of nested folders in a file system.</li><br>
+                <img src="file_oper.png" alt="tree structure example">
+            </ul><br><br><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+            </div>
+        </section>
+        
+        <section id="impl1">
+
+            <h2>Implementation of Trees</h2>
+            <p>A tree can be implemented in various ways, primarily using:</p><br>
+            <ol>
+                <li><strong>Linked Nodes:</strong> A dynamic approach where each node contains data and pointers to its children, commonly used in binary trees and general trees.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Flexible and widely used for hierarchical data structures.</li>
+                        <li><strong>Drawbacks:</strong> Requires additional memory for pointers and is slower due to pointer-based traversal.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Arrays:</strong> A contiguous memory structure where nodes are stored in an array, commonly used for complete binary trees or heaps.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Ideal for compact storage and easy indexing of nodes.</li>
+                        <li><strong>Drawbacks:</strong> Inefficient for sparse trees and dynamic operations like insertion and deletion.</li>
+                    </ul>
+                </li><br>
+            </ol><br><br>
+            <h3>Comparison of Tree Implementation: Linked Nodes vs Arrays</h3><br>
+            <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Tree Using Linked Nodes</th>
+                        <th>Tree Using Arrays</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Memory Allocation</td>
+                        <td>Dynamic memory allocation for nodes as needed.</td>
+                        <td>Fixed or dynamic array size depending on implementation.</td>
+                    </tr>
+                    <tr>
+                        <td>Space Efficiency</td>
+                        <td>Flexible but requires extra memory for pointers.</td>
+                        <td>Efficient for complete trees but wastes space for sparse trees.</td>
+                    </tr>
+                    <tr>
+                        <td>Traversal Complexity</td>
+                        <td>Requires pointer-based navigation for traversal.</td>
+                        <td>Index-based access allows easier traversal in some cases.</td>
+                    </tr>
+                    <tr>
+                        <td>Insertion/Deletion</td>
+                        <td>Efficient and dynamic without the need for resizing.</td>
+                        <td>May require resizing or shifting of elements in arrays.</td>
+                    </tr>
+                    <tr>
+                        <td>Random Access</td>
+                        <td>Not supported; traversal needed to access specific nodes.</td>
+                        <td>Supported for complete trees using indexing.</td>
+                    </tr>
+                    <tr>
+                        <td>Cache Efficiency</td>
+                        <td>Poorer due to scattered memory allocation.</td>
+                        <td>Better due to contiguous memory allocation.</td>
+                    </tr>
+                    <tr>
+                        <td>Flexibility</td>
+                        <td>Highly flexible; can grow or shrink dynamically.</td>
+                        <td>Limited flexibility; requires resizing for dynamic growth.</td>
+                    </tr>
+                    <tr>
+                        <td>Implementation Complexity</td>
+                        <td>More complex due to pointer management.</td>
+                        <td>Simpler for complete trees but tricky for sparse trees.</td>
+                    </tr>
+                    <tr>
+                        <td>Traversal Methods</td>
+                        <td>Supports pre-order, in-order, post-order, and level-order traversal.</td>
+                        <td>Supports level-order traversal directly through indexing.</td>
+                    </tr>
+                    <tr>
+                        <td>Best Suited For</td>
+                        <td>General-purpose trees, especially when structure varies or is dynamic.</td>
+                        <td>Complete trees or heaps with predictable size.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl6')">Next</span>
+            </div>
+        </section>
+
+        <section id="impl6">
+
+            <h2>Types of Trees</h2>
+            <p>Trees are categorized into various types based on their structure and properties:</p><br>
+            <ol>
+                <li><strong>Binary Tree:</strong> A tree in which each node has at most two children, referred to as the left and right child.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Commonly used in searching, sorting, and hierarchical data representation.</li>
+                        <li><strong>Examples:</strong> Binary Search Tree (BST), Complete Binary Tree.</li>
+                    </ul>
+                    <img src="binary-tree.png" alt="binary tree example">
+                </li><br><br>
+                <li><strong>Binary Search Tree (BST):</strong> A binary tree where each node's left subtree contains values less than the node, and the right subtree contains values greater than the node.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Efficiently supports operations like search, insert, and delete.</li>
+                        <li><strong>Properties:</strong> All operations have an average-case time complexity of O(log n).</li>
+                    </ul>
+                    <img src="bst.png" alt="binary search tree example">
+                </li><br><br>
+                <li><strong>AVL Tree:</strong> A self-balancing binary search tree where the height difference (balance factor) of left and right subtrees is at most 1.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Ensures balanced structure for maintaining O(log n) time complexity.</li>
+                        <li><strong>Drawbacks:</strong> Requires additional rotations for balancing during insertions and deletions.</li>
+                    </ul>
+                    <img src="avltree.webp" alt="AVL tree example">
+                </li><br><br>
+                <li><strong>Heap:</strong> A specialized tree-based structure satisfying the heap property, where the parent node is either greater (max-heap) or smaller (min-heap) than its children.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Used in priority queues and sorting algorithms like Heap Sort.</li>
+                        <li><strong>Examples:</strong> Min-Heap, Max-Heap.</li>
+                    </ul>
+                    <img src="heap.png" alt="heap example">
+                </li><br><br>
+                <li><strong>Trie:</strong> A tree used to store dynamic sets or associative arrays where keys are strings, with each node representing a character.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Commonly used in dictionaries, autocomplete systems, and IP routing.</li>
+                        <li><strong>Drawbacks:</strong> Requires significant memory for nodes with sparse branching.</li>
+                    </ul>
+                    <img src="trie.png" alt="heap example">
+                </li>
+            </ol><br><br>
+            <h3>Comparison of Types of Trees</h3><br>
+            <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Key Properties</th>
+                        <th>Best Suited For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Binary Tree</td>
+                        <td>Each node has at most two children; no specific ordering of values.</td>
+                        <td>General-purpose hierarchical data representation.</td>
+                    </tr>
+                    <tr>
+                        <td>Binary Search Tree (BST)</td>
+                        <td>Left subtree contains smaller values, right subtree contains larger values.</td>
+                        <td>Efficient searching, insertion, and deletion operations.</td>
+                    </tr>
+                    <tr>
+                        <td>AVL Tree</td>
+                        <td>Self-balancing BST; height difference of left and right subtrees is at most 1.</td>
+                        <td>Maintaining balanced structure for consistently fast operations.</td>
+                    </tr>
+                    <tr>
+                        <td>Heap</td>
+                        <td>Parent is greater (max-heap) or smaller (min-heap) than children.</td>
+                        <td>Priority queues, heap sort, and scheduling algorithms.</td>
+                    </tr>
+                    <tr>
+                        <td>Trie</td>
+                        <td>Nodes represent characters of keys; supports efficient string operations.</td>
+                        <td>Autocomplete systems, dictionaries, and routing tables.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+            </div>
+        </section>
+        
+        <section id="impl2">
+
+            <h2>Binary Trees</h2>
+            <p>A binary tree is a type of tree data structure where each node has at most two children, referred to as the left child and the right child. Binary trees are the foundation of various specialized tree structures, offering efficient solutions for searching, sorting, and hierarchical data representation.</p><br>
+            
+            <img src="typesbtree_ex.png" alt="types of binary trees">
+            
+            <ol>
+                <li><strong>Full Binary Tree: </strong><br><br> A binary tree in which every node has either 0 or 2 children.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Useful in certain algorithms where every node must have two children, such as expression trees.</li>
+                        <li><strong>Properties:</strong> If the tree has `n` internal nodes, it will have `n + 1` leaves.</li>
+                        <li><strong>Advantages:</strong> Provides structural predictability and is easy to traverse.</li>
+                        <li><strong>Disadvantages:</strong> Requires nodes to be strictly organized, limiting flexibility.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Complete Binary Tree: </strong><br><br> A binary tree in which all levels are fully filled except possibly the last, and the last level has all nodes as left as possible.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Used in heap-based algorithms like priority queues.</li>
+                        <li><strong>Properties:</strong> Efficient memory usage with no gaps in the structure.</li>
+                        <li><strong>Advantages:</strong> Ensures near-optimal height for operations.</li>
+                        <li><strong>Disadvantages:</strong> Maintaining completeness during insertions can be challenging.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Perfect Binary Tree: </strong><br><br> A binary tree where all interior nodes have two children, and all leaves are at the same level.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Ideal for algorithms that rely on balanced tree structures like divide and conquer.</li>
+                        <li><strong>Properties:</strong> A perfect binary tree with `h` levels has `2^h - 1` nodes.</li>
+                        <li><strong>Advantages:</strong> Maximum efficiency in terms of depth and structure.</li>
+                        <li><strong>Disadvantages:</strong> Difficult to maintain during dynamic insertions and deletions.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Balanced Binary Tree: </strong><br><br> A binary tree in which the height difference between the left and right subtrees of any node is at most 1.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Provides fast access times for operations like search, insert, and delete.</li>
+                        <li><strong>Examples:</strong> AVL Tree, Red-Black Tree.</li>
+                        <li><strong>Advantages:</strong> Ensures minimal height for a given number of nodes, optimizing time complexity.</li>
+                        <li><strong>Disadvantages:</strong> Balancing the tree after every operation can be computationally expensive.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Degenerate (or Pathological) Tree: </strong><br><br> A binary tree where each parent node has only one child, forming a structure similar to a linked list.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Rarely desirable but may arise in unbalanced trees or during recursive data processes.</li>
+                        <li><strong>Properties:</strong> Operates with linear height, reducing efficiency in operations.</li>
+                        <li><strong>Advantages:</strong> Simple structure and easy to understand.</li>
+                        <li><strong>Drawbacks:</strong> Results in inefficient operations with linear time complexity for searching and insertion.</li>
+                    </ul>
+                </li>
+            </ol><br><br>
+            <h3>Comparison of Types of Binary Trees</h3><br>
+            <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Key Properties</th>
+                        <th>Best Suited For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Full Binary Tree</td>
+                        <td>Each node has 0 or 2 children; no node has only 1 child.</td>
+                        <td>Applications requiring all nodes to have exactly 0 or 2 children.</td>
+                    </tr>
+                    <tr>
+                        <td>Complete Binary Tree</td>
+                        <td>All levels are fully filled except possibly the last, which is filled from left to right.</td>
+                        <td>Heap data structure and priority queues.</td>
+                    </tr>
+                    <tr>
+                        <td>Perfect Binary Tree</td>
+                        <td>All interior nodes have 2 children, and all leaves are at the same level.</td>
+                        <td>Ideal balanced structures for algorithms like divide and conquer.</td>
+                    </tr>
+                    <tr>
+                        <td>Balanced Binary Tree</td>
+                        <td>Height difference between left and right subtrees of every node is ≤1.</td>
+                        <td>Efficient operations with minimal height.</td>
+                    </tr>
+                    <tr>
+                        <td>Degenerate Tree</td>
+                        <td>Every node has only one child, forming a linear structure.</td>
+                        <td>Edge cases in unbalanced trees; avoidable for efficient algorithms.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl6')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+            </div>
+        </section>
+         
+        <section id="impl3">
+
+            <h2>Implementing a Binary Tree</h2><br>
+        
+            <p>A binary tree is a hierarchical data structure in which each node has at most two children, referred to as the left child and the right child. The topmost node is called the root, and the nodes at the bottommost level are called leaves. Binary trees are used in various applications like searching, sorting, and hierarchical data representation.</p>
+        
+            <p>The main advantage of using binary trees is their ability to organize data in a structured and efficient manner, enabling quick access, insertion, and deletion operations.</p>
+        <!-- <img src="tree_basic.png" alt="tree basic parts"><br> --> <br><br>
+            <h3>Binary Tree Types</h3><br>
+            <ul>
+                <li><strong>Full Binary Tree:</strong> A binary tree in which every node other than the leaves has two children.</li><br>
+                <li><strong>Complete Binary Tree:</strong> A binary tree in which all levels, except possibly the last, are completely filled, and all nodes are as far left as possible.</li><br>
+                <li><strong>Perfect Binary Tree:</strong> A binary tree in which all interior nodes have two children, and all leaves are at the same level.</li><br>
+                <li><strong>Binary Search Tree (BST):</strong> A binary tree where the left subtree of a node contains only nodes with keys lesser than the node’s key, and the right subtree contains only nodes with keys greater than the node’s key.</li><br>
+            </ul><br>
+            
+        
+            <div id="impl3">
+                <h4>Operations and their Algorithms:</h4><br>
+                <p>
+                    1. <strong>Insert Operation:</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;a) Start at the root.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;b) Compare the value to be inserted with the root node's value.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;c) Recursively move to the left or right subtree based on comparison.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;d) Insert the node at the appropriate position.<br><br>
+        
+                    2. <strong>Search Operation:</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;a) Start at the root.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;b) Compare the value to be searched with the current node's value.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;c) Recursively search in the left or right subtree based on comparison.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;d) If the value matches a node, return the node; otherwise, return null.<br><br>
+        
+                    3. <strong>Traversal Operations:</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;a) <strong>Inorder Traversal:</strong> Traverse the left subtree, visit the node, and then traverse the right subtree.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;b) <strong>Preorder Traversal:</strong> Visit the node, traverse the left subtree, and then traverse the right subtree.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;c) <strong>Postorder Traversal:</strong> Traverse the left subtree, traverse the right subtree, and then visit the node.<br><br>
+                    <img src="lrtree.png" alt="sub trees example"><br>
+                    <strong>Time Complexity:</strong> O(h) where h is the height of the tree.<br>
+                    <strong>Space Complexity:</strong> O(h) for recursive calls.
+                </p>
+            </div>
+            <br><br>
+        <h3>Implementation Code</h3><br>
+        <pre>
+        <code>
+        // C program to implement a Binary Tree
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        // Struct representing a node in the binary tree
+        typedef struct Node {
+            int data;
+            struct Node* left;
+            struct Node* right;
+        } Node;
+        
+        // Function to create a new node
+        Node* createNode(int data) {
+            Node* newNode = (Node*)malloc(sizeof(Node));
+            newNode->data = data;
+            newNode->left = NULL;
+            newNode->right = NULL;
+            return newNode;
+        }
+        
+        // Function to insert a node in a binary search tree
+        Node* insert(Node* root, int data) {
+            if (root == NULL) {
+                return createNode(data);
+            }
+            if (data < root->data) {
+                root->left = insert(root->left, data);
+            } else if (data > root->data) {
+                root->right = insert(root->right, data);
+            }
+            return root;
+        }
+        
+        // Function for inorder traversal
+        void inorderTraversal(Node* root) {
+            if (root != NULL) {
+                inorderTraversal(root->left);
+                printf("%d ", root->data);
+                inorderTraversal(root->right);
+            }
+        }
+        
+        // Function for preorder traversal
+        void preorderTraversal(Node* root) {
+            if (root != NULL) {
+                printf("%d ", root->data);
+                preorderTraversal(root->left);
+                preorderTraversal(root->right);
+            }
+        }
+        
+        // Function for postorder traversal
+        void postorderTraversal(Node* root) {
+            if (root != NULL) {
+                postorderTraversal(root->left);
+                postorderTraversal(root->right);
+                printf("%d ", root->data);
+            }
+        }
+        
+        // Driver program to test binary tree implementation
+        int main() {
+            Node* root = NULL;
+            root = insert(root, 50);
+            insert(root, 30);
+            insert(root, 70);
+            insert(root, 20);
+            insert(root, 40);
+            insert(root, 60);
+            insert(root, 80);
+        
+            printf("Inorder traversal: ");
+            inorderTraversal(root);
+            printf("\n");
+        
+            printf("Preorder traversal: ");
+            preorderTraversal(root);
+            printf("\n");
+        
+            printf("Postorder traversal: ");
+            postorderTraversal(root);
+            printf("\n");
+        
+            return 0;
+        }
+        </code>
+        </pre><br><br>
+        
+            <h3>Output</h3><br>
+            <pre><code>
+                Inorder traversal: 20 30 40 50 60 70 80
+                Preorder traversal: 50 30 20 40 70 60 80
+                Postorder traversal: 20 40 30 60 80 70 50
+            </code></pre><br><br>
+        
+            <h3>Complexity Analysis</h3><br>
+            <p><strong>Time Complexity:</strong><br> O(h) for insert and search operations, where h is the height of the tree. For balanced trees, h = O(log N).<br>
+            <strong>Space Complexity:</strong><br> O(N) for storing N nodes and O(h) for recursion in traversal operations.</p>
+                <br><br>
+            <h3>Summary</h3>
+            <p>In this implementation, we define a <code>Node</code> struct to represent each node in the binary tree. Operations like insertion, searching, and traversal are implemented using recursive algorithms. Traversal operations like inorder, preorder, and postorder allow exploring the tree in different ways.</p>
+            <p>This implementation covers the basic structure and operations of a binary tree. Using the binary tree, one can organize and access data efficiently for various applications.</p>
+                <br><br>
+            <h3>Benefits of Using Binary Trees</h3><br>
+            <ul>
+                <li><strong>Efficient Searching:</strong> Searching in a binary search tree takes O(log N) time for balanced trees.</li><br>
+                <li><strong>Hierarchical Representation:</strong> Binary trees naturally represent hierarchical data such as file systems and organization charts.</li><br>
+                <li><strong>Versatile:</strong> Binary trees can be used to implement other data structures like heaps and balanced trees.</li><br>
+            </ul>
+            <br><br>
+        
+                    <div class="navigation-buttons">
+                        <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+                        <span class="nav-btn" onclick="showSection('impl5')">Next</span>
+                    </div>
+        </section>
+
+        <section id="impl5">
+
+            <h2>Binary Search Trees</h2>
+            <p>A Binary Search Tree (BST) is a type of binary tree that maintains a specific order: for each node, all elements in the left subtree are less than the node, and all elements in the right subtree are greater than the node. This property allows efficient searching, insertion, and deletion operations.</p><br>
+            <img src="binarysearchtree.png" alt="binary search tree">
+            <ol>
+                <li><strong>Unbalanced BST:</strong> A BST that does not maintain balanced height among its subtrees.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Common in simple implementations without balancing mechanisms.</li>
+                        <li><strong>Properties:</strong> Performance degrades to O(n) in the worst case when it degenerates to a linked list.</li>
+                        <li><strong>Advantages:</strong> Easy to implement and understand.</li>
+                        <li><strong>Disadvantages:</strong> Lack of balance results in inefficient operations in skewed trees.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Balanced BST:</strong> A BST where the height difference between left and right subtrees is minimized.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Used in applications requiring consistent performance for dynamic data.</li>
+                        <li><strong>Examples:</strong> AVL Tree, Red-Black Tree.</li>
+                        <li><strong>Advantages:</strong> Ensures logarithmic time complexity for search, insertion, and deletion.</li>
+                        <li><strong>Disadvantages:</strong> Balancing after every operation adds overhead.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>AVL Tree:</strong> A self-balancing BST where the height difference (balance factor) of any node is at most 1.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Ideal for dynamic datasets with frequent insertions and deletions.</li>
+                        <li><strong>Properties:</strong> Guarantees O(log n) height.</li>
+                        <li><strong>Advantages:</strong> Highly efficient for lookup and updates.</li>
+                        <li><strong>Disadvantages:</strong> Complex implementation and balancing logic.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Red-Black Tree:</strong> A self-balancing BST where nodes are either red or black, ensuring balanced height.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Often used in libraries and frameworks, such as Java's TreeMap and C++'s std::map.</li>
+                        <li><strong>Properties:</strong> Guarantees O(log n) time complexity for operations.</li>
+                        <li><strong>Advantages:</strong> Simpler balancing mechanism compared to AVL trees.</li>
+                        <li><strong>Disadvantages:</strong> Slower than AVL trees for strictly balanced scenarios.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Splay Tree:</strong> A self-adjusting BST where recently accessed nodes are moved closer to the root.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Optimized for scenarios with a high frequency of certain access patterns.</li>
+                        <li><strong>Properties:</strong> Frequently accessed nodes are faster to reach.</li>
+                        <li><strong>Advantages:</strong> Amortized O(log n) time complexity for operations.</li>
+                        <li><strong>Disadvantages:</strong> Performance may degrade in uniformly distributed data.</li>
+                    </ul>
+                </li>
+            </ol><br><br>
+            <h3>Comparison of Types of Binary Search Trees</h3><br>
+            <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Key Properties</th>
+                        <th>Best Suited For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Unbalanced BST</td>
+                        <td>May degrade to O(n) performance in skewed cases.</td>
+                        <td>Basic implementations where balancing is not required.</td>
+                    </tr>
+                    <tr>
+                        <td>Balanced BST</td>
+                        <td>Height difference between left and right subtrees is minimized.</td>
+                        <td>Dynamic datasets with consistent performance needs.</td>
+                    </tr>
+                    <tr>
+                        <td>AVL Tree</td>
+                        <td>Balance factor of every node is at most 1.</td>
+                        <td>Applications requiring frequent and efficient lookups.</td>
+                    </tr>
+                    <tr>
+                        <td>Red-Black Tree</td>
+                        <td>Nodes are colored red or black; ensures balanced height.</td>
+                        <td>Widely used in libraries and frameworks.</td>
+                    </tr>
+                    <tr>
+                        <td>Splay Tree</td>
+                        <td>Recently accessed nodes are moved closer to the root.</td>
+                        <td>Data with skewed access patterns and high locality.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl3')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+            </div>
+        </section>
+        
+        <section id="impl4">
+
+            <h2>Implementing Different Types of Binary Search Trees</h2><br>
+            <p>Binary Search Trees (BSTs) come in various types, each designed to optimize certain operations based on specific requirements. This section provides implementations of the following types of BSTs:</p>
+            <br>
+            <ul>
+                <li><strong>Standard Binary Search Tree</strong></li>
+                <li><strong>AVL Tree</strong></li>
+                <li><strong>Red-Black Tree</strong></li>
+            </ul>
+            <br><br>
+            <h3>1. Standard Binary Search Tree</h3><br>
+            <p>A standard BST is a tree where the left child of a node contains values smaller than the node, and the right child contains values greater than the node. It does not guarantee balance, which can lead to degraded performance in the worst case.</p>
+            <pre><code>
+        // Implementation of a Standard Binary Search Tree in C
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        // Node structure
+        struct Node {
+            int data;
+            struct Node* left;
+            struct Node* right;
+        };
+        
+        // Function to create a new node
+        struct Node* createNode(int data) {
+            struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+            node->data = data;
+            node->left = NULL;
+            node->right = NULL;
+            return node;
+        }
+        
+        // Function to insert a node in a BST
+        struct Node* insert(struct Node* root, int data) {
+            if (root == NULL) return createNode(data);
+            if (data &lt; root->data) root->left = insert(root->left, data);
+            else if (data &gt; root->data) root->right = insert(root->right, data);
+            return root;
+        }
+        
+        // Function to perform inorder traversal
+        void inorderTraversal(struct Node* root) {
+            if (root != NULL) {
+                inorderTraversal(root->left);
+                printf("%d ", root->data);
+                inorderTraversal(root->right);
+            }
+        }
+        
+        // Main function to demonstrate the Standard BST
+        int main() {
+            struct Node* root = NULL;
+            root = insert(root, 50);
+            insert(root, 30);
+            insert(root, 70);
+            insert(root, 20);
+            insert(root, 40);
+            insert(root, 60);
+            insert(root, 80);
+        
+            printf("Inorder Traversal of Standard BST: ");
+            inorderTraversal(root);
+            printf("\n");
+            return 0;
+        }
+            </code></pre>
+        <br><br><br>
+            <h3>2. AVL Tree</h3><br>
+            <p>An AVL tree is a self-balancing binary search tree where the difference in heights of left and right subtrees (balance factor) of any node is at most one. This ensures O(log N) time complexity for insertions, deletions, and lookups.</p>
+            <pre><code>
+        // Implementation of AVL Tree in C
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            struct Node* left;
+            struct Node* right;
+            int height;
+        };
+        
+        int max(int a, int b) { return (a &gt; b) ? a : b; }
+        
+        // Function to get the height of a node
+        int height(struct Node* node) {
+            return (node == NULL) ? 0 : node->height;
+        }
+        
+        // Function to create a new node
+        struct Node* createNode(int data) {
+            struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+            node->data = data;
+            node->left = NULL;
+            node->right = NULL;
+            node->height = 1;
+            return node;
+        }
+        
+        // Right rotate
+        struct Node* rightRotate(struct Node* y) {
+            struct Node* x = y->left;
+            struct Node* T2 = x->right;
+        
+            x->right = y;
+            y->left = T2;
+        
+            y->height = max(height(y->left), height(y->right)) + 1;
+            x->height = max(height(x->left), height(x->right)) + 1;
+        
+            return x;
+        }
+        
+        // Left rotate
+        struct Node* leftRotate(struct Node* x) {
+            struct Node* y = x->right;
+            struct Node* T2 = y->left;
+        
+            y->left = x;
+            x->right = T2;
+        
+            x->height = max(height(x->left), height(x->right)) + 1;
+            y->height = max(height(y->left), height(y->right)) + 1;
+        
+            return y;
+        }
+        
+        // Get balance factor
+        int getBalance(struct Node* node) {
+            return (node == NULL) ? 0 : height(node->left) - height(node->right);
+        }
+        
+        // Insert a node
+        struct Node* insert(struct Node* node, int data) {
+            if (node == NULL) return createNode(data);
+        
+            if (data &lt; node->data) node->left = insert(node->left, data);
+            else if (data &gt; node->data) node->right = insert(node->right, data);
+            else return node;
+        
+            node->height = 1 + max(height(node->left), height(node->right));
+        
+            int balance = getBalance(node);
+        
+            if (balance &gt; 1 && data &lt; node->left->data) return rightRotate(node);
+        
+            if (balance &lt; -1 && data &gt; node->right->data) return leftRotate(node);
+        
+            if (balance &gt; 1 && data &gt; node->left->data) {
+                node->left = leftRotate(node->left);
+                return rightRotate(node);
+            }
+        
+            if (balance &lt; -1 && data &lt; node->right->data) {
+                node->right = rightRotate(node->right);
+                return leftRotate(node);
+            }
+        
+            return node;
+        }
+        
+        void inorderTraversal(struct Node* root) {
+            if (root != NULL) {
+                inorderTraversal(root->left);
+                printf("%d ", root->data);
+                inorderTraversal(root->right);
+            }
+        }
+        
+        int main() {
+            struct Node* root = NULL;
+        
+            root = insert(root, 10);
+            root = insert(root, 20);
+            root = insert(root, 30);
+            root = insert(root, 40);
+            root = insert(root, 50);
+            root = insert(root, 25);
+        
+            printf("Inorder Traversal of AVL Tree: ");
+            inorderTraversal(root);
+            printf("\n");
+            return 0;
+        }
+            </code></pre>
+            <br><br><br>
+            <h3>3. Red-Black Tree</h3><br>
+            <p>Red-Black Trees are self-balancing binary search trees with the following properties:
+                <ul>
+                    <li>Each node is either red or black.</li>
+                    <li>The root is always black.</li>
+                    <li>Red nodes cannot have red children.</li>
+                    <li>Every path from a node to its descendant null pointers must have the same number of black nodes.</li>
+                </ul>
+            </p>
+            <p>Due to complexity, Red-Black Tree implementation is usually provided in libraries (e.g., C++ STL's <code>map</code> and <code>set</code>).</p>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl5')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps0')">Next</span>
+            </div>
+        </section>
+
+        <section id="apps0">
+
+            <h2>Understanding AVL Trees</h2><br>
+            <p>An AVL Tree is a type of self-balancing binary search tree where the difference between the heights of the left and right subtrees of any node (called the balance factor) is at most 1. Named after its inventors, Adelson-Velsky and Landis, AVL trees ensure that the tree remains balanced after every insertion or deletion operation, thereby maintaining efficient performance.</p><br>
+        
+            <h3>Key Concepts of AVL Trees</h3><br>
+            <ul>
+                <li><strong>Balance Factor:</strong> The difference between the height of the left and right subtrees. For an AVL tree, the balance factor must be -1, 0, or 1 for all nodes.</li><br>
+                <li><strong>Height of a Node:</strong> The number of edges on the longest path from the node to a leaf.</li><br>
+                <li><strong>Self-Balancing:</strong> AVL trees perform rotations to maintain the balance factor within the permissible range after insertions and deletions.</li><br>
+            </ul><br>
+        
+            <h3>Types of Rotations in AVL Trees</h3><br>
+            <p>When the balance factor of a node exceeds the range [-1, 1], rotations are used to rebalance the tree:</p>
+            <ul>
+                <li><strong>Left Rotation (LL Rotation):</strong> Used when a node is inserted into the left subtree of the left child.</li><br>
+                <li><strong>Right Rotation (RR Rotation):</strong> Used when a node is inserted into the right subtree of the right child.</li><br>
+                <li><strong>Left-Right Rotation (LR Rotation):</strong> A combination of a left rotation followed by a right rotation.</li><br>
+                <li><strong>Right-Left Rotation (RL Rotation):</strong> A combination of a right rotation followed by a left rotation.</li><br>
+            </ul><br>
+        
+            <h3>Balancing an AVL Tree</h3><br>
+            <p>Balancing involves the following steps:</p>
+            <ol>
+                <li>Calculate the balance factor of each node during insertion or deletion.</li>
+                <li>If the balance factor of a node becomes -2 or 2, determine the type of rotation needed based on the subtree where the imbalance occurs.</li>
+                <li>Perform the appropriate rotation(s) to restore balance.</li>
+            </ol><br><br>
+
+            <h3> Understanding Balancing Factor in an AVL Tree</h3>
+
+            <p>The <strong>balancing factor</strong> is a critical concept in AVL trees that ensures the tree remains balanced after every operation (insertion or deletion).</p>
+          <br>
+            <h3>Definition:</h3>
+            <p>The balancing factor for a node is defined as the difference between the heights of its <strong>left subtree</strong> and <strong>right subtree</strong>:</p><br>
+            <pre><code>Balancing Factor (BF) = Height of Left Subtree - Height of Right Subtree</code></pre><br>
+          
+            <ul>
+              <li><strong>BF = -1, 0, or 1:</strong> The node is balanced.</li>
+              <li><strong>(BF &lt; -1) or (BF &gt; 1) :</strong> The node is unbalanced, requiring a rotation to restore balance.</li>
+            </ul>
+          <br><br>
+            <h3>Example:</h3>
+            <br>
+            <h4>Initial AVL Tree</h4>
+            <pre>
+                30
+               /  \ 
+              20   40
+             /    
+            10
+            </pre>
+          <br>
+            <p><strong>Balancing Factors:</strong></p>
+            <ul>
+              <li>Node 10: BF = 0 - 0 = 0</li>
+              <li>Node 20: BF = 1 - 0 = 1</li>
+              <li>Node 30: BF = 2 - 1 = 1</li>
+            </ul>
+          <br>
+            <h4>Insertion of Node 25</h4>
+            <pre>
+                30
+               /  \ 
+              20   40
+             /  \ 
+            10   25
+            </pre>
+          <br>
+            <p><strong>Updated Balancing Factors:</strong></p>
+            <ul>
+              <li>Node 25: BF = 0 - 0 = 0</li>
+              <li>Node 20: BF = 1 - 1 = 0</li>
+              <li>Node 30: BF = 2 - 1 = 1</li>
+            </ul>
+          <br><br>
+            <h3>Unbalanced Example:</h3><br>
+            <h4>Insertion of Node 5</h4>
+            <pre>
+                30
+               /  \ 
+              20   40
+             /    
+            10   
+           /    
+          5
+            </pre>
+            <br>
+            <p><strong>Updated Balancing Factors:</strong></p>
+            <ul>
+              <li>Node 5: BF = 0 - 0 = 0</li>
+              <li>Node 10: BF = 1 - 0 = 1</li>
+              <li>Node 20: BF = 2 - 0 = 2 (Unbalanced)</li>
+              <li>Node 30: BF = 3 - 1 = 2 (Unbalanced)</li>
+            </ul>
+          <br><br>
+            <h3>Restoring Balance:</h3>
+            <p>To fix the imbalance at node <strong>20</strong>, perform a <strong>Right Rotation</strong>:</p>
+          <br>
+            <h4>Before Rotation:</h4>
+            <pre>
+                30
+               /  \ 
+              20   40
+             /    
+            10   
+           /    
+          5
+            </pre>
+          <br>
+            <h4>After Right Rotation:</h4>
+            <pre>
+                30
+               /  \ 
+              10   40
+             /  \ 
+            5    20
+            </pre>
+          <br>
+            <p><strong>Updated Balancing Factors:</strong></p>
+            <ul>
+              <li>Node 5: BF = 0 - 0 = 0</li>
+              <li>Node 10: BF = 1 - 1 = 0</li>
+              <li>Node 20: BF = 0 - 0 = 0</li>
+              <li>Node 30: BF = 2 - 1 = 1</li>
+            </ul>
+          <br><br>
+            <h3>Summary:</h3>
+            <p>The balancing factor ensures AVL trees maintain their <strong>O(log N)</strong> height. If the balancing factor for any node exceeds <strong>-1</strong> or <strong>1</strong>, <strong>rotations</strong> are used to restore balance. This makes AVL trees efficient for search, insertion, and deletion operations.</p>
+            <br><br><br>
+            <h3>Implementation of an AVL Tree</h3><br>
+            <pre><code>
+        // C program to implement an AVL Tree
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        // Struct representing a node in the AVL tree
+        typedef struct Node {
+            int data;
+            struct Node* left;
+            struct Node* right;
+            int height;
+        } Node;
+        
+        // Function to get the height of a node
+        int height(Node* node) {
+            return node == NULL ? 0 : node->height;
+        }
+        
+        // Function to calculate the balance factor of a node
+        int getBalanceFactor(Node* node) {
+            return node == NULL ? 0 : height(node->left) - height(node->right);
+        }
+        
+        // Function to create a new node
+        Node* createNode(int data) {
+            Node* newNode = (Node*)malloc(sizeof(Node));
+            newNode->data = data;
+            newNode->left = NULL;
+            newNode->right = NULL;
+            newNode->height = 1;
+            return newNode;
+        }
+        
+        // Right rotation
+        Node* rightRotate(Node* y) {
+            Node* x = y->left;
+            Node* T2 = x->right;
+        
+            x->right = y;
+            y->left = T2;
+        
+            y->height = 1 + fmax(height(y->left), height(y->right));
+            x->height = 1 + fmax(height(x->left), height(x->right));
+        
+            return x;
+        }
+        
+        // Left rotation
+        Node* leftRotate(Node* x) {
+            Node* y = x->right;
+            Node* T2 = y->left;
+        
+            y->left = x;
+            x->right = T2;
+        
+            x->height = 1 + fmax(height(x->left), height(x->right));
+            y->height = 1 + fmax(height(y->left), height(y->right));
+        
+            return y;
+        }
+        
+        // Function to insert a node into the AVL tree
+        Node* insert(Node* node, int data) {
+            if (node == NULL) {
+                return createNode(data);
+            }
+        
+            if (data < node->data) {
+                node->left = insert(node->left, data);
+            } else if (data > node->data) {
+                node->right = insert(node->right, data);
+            } else {
+                return node; // Duplicate keys are not allowed
+            }
+        
+            // Update height of the current node
+            node->height = 1 + fmax(height(node->left), height(node->right));
+        
+            // Calculate balance factor
+            int balance = getBalanceFactor(node);
+        
+            // Perform rotations if necessary
+            if (balance > 1 && data < node->left->data) {
+                return rightRotate(node);
+            }
+            if (balance < -1 && data > node->right->data) {
+                return leftRotate(node);
+            }
+            if (balance > 1 && data > node->left->data) {
+                node->left = leftRotate(node->left);
+                return rightRotate(node);
+            }
+            if (balance < -1 && data < node->right->data) {
+                node->right = rightRotate(node->right);
+                return leftRotate(node);
+            }
+        
+            return node;
+        }
+        
+        // Function for inorder traversal
+        void inorderTraversal(Node* root) {
+            if (root != NULL) {
+                inorderTraversal(root->left);
+                printf("%d ", root->data);
+                inorderTraversal(root->right);
+            }
+        }
+        
+        // Driver program to test AVL Tree implementation
+        int main() {
+            Node* root = NULL;
+            root = insert(root, 10);
+            root = insert(root, 20);
+            root = insert(root, 30);
+            root = insert(root, 40);
+            root = insert(root, 50);
+            root = insert(root, 25);
+        
+            printf("Inorder traversal of the AVL Tree: ");
+            inorderTraversal(root);
+            printf("\n");
+        
+            return 0;
+        }
+            </code></pre><br>
+            <br>
+            <h3>Output</h3><br>
+            <pre><code>
+            Inorder traversal of the AVL Tree: 10 20 25 30 40 50
+            </code></pre><br>
+            <br><br>
+            <h3>Advantages of AVL Trees</h3><br>
+            <ul>
+                <li><strong>Search Efficiency:</strong> Ensures O(log N) time complexity for search operations.</li><br>
+                <li><strong>Guaranteed Balancing:</strong> The tree is always balanced, ensuring consistent performance.</li><br>
+                <li><strong>Dynamic Updates:</strong> Automatically adjusts balance after every insertion and deletion.</li><br>
+            </ul><br>
+        
+            <h3>Limitations of AVL Trees</h3><br>
+            <ul>
+                <li>Requires additional memory for storing the height of each node.</li><br>
+                <li>Insertion and deletion operations may involve multiple rotations, making them relatively expensive compared to unbalanced binary search trees.</li><br>
+            </ul><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl4')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps1')">Next</span>
+            </div>
+        </section>
+        
+        <section id="apps1">
+            <h2>Heap Trees</h2>
+            <p>A <strong>Heap</strong> is a specialized tree-based data structure that satisfies the <em>heap property</em>. It is widely used in algorithms such as priority queues and heap sort. A heap can be of two types:</p>
+            <br><br>
+            <h3>Types of Heaps</h3>
+            <ul>
+                <li><strong>Max-Heap:</strong> In a max-heap, the value of each node is greater than or equal to the values of its children. The largest element is at the root.</li>
+                <li><strong>Min-Heap:</strong> In a min-heap, the value of each node is less than or equal to the values of its children. The smallest element is at the root.</li>
+            </ul>
+            <br><br>
+            <h3>Properties of a Heap</h3>
+            <ul>
+                <li><strong>Complete Binary Tree:</strong> A heap is always a complete binary tree, meaning all levels are completely filled except possibly the last, which is filled from left to right.</li>
+                <li><strong>Heap Property:</strong> Every parent node either has a value greater than or equal to (max-heap) or less than or equal to (min-heap) its children.</li>
+            </ul>
+            <br><br>
+            <h3>Heap Operations</h3>
+            <h3>1. Insertion</h3>
+            <p>To insert an element into a heap:</p>
+            <ol>
+                <li>Add the element to the next available position in the tree (maintains completeness).</li>
+                <li>Heapify upwards: Compare the added element with its parent and swap if it violates the heap property.</li>
+            </ol>
+        
+            <h3>2. Deletion (Removing the Root)</h3>
+            <p>To remove the root (maximum or minimum element):</p>
+            <ol>
+                <li>Replace the root with the last element of the heap.</li>
+                <li>Remove the last element.</li>
+                <li>Heapify downwards: Compare the new root with its children and swap with the larger child (max-heap) or smaller child (min-heap) to restore the heap property.</li>
+            </ol>
+            <br><br>
+            <h4>Example of a Max-Heap</h3>
+            <p>Consider the following array representation of a max-heap:</p>
+            <pre>
+                Array: [50, 30, 40, 10, 5, 20, 30]
+            </pre>
+            <p>Its tree representation is:</p>
+            <pre>
+                         50
+                       /    \
+                     30      40
+                    /  \    /  \
+                  10    5  20   30
+            </pre>
+            <br>
+            <h3>Insertion Example</h3>
+            <p>Insert <strong>60</strong> into the heap:</p>
+            <ol>
+                <li>Add 60 at the next available position:</li>
+                <pre>
+                         50
+                       /    \
+                     30      40
+                    /  \    /  \
+                  10    5  20   30
+                          /
+                        60
+                </pre><br>
+                <li>Heapify upwards: Swap 60 with 30 and then with 50.</li>
+                <pre>
+                         60
+                       /    \
+                     50      40
+                    /  \    /  \
+                  30    5  20   30
+                          /
+                        10
+                </pre>
+            </ol>
+            <br>
+            <h3>Deletion Example</h3>
+            <p>Remove the root (60):</p>
+            <ol>
+                <li>Replace 60 with the last element (10):</li>
+                <pre>
+                         10
+                       /    \
+                     50      40
+                    /  \    /  \
+                  30    5  20   30
+                </pre><br>
+                <li>Heapify downwards: Swap 10 with 50.</li>
+                <li>Continue heapifying: Swap 10 with 30.</li>
+                <pre>
+                         50
+                       /    \
+                     30      40
+                    /  \    /  \
+                  10    5  20   30
+                </pre>
+            </ol>
+            <br><br>
+            <h3>Applications of Heaps</h3>
+            <ul>
+                <li><strong>Priority Queues:</strong> Efficiently retrieve the highest or lowest priority element.</li>
+                <li><strong>Heap Sort:</strong> A comparison-based sorting algorithm using a heap.</li>
+                <li><strong>Graph Algorithms:</strong> Used in Dijkstra's and Prim's algorithms for finding shortest paths and minimum spanning trees.</li>
+            </ul><br>
+            
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('apps0')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps2')">Next</span>
+            </div>
+
+        </section>
+
+        <section id="apps2">
+            <h2>Comparison Between Different Types of Trees</h2>
+            <p>The following table highlights the key differences between various types of trees, helping to understand their structure, properties, and applications:</p>
+        
+            <table border="1" cellspacing="0" cellpadding="5">
+                <thead>
+                    <tr>
+                        <th>Tree Type</th>
+                        <th>Definition</th>
+                        <th>Key Properties</th>
+                        <th>Common Applications</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Binary Tree</strong></td>
+                        <td>A tree where each node has at most two children.</td>
+                        <td>
+                            <ul>
+                                <li>Can have 0, 1, or 2 children per node.</li>
+                                <li>Not necessarily ordered.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Hierarchical data representation.</li>
+                                <li>Basic tree operations like traversal.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Binary Search Tree (BST)</strong></td>
+                        <td>A binary tree where the left child contains values smaller than the parent, and the right child contains values greater than the parent.</td>
+                        <td>
+                            <ul>
+                                <li>Efficient for search, insert, and delete operations (O(log N) for balanced trees).</li>
+                                <li>In-order traversal gives sorted data.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Dynamic set operations.</li>
+                                <li>Search-intensive applications.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>AVL Tree</strong></td>
+                        <td>A self-balancing binary search tree where the difference in heights of left and right subtrees of a node is at most 1.</td>
+                        <td>
+                            <ul>
+                                <li>Height-balanced.</li>
+                                <li>Rotation operations maintain balance.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Database indexing.</li>
+                                <li>Applications requiring fast lookups and inserts.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Heap Tree</strong></td>
+                        <td>A binary tree-based structure where the parent node is either greater than or smaller than its children.</td>
+                        <td>
+                            <ul>
+                                <li>Max-Heap: Parent node is greater than or equal to its children.</li>
+                                <li>Min-Heap: Parent node is smaller than or equal to its children.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Priority queue implementation.</li>
+                                <li>Heap sort algorithm.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Red-Black Tree</strong></td>
+                        <td>A self-balancing binary search tree where each node has a color (red or black) to ensure balance.</td>
+                        <td>
+                            <ul>
+                                <li>No two consecutive red nodes.</li>
+                                <li>Tree height is approximately log N.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Memory management (e.g., Linux kernel).</li>
+                                <li>Associative containers (e.g., map, set in C++ STL).</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>B-Tree</strong></td>
+                        <td>A self-balancing search tree optimized for systems that read and write large blocks of data.</td>
+                        <td>
+                            <ul>
+                                <li>Each node can have multiple keys and children.</li>
+                                <li>Height is kept low for efficient disk I/O.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Databases.</li>
+                                <li>File systems.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trie</strong></td>
+                        <td>A tree used for storing strings where nodes represent prefixes of the strings.</td>
+                        <td>
+                            <ul>
+                                <li>Efficient for prefix-based searches.</li>
+                                <li>Space-efficient for sets of similar strings.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Auto-complete features.</li>
+                                <li>IP routing (longest prefix matching).</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <p>This table provides a consolidated view of tree types, making it easier to select the appropriate tree type for specific applications.</p>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('apps1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+            </div>
+        </section>
+        
+        
+<section id="quiz">
+            <h2>Test Your Knowledge on Trees</h2>
+            <h4 style="text-align: center;">This test consists of 15 multiple choice questions. <br>
+                You will have 15 minutes time to complete the test. <br>click on the below Button to start the test <br>
+     </h4><br>
+                <h3 style="text-align: center;">All the best 👍🏼...</h3>
+                <div id="btn1">
+                <button type="button" class="action" onclick="openCourse('trees_test.html')">Start Writing</button>
+                </div>
+        </section>
+        
+        <script>
+            // Function to show the selected section and scroll to it
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                const section = document.getElementById(sectionId);
+                section.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+            }
+            
+            function openInNewTab() {
+                window.open('https://brk8789.github.io/Brk_visualizations/Basics/stack/stack.html', '_blank');
+            }
+            
+            function openInNewTabLl() {
+                window.open('https://brk8789.github.io/Brk_visualizations/Basics/implementation-linked-list/linkedlist.html', '_blank');
+            }
+            function openCourse(url) {
+      window.open(url, '_blank');
+    }
+            </script>
+            
+
+</body>
+
+</html>

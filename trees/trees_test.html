@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>Stack Assessment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #1c1c1c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #f4f4f4;
+    }
+
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #f4f4f4;
+    }
+
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 1em;
+      color: #cfcfcf;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      color: white;
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .marks-display {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #2e7d32;
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      border: 2px solid #388e3c;
+      border-radius: 5px;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: rgba(46, 125, 50, 0.3);
+      border: 1px solid #2e7d32;
+      color: #81c784;
+      border-radius: 5px;
+    }
+
+    .correct-answer {
+      color: #76ff03;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .timer {
+      text-align: right;
+      font-size: 1.2em;
+      color: #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      color: #ff5252;
+      margin-top: 15px;
+      font-size: 1em;
+      padding: 10px;
+      background-color: rgba(255, 82, 82, 0.1);
+      border: 1px solid #ff5252;
+      border-radius: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Trees Assessment
+  </header>
+  <main>
+    <div class="timer" id="timer">Time Left: 15:00</div>
+    <h2 style="text-align: center;">Test Your Knowledge on trees</h2>
+    <div id="testContainer"></div>
+    <div id="alertContainer" class="alert" style="display: none;">Please ensure all questions are answered before submitting. Each response helps us evaluate your understanding accurately!</div>
+    <button id="submitButton" class="submit-btn">Submit Answers</button>
+    <div id="marksContainer" class="marks-display" style="display: none;"></div>
+  </main>
+  <footer>
+    &copy;Dr. Bomma Rama Krishna
+  </footer>
+
+  <script>
+const questions = [
+  { 
+    question: "What is a binary tree?", 
+    options: ["A tree with at most two children per node", "A tree with nodes arranged in sorted order", "A tree with an unlimited number of children"], 
+    correctIndex: 0, 
+    explanation: "A binary tree is a tree data structure where each node can have at most two children, typically referred to as the left and right child." 
+  },
+  { 
+    question: "What is the height of a tree?", 
+    options: ["The length of the longest path from root to a leaf", "The number of nodes in the tree", "The number of edges in the tree"], 
+    correctIndex: 0, 
+    explanation: "The height of a tree is the number of edges on the longest path from the root to any leaf node." 
+  },
+  { 
+    question: "What is a full binary tree?", 
+    options: ["A tree where every node has either 0 or 2 children", "A tree where all nodes are filled except the last level", "A tree with only one node"], 
+    correctIndex: 0, 
+    explanation: "A full binary tree is a binary tree in which every node has either 0 or 2 children." 
+  },
+  { 
+    question: "What is the time complexity of searching in a binary search tree (BST)?", 
+    options: ["O(h)", "O(1)", "O(n)"], 
+    correctIndex: 0, 
+    explanation: "The time complexity of searching in a BST is O(h), where h is the height of the tree." 
+  },
+  { 
+    question: "What is the difference between a binary tree and a binary search tree?", 
+    options: ["BST is sorted, binary tree is not", "Binary tree has a root node, BST does not", "Binary tree cannot have duplicate values, BST can"], 
+    correctIndex: 0, 
+    explanation: "A binary search tree is a type of binary tree where the left subtree contains values less than the node, and the right subtree contains values greater than the node." 
+  },
+  { 
+    question: "What is an AVL tree?", 
+    options: ["A self-balancing binary search tree", "A tree where nodes have at most one child", "A tree used for graph traversal"], 
+    correctIndex: 0, 
+    explanation: "An AVL tree is a self-balancing binary search tree where the height difference between left and right subtrees of any node is at most 1." 
+  },
+  { 
+    question: "Which traversal method visits nodes in the order: left, root, right?", 
+    options: ["Inorder traversal", "Preorder traversal", "Postorder traversal"], 
+    correctIndex: 0, 
+    explanation: "In inorder traversal, the nodes are visited in the order: left subtree, root node, right subtree." 
+  },
+  { 
+    question: "What is the time complexity of inserting a node in an AVL tree?", 
+    options: ["O(log n)", "O(n)", "O(1)"], 
+    correctIndex: 0, 
+    explanation: "Insertion in an AVL tree has a time complexity of O(log n) due to its balanced structure." 
+  },
+  { 
+    question: "Which of these is a complete binary tree?", 
+    options: ["A tree where all levels except possibly the last are fully filled", "A tree with nodes only in left subtrees", "A tree with all nodes having exactly one child"], 
+    correctIndex: 0, 
+    explanation: "A complete binary tree is a binary tree in which all levels are fully filled except possibly the last, which is filled from left to right." 
+  },
+  { 
+    question: "What is a balanced tree?", 
+    options: ["A tree where the height difference between subtrees is minimal", "A tree with equal number of nodes in all subtrees", "A tree with nodes in sorted order"], 
+    correctIndex: 0, 
+    explanation: "A balanced tree is a tree where the height of left and right subtrees of every node differ by at most 1." 
+  },
+  { 
+    question: "What is a red-black tree?", 
+    options: ["A self-balancing binary search tree with color properties", "A tree with nodes that are red or black", "A tree for sorting nodes"], 
+    correctIndex: 0, 
+    explanation: "A red-black tree is a self-balancing binary search tree where each node has a color (red or black) that ensures balance during insertion and deletion." 
+  },
+  { 
+    question: "Which of these trees is commonly used in database indexing?", 
+    options: ["B-trees", "Binary search trees", "AVL trees"], 
+    correctIndex: 0, 
+    explanation: "B-trees are widely used in database indexing because they provide efficient insertion, deletion, and search operations." 
+  },
+  { 
+    question: "What is a degenerate tree?", 
+    options: ["A tree where each parent has only one child", "A tree with an equal number of nodes at each level", "A tree with no leaves"], 
+    correctIndex: 0, 
+    explanation: "A degenerate tree is a tree in which each parent has only one child, making it similar to a linked list." 
+  },
+  { 
+    question: "What is the maximum number of nodes in a binary tree of height h?", 
+    options: ["2^(h+1) - 1", "h", "2^h"], 
+    correctIndex: 0, 
+    explanation: "The maximum number of nodes in a binary tree of height h is given by 2^(h+1) - 1." 
+  },
+  { 
+    question: "What is a perfect binary tree?", 
+    options: ["A binary tree with all internal nodes having two children and all leaves at the same level", "A tree where each parent has one child", "A tree with only one level"], 
+    correctIndex: 0, 
+    explanation: "A perfect binary tree is a binary tree where all internal nodes have exactly two children and all leaves are at the same level." 
+  },
+  { 
+    question: "What is the primary application of a Huffman tree?", 
+    options: ["Data compression", "Sorting", "Searching"], 
+    correctIndex: 0, 
+    explanation: "Huffman trees are used in data compression algorithms like Huffman coding to create prefix-free codes." 
+  },
+  { 
+    question: "Which traversal method is used in breadth-first search (BFS)?", 
+    options: ["Level order traversal", "Inorder traversal", "Preorder traversal"], 
+    correctIndex: 0, 
+    explanation: "Level order traversal is used in breadth-first search to explore all nodes at a given depth before moving to the next level." 
+  },
+  { 
+    question: "What is the degree of a node in a tree?", 
+    options: ["The number of children a node has", "The height of the tree", "The depth of the node"], 
+    correctIndex: 0, 
+    explanation: "The degree of a node is the number of children it has." 
+  },
+  { 
+    question: "Which tree structure is used in heap implementation?", 
+    options: ["Binary tree", "Ternary tree", "Quad tree"], 
+    correctIndex: 0, 
+    explanation: "Heaps are implemented as binary trees, specifically binary heaps, to efficiently support heap operations." 
+  },
+  { 
+    question: "What is the primary difference between DFS and BFS?", 
+    options: ["DFS uses stack; BFS uses queue", "DFS uses recursion; BFS does not", "DFS visits all nodes; BFS does not"], 
+    correctIndex: 0, 
+    explanation: "DFS uses a stack (or recursion) to traverse depth-first, while BFS uses a queue for level-order traversal." 
+  },
+  { 
+    question: "What is the depth of a node in a tree?", 
+    options: ["The number of edges from the root to the node", "The total number of nodes in the tree", "The number of children the node has"], 
+    correctIndex: 0, 
+    explanation: "The depth of a node is the number of edges from the root to the node." 
+  },
+  { 
+    question: "What type of tree is used in decision-making algorithms?", 
+    options: ["Decision tree", "Binary tree", "Ternary tree"], 
+    correctIndex: 0, 
+    explanation: "Decision trees are used in decision-making algorithms and machine learning for classification and regression." 
+  },
+  { 
+    question: "Which of the following is true for a heap tree?", 
+    options: ["It is a complete binary tree", "It is a self-balancing binary tree", "It has all leaves on the left side"], 
+    correctIndex: 0, 
+    explanation: "A heap tree is a complete binary tree, meaning all levels are fully filled except possibly the last, which is filled from left to right." 
+  },
+  { 
+    question: "What is the purpose of the parent pointer in a tree?", 
+    options: ["To store reference to the parent node", "To store the value of the node", "To store the number of children"], 
+    correctIndex: 0, 
+    explanation: "The parent pointer stores a reference to the parent node in the tree, enabling traversal to the parent." 
+  },
+  { 
+    question: "Which traversal technique is used to clone a tree?", 
+    options: ["Postorder traversal", "Inorder traversal", "Preorder traversal"], 
+    correctIndex: 0, 
+    explanation: "Postorder traversal is used to clone a tree as it processes the children before the parent." 
+  }
+];
+
+
+    let timerInterval;
+    let timeLeft = 15 * 60;
+
+    function startTimer() {
+      const timerElement = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          autoSubmit();
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
+    function checkAllAnswered() {
+      return questions.every((_, index) => document.querySelector(`input[name="q${index}"]:checked`));
+    }
+
+    function evaluateAnswers() {
+    let score = 0;
+    const feedbackElements = document.querySelectorAll(".feedback");
+    const correctAnswerElements = document.querySelectorAll(".correct-answer");
+    const answerStatusElements = document.querySelectorAll(".answer-status");
+
+    questions.forEach((q, index) => {
+        const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+        const correctAnswerElement = correctAnswerElements[index];
+        const feedbackElement = feedbackElements[index];
+        const answerStatusElement = answerStatusElements[index];
+
+        if (selectedOption) {
+            const isCorrect = parseInt(selectedOption.value) === q.correctIndex;
+
+            // If the answer is correct
+            if (isCorrect) {
+                score++;
+                answerStatusElement.textContent = "Correct!";
+                answerStatusElement.style.color = "#76ff03"; // Green for correct
+            } else {
+                // If the answer is wrong
+                answerStatusElement.textContent = `Wrong! The correct answer is: ${q.options[q.correctIndex]}`;
+                answerStatusElement.style.color = "#ff5252"; // Red for wrong
+            }
+        }
+
+        // Display correct answer and explanation
+        correctAnswerElement.style.display = "block";
+        feedbackElement.style.display = "block";
+    });
+
+    return score;
+}
+
+function renderQuestions() {
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+    testContainer.innerHTML = shuffledQuestions.map((q, index) => `
+    <div class="question-container">
+        <p class="question">${index + 1}. ${q.question}</p>
+        <div class="options">
+            ${q.options.map((option, i) => `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}"> ${option}
+                </label>
+            `).join("")}
+        </div>
+        <p class="answer-status" style="font-weight: bold;"></p> <!-- Added line to show answer status -->
+        <p class="correct-answer" style="display: none; color: #76ff03;">Correct Answer: ${q.options[q.correctIndex]}</p>
+        <p class="feedback" style="display: none; color: #81c784;">Explanation: ${q.explanation}</p>
+    </div>
+    `).join("");
+}
+
+function autoSubmit() {
+    const totalScore = evaluateAnswers();
+    marksContainer.textContent = `You scored ${totalScore} out of ${questions.length}!`;
+    marksContainer.style.display = "block";
+    submitButton.disabled = true;
+}
+
+
+    submitButton.addEventListener("click", () => {
+      if (!checkAllAnswered()) {
+        alertContainer.style.display = "block";
+      } else {
+        clearInterval(timerInterval);
+        alertContainer.style.display = "none";
+        autoSubmit();
+      }
+    });
+
+    renderQuestions();
+    startTimer();
+  </script>
+</body>
+</html>

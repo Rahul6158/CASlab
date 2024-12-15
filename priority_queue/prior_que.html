@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+    <title>Priority Queue Data Structure</title>
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+/* Button */
+.action {
+    user-select: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.25rem;
+    background-color: #007acc;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action:hover {
+    background-color: #005a99;
+}
+
+
+</style>
+
+</head>
+
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Priority Queue Data Structure</h2>
+    <ul>
+        <li><a href="#" onclick="showSection('intro1')">Introduction to Priority Queue</a></li>
+        <li><a href="#" onclick="showSection('intro2')">Key Operations in Priority Queue</a></li>
+        <li><a href="#" onclick="showSection('impl1')">Types of Priority Queues</a></li>
+        <li><a href="#" onclick="showSection('intro3')">Implementation of Priority Queue</a></li>
+        <li><a href="#" onclick="showSection('impl4')">Priority Queue Operations Implementation (Simple)</a></li>
+        <li><a href="#" onclick="showSection('impl6')">Overflow and Underflow in Priority Queue</a></li>
+        <li><a href="#" onclick="showSection('impl3')">Advantages and Disadvantages of Priority Queue</a></li>
+        <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+
+        <li><div id="btn">
+            <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/Basics/prior_queue/prior_que.html')">Priority Queue Visualizations</button>
+        </div></li>
+    </ul>
+</div>
+
+
+
+<div class="content">
+
+    <section id="intro1" class="active">
+        <h2>What is a Priority Queue</h2>
+        <p>A <strong>Priority Queue</strong> is a type of data structure where each element is associated with a priority. The elements are dequeued based on their priority rather than the order in which they were added.</p><br>
+        
+        <img src="prior_queue.png" alt="priority queue example"><br><br>
+        
+        <h3>Understanding Priority Queues:</h3><br>
+        <p>In a priority queue, each element has a priority value, and the elements are processed according to their priority, with higher priority elements being dequeued first. Unlike regular queues, priority queues ensure that the order of processing depends on the priority of the elements rather than their insertion order.</p>
+        <ul>
+            <li>Each element in the queue is represented by a <strong>node</strong>, which contains both the data and its associated priority.</li>
+            <li>Priority queues can be implemented using various underlying data structures, such as heaps, linked lists, or arrays.</li>
+        </ul>
+        <p><strong>Example</strong>: A priority queue can be visualized as a sequence of nodes, where each node has a value and a priority that determines the order of processing.</p>
+        <img src="priority-queue-diagram.svg" alt="priority queue example (nodes)">
+        <br><br>
+    
+        <h3>Working with Priority Queues</h3><br>
+        <p>Priority queues are particularly useful for tasks where tasks or events need to be processed based on priority rather than order of arrival.</p><br>
+    
+        <ul>
+            <li><strong>Priority Queue Structure:</strong><br>
+                In a priority queue, elements are arranged based on their priority. The dequeue operation removes the element with the highest priority.</li><br>
+            <li><strong>Accessing Elements:</strong><br>
+                Access to elements is based on their priority, with the highest priority element being accessed first, leading to efficient task scheduling or event handling.</li><br>
+        </ul><br>
+        
+        <h3>Real-World Examples of Priority Queues</h3>
+        <p>Priority queues are widely used in various real-world applications that require handling tasks or events based on priority. Some examples include:</p>
+        <br><ul>
+            <li><strong>Task Scheduling:</strong> In operating systems, priority queues are used to schedule tasks based on their priority level.</li><br>
+            <li><strong>Dijkstra's Algorithm:</strong> Priority queues are used in Dijkstra's algorithm for finding the shortest path in a graph.</li><br>
+            <li><strong>Event Simulation:</strong> In simulation systems, priority queues manage events where higher priority events are processed first.</li><br>
+            <li><strong>Huffman Encoding:</strong> Priority queues are used in the compression algorithm for constructing Huffman codes.</li><br>
+            <li><strong>Data Streaming:</strong> Priority queues help in handling streaming data where elements with higher importance are processed before others.</li><br>
+        </ul><br>
+    
+        <div class="navigation-buttons">
+            <span></span>
+            <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+        </div>
+    </section>
+    
+         
+    <section id="intro2">
+        <h2>Key Operations of a Priority Queue</h2><br>
+        <ol>
+            <li>
+                <strong>Access</strong>: The operation used to access an element in the priority queue based on its priority. The element with the highest priority is accessed first.
+            </li><br>
+            <li>
+                <strong>Insert</strong>: The operation used to add a new element with a specific priority to the priority queue, ensuring the queue remains ordered according to priorities.
+            </li><br>
+            <li>
+                <strong>Update</strong>: The operation that allows you to change the priority of an existing element in the queue.
+            </li><br>
+            <li>
+                <strong>Delete</strong>: The operation to remove an element from the priority queue. The element with the highest priority is removed first.
+            </li><br>
+            <li>
+                <strong>Peek</strong>: The operation to view the element with the highest priority without removing it from the queue.
+            </li><br>
+        </ol><br><br>
+        
+        <h3>A Real-World Example</h3><br>
+        <ul>
+            <li><strong>Access</strong>: Retrieve the highest priority task from a to-do list.<br> Example: Finding the most urgent task to complete in a task management system. <br>
+            </li><br>
+            <li><strong>Insert</strong>: Add a new task with a specific priority to the task list.<br> Example: Adding a high-priority email to a priority inbox. <br>
+                <br>
+            </li><br>
+            <li><strong>Update</strong>: Change the priority of a task in the queue.<br> Example: Changing the priority of an order in a shipping system to express delivery. <br>
+                <br>
+            </li><br>
+            <li><strong>Delete</strong>: Remove the highest priority task from the list.<br> Example: Completing or removing the highest priority bug fix in software development. <br>
+                <br>
+            </li><br>
+            <li><strong>Peek</strong>: View the highest priority element in the queue.<br> Example: Checking the most urgent email in a priority email system. <br>
+            </li><br>
+        </ul><br>
+        <img src="task-management-services.jpg" alt="task management software example"><br><br>
+    
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+        </div>
+    </section>
+      
+
+    <section id="impl1">
+        <h2>Types of Priority Queues</h2>
+        <p>Priority queues come in different types, each with distinct characteristics and suited for various tasks depending on the requirements:</p><br>
+        <ol>
+            <li><strong>Binary Heap:</strong> A binary tree-based structure where each parent node has a higher priority than its child nodes. This ensures efficient access to the highest (or lowest) priority element.
+                <br><br><ul style="list-style-type: disc;">
+                    <li><strong>Usage:</strong> Commonly used in implementing heap sort or priority queue operations, where efficient insertion and extraction are essential.</li>
+                    <li><strong>Drawbacks:</strong> While insertion and extraction are efficient, searching for arbitrary elements can be slow.</li>
+                    <img src="smtku.png" alt="Binary Heap Example">
+                </ul>
+            </li><br><br>
+            <li><strong>Fibonacci Heap:</strong> A heap structure where trees are kept in a collection, and each tree follows the heap property. It provides better amortized time complexity for some operations.
+                <br><br><ul style="list-style-type: disc;">
+                    <li><strong>Usage:</strong> Useful in scenarios like network optimization, where operations like decrease key and merge heaps are frequent.</li>
+                    <li><strong>Drawbacks:</strong> More complex to implement and less practical for simple use cases.</li>
+                    <li><strong>node in a Fibonacci heap:</strong> In a Fibonacci heap, each node has a child list, and trees are kept together in a circular doubly linked list. This allows for efficient merging and decrease key operations.</li>
+                    <img src="fheap_.jpg" alt="Fibonacci Heap Node">
+                </ul>
+            </li><br><br>
+            <li><strong>Binomial Heap:</strong> A binomial tree-based heap that allows efficient merging of two heaps. It provides good time complexity for insertion and deletion operations, especially for merging heaps.
+                <br><br><ul style="list-style-type: disc;">
+                    <li><strong>Usage:</strong> Ideal for applications where merging heaps frequently is required, such as in graph algorithms.</li>
+                    <li><strong>Drawbacks:</strong> More complex compared to binary heaps and requires extra memory to manage the binomial tree structure.</li>
+                    <img src="binomial-heap-11.jpg" alt="Binomial Heap Example">
+                </ul>
+            </li><br>
+        </ol><br><br>
+    
+        <h3>Comparison of Priority Queue Types: Binary vs Fibonacci vs Binomial</h3><br>
+        <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Binary Heap</th>
+                        <th>Fibonacci Heap</th>
+                        <th>Binomial Heap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Memory Allocation</td>
+                        <td>Each node has a value and two child pointers.</td>
+                        <td>Each node has a value, a child list, and links to other nodes in a circular doubly linked list.</td>
+                        <td>Each node has a value and a pointer to a binomial tree.</td>
+                    </tr>
+                    <tr>
+                        <td>Traversal Direction</td>
+                        <td>Only the root node is accessed first, followed by child nodes.</td>
+                        <td>Requires traversal through child lists for certain operations.</td>
+                        <td>Requires traversing through the binomial tree.</td>
+                    </tr>
+                    <tr>
+                        <td>Insertion Time Complexity</td>
+                        <td>O(log n)</td>
+                        <td>O(1) amortized</td>
+                        <td>O(log n)</td>
+                    </tr>
+                    <tr>
+                        <td>Deletion Time Complexity</td>
+                        <td>O(log n)</td>
+                        <td>O(log n) amortized</td>
+                        <td>O(log n)</td>
+                    </tr>
+                    <tr>
+                        <td>Memory Overhead</td>
+                        <td>Low, only requires storing pointers for children.</td>
+                        <td>Higher, due to the circular doubly linked structure.</td>
+                        <td>Moderate, as it requires managing binomial trees.</td>
+                    </tr>
+                    <tr>
+                        <td>Access Time Complexity</td>
+                        <td>O(1) for accessing the root (highest or lowest priority element).</td>
+                        <td>O(1) for accessing the root (highest or lowest priority element).</td>
+                        <td>O(log n) for accessing the highest or lowest priority element.</td>
+                    </tr>
+                    <tr>
+                        <td>Implementation Simplicity</td>
+                        <td>Relatively simple and commonly used.</td>
+                        <td>Complex, requiring extra data structures.</td>
+                        <td>Moderately complex, requires binomial tree management.</td>
+                    </tr>
+                    <tr>
+                        <td>Best Suited For</td>
+                        <td>General-purpose priority queues with frequent insertions and extractions.</td>
+                        <td>Applications requiring frequent decrease-key or merge operations.</td>
+                        <td>Applications where merging heaps is frequent.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><br><br>
+    
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+            <span class="nav-btn" onclick="showSection('intro3')">Next</span>
+        </div>
+    </section>
+    
+
+    <section id="intro3">
+        <h2>Priority Queue Implementation</h2>
+        <p>In C, a priority queue is a data structure that operates similarly to a regular queue, but with a twist: each element in the queue is assigned a priority. Elements with higher priorities are dequeued before those with lower priorities. Priority queues are often implemented using heaps, but can also be implemented with other data structures like arrays or linked lists. Let's explore how priority queues are declared, initialized, and accessed in C, along with their various types.</p>
+        <br><br>
+        <h3>Priority Queue Declaration Syntax</h3><br>
+        <pre><code>struct Node <br> { <br> data_type data; <br> int priority; <br> struct Node* next; <br> };<br></code></pre>
+        <p>This is the basic syntax for declaring a node structure for a priority queue in C. Each node has a data element, a priority element, and a link to the next node in the queue.</p>
+        <br><br>
+        <h3>Priority Queue Types</h3><br>
+        <div id="table-overflow">
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Array-Based Priority Queue</th>
+                    <th>Linked List-Based Priority Queue</th>
+                    <th>Heap-Based Priority Queue</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Declaration</strong></td>
+                    <td><code>struct Queue { data_type data; int priority; }[];</code></td>
+                    <td><code>struct Node { data_type data; int priority; struct Node* next; };</code></td>
+                    <td><code>struct Heap { data_type data[]; int priority[]; }</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Initialization</strong></td>
+                    <td><code>struct Queue* queue = NULL;</code></td>
+                    <td><code>struct Node* head = NULL;</code></td>
+                    <td><code>struct Heap* heap = NULL;</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Accessing</strong></td>
+                    <td><code>queue_name[index]</code></td>
+                    <td><code>node_name = head;</code><br><code>while (node_name != NULL) { ... }</code></td>
+                    <td><code>heap_name[index]</code><br><code>while (heap_name != NULL) { ... }</code></td>
+                </tr>
+            </tbody>
+        </table>
+        </div><br><br><br>
+    
+        <h3>1. Array-Based Priority Queue in C</h3>
+        <p>An array-based priority queue stores elements in an array, and the priority of an element determines its position within the queue. When inserting a new element, we may need to reorder the array to maintain the correct priority order.</p>
+        <br><br>
+        <h3>Example</h3>
+        <pre><code>// Array-Based Priority Queue Example
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Queue {
+        int data;
+        int priority;
+    };
+    
+    int main() {
+        struct Queue queue[] = {{10, 3}, {20, 1}, {30, 2}};
+        int size = 3;
+        
+        // Sort by priority (higher priority comes first)
+        for (int i = 0; i < size-1; i++) {
+            for (int j = i+1; j < size; j++) {
+                if (queue[i].priority < queue[j].priority) {
+                    // Swap
+                    struct Queue temp = queue[i];
+                    queue[i] = queue[j];
+                    queue[j] = temp;
+                }
+            }
+        }
+        
+        // Print sorted queue
+        for (int i = 0; i < size; i++) {
+            printf("%d (Priority: %d)\n", queue[i].data, queue[i].priority);
+        }
+        
+        return 0;
+    }
+    </code></pre><br>
+        <h4>Output:</h4>
+        <pre>20 (Priority: 1)
+    30 (Priority: 2)
+    10 (Priority: 3)</pre><br><br><br>
+    
+        <h3>2. Linked List-Based Priority Queue in C</h3>
+        <p>A linked list-based priority queue uses a linked list where each node contains an element and its priority. The queue is maintained in sorted order based on priority.</p>
+        <br>
+        <h3>Example</h3>
+        <pre><code>// Linked List-Based Priority Queue Example
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt;
+    
+    struct Node {
+        int data;
+        int priority;
+        struct Node* next;
+    };
+    
+    void insert(struct Node** head, int data, int priority) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = data;
+        newNode->priority = priority;
+        newNode->next = NULL;
+    
+        // If the queue is empty or the new node has higher priority
+        if (*head == NULL || (*head)->priority < priority) {
+            newNode->next = *head;
+            *head = newNode;
+        } else {
+            struct Node* current = *head;
+            while (current->next != NULL && current->next->priority >= priority) {
+                current = current->next;
+            }
+            newNode->next = current->next;
+            current->next = newNode;
+        }
+    }
+    
+    int main() {
+        struct Node* head = NULL;
+        
+        // Insert nodes with different priorities
+        insert(&head, 10, 3);
+        insert(&head, 20, 1);
+        insert(&head, 30, 2);
+        
+        // Traverse the list
+        struct Node* current = head;
+        while (current != NULL) {
+            printf("%d (Priority: %d)\n", current->data, current->priority);
+            current = current->next;
+        }
+        
+        return 0;
+    }
+    </code></pre><br>
+        <h4>Output:</h4>
+        <pre>10 (Priority: 3)
+    30 (Priority: 2)
+    20 (Priority: 1)</pre><br><br><br>
+    
+        <h3>3. Heap-Based Priority Queue in C</h3>
+        <p>A heap-based priority queue stores elements in a heap structure, ensuring that the element with the highest priority is always at the root. This allows for efficient access and removal of the highest-priority element.</p>
+        <br>
+        <h3>Example</h3>
+        <pre><code>// Heap-Based Priority Queue Example
+    #include &lt;stdio.h&gt;
+    #include &lt;stdlib.h&gt>
+    
+    struct Heap {
+        int data[10];
+        int priority[10];
+        int size;
+    };
+    
+    void heapify(struct Heap* heap, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        
+        if (left < heap->size && heap->priority[left] > heap->priority[largest]) {
+            largest = left;
+        }
+        
+        if (right < heap->size && heap->priority[right] > heap->priority[largest]) {
+            largest = right;
+        }
+        
+        if (largest != i) {
+            // Swap
+            int tempData = heap->data[i];
+            int tempPriority = heap->priority[i];
+            heap->data[i] = heap->data[largest];
+            heap->priority[i] = heap->priority[largest];
+            heap->data[largest] = tempData;
+            heap->priority[largest] = tempPriority;
+            
+            heapify(heap, largest);
+        }
+    }
+    
+    int main() {
+        struct Heap heap = {{10, 20, 30}, {3, 1, 2}, 3};
+        
+        // Build heap
+        for (int i = heap.size / 2 - 1; i >= 0; i--) {
+            heapify(&heap, i);
+        }
+        
+        // Print heap
+        for (int i = 0; i < heap.size; i++) {
+            printf("%d (Priority: %d)\n", heap.data[i], heap.priority[i]);
+        }
+        
+        return 0;
+    }
+    </code></pre><br>
+        <h4>Output:</h4>
+        <pre>10 (Priority: 3)
+    30 (Priority: 2)
+    20 (Priority: 1)</pre>
+        <br><br>
+    
+        <h3>Comparison Of Complexities</h3>
+        <div id="table-overflow">
+        <table border="1">
+            <tr>
+                <th>Operation</th>
+                <th>Array-Based Priority Queue</th>
+                <th>Linked List-Based Priority Queue</th>
+                <th>Heap-Based Priority Queue</th>
+            </tr>
+            <tr>
+                <td>Access by Index</td>
+                <td>O(1)</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Insertion</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>O(log n)</td>
+            </tr>
+            <tr>
+                <td>Deletion</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>O(log n)</td>
+            </tr>
+        </table>
+        </div><br>
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+        </div><br>
+    </section>
+    
+
+    <section id="impl4">
+        <h2>Implementation of Priority Queue Operations</h2>
+        <br>
+        <h3>1. Priority Queue Creation and Display</h3>
+        <p>Let's first create and display a simple priority queue in C:</p>
+        <br>
+        <pre><code>
+        // C Program to create and display a priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        // Function to display the priority queue
+        void displayQueue(struct Node* front) {
+            struct Node* current = front;
+            while (current != NULL) {
+                printf("Node data: %d, Priority: %d\n", current->data, current->priority);
+                current = current->next;
+            }
+        }
+        
+        int main() {
+            // Creating nodes
+            struct Node* front = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+        
+            // Initializing nodes
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            // Display the priority queue
+            displayQueue(front);
+        
+            return 0;
+        }
+        </code></pre>
+        
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Node data: 10, Priority: 1
+        Node data: 20, Priority: 3
+        Node data: 30, Priority: 2
+        </code></pre>
+        <br><br><br>
+        
+        <h3>2. Accessing an Element in Priority Queue</h3>
+        <p>Accessing a specific element based on its priority:</p>
+        <br>
+        <pre><code>
+        // C Program to access an element in a priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        // Function to access an element
+        void accessElement(struct Node* front, int position) {
+            struct Node* current = front;
+            int index = 0;
+        
+            while (current != NULL) {
+                if (index == position) {
+                    printf("Element at position %d: Data: %d, Priority: %d\n", position, current->data, current->priority);
+                    return;
+                }
+                index++;
+                current = current->next;
+            }
+            printf("Position %d not found in the priority queue.\n", position);
+        }
+        
+        int main() {
+            struct Node* front = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+        
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            // Access an element
+            accessElement(front, 2);
+        
+            return 0;
+        }
+        </code></pre>
+        
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Element at position 2: Data: 30, Priority: 2
+        </code></pre>
+        <br><br><br>
+        
+        <h3>3. Insertion in Priority Queue</h3>
+        <p>Inserting a new node at a specific position in the priority queue:</p>
+        <br>
+        <pre><code>
+        // C Program to insert a node in a priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        // Function to insert a node
+        void insertNode(struct Node** front, int data, int priority) {
+            struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+            newNode->data = data;
+            newNode->priority = priority;
+        
+            if (*front == NULL || (*front)->priority > priority) {
+                newNode->next = *front;
+                *front = newNode;
+                return;
+            }
+        
+            struct Node* current = *front;
+            while (current->next != NULL && current->next->priority <= priority) {
+                current = current->next;
+            }
+        
+            newNode->next = current->next;
+            current->next = newNode;
+        }
+        
+        int main() {
+            struct Node* front = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+        
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            // Insert a new node
+            insertNode(&front, 15, 2);
+        
+            // Display the updated priority queue
+            struct Node* current = front;
+            while (current != NULL) {
+                printf("Node data: %d, Priority: %d\n", current->data, current->priority);
+                current = current->next;
+            }
+        
+            return 0;
+        }
+        </code></pre>
+        
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Node data: 10, Priority: 1
+        Node data: 15, Priority: 2
+        Node data: 30, Priority: 2
+        Node data: 20, Priority: 3
+        </code></pre>
+        <br><br><br>
+        
+        <h3>4. Deletion in Priority Queue</h3>
+        <p>Deleting a node at the front (highest priority) in the priority queue:</p>
+        <br>
+        <pre><code>
+        // C Program to delete a node from the priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        // Function to delete a node
+        void deleteNode(struct Node** front) {
+            if (*front == NULL) return;
+        
+            struct Node* temp = *front;
+            *front = temp->next;
+            free(temp);
+        }
+        
+        int main() {
+            struct Node* front = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+        
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            // Delete the node at the front
+            deleteNode(&front);
+        
+            // Display the updated priority queue
+            struct Node* current = front;
+            while (current != NULL) {
+                printf("Node data: %d, Priority: %d\n", current->data, current->priority);
+                current = current->next;
+            }
+        
+            return 0;
+        }
+        </code></pre>
+        
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Node data: 30, Priority: 2
+        Node data: 20, Priority: 3
+        </code></pre>
+        <br><br><br>
+        
+        <h3>5. Searching in Priority Queue</h3>
+        <p>Searching for a node based on its value in the priority queue:</p>
+        <br>
+        <pre><code>
+        // C Program to search for a node in a priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        // Function to search for a node
+        void searchNode(struct Node* front, int key) {
+            struct Node* current = front;
+            int position = 0;
+        
+            while (current != NULL) {
+                if (current->data == key) {
+                    printf("Element %d found at position %d.\n", key, position);
+                    return;
+                }
+                position++;
+                current = current->next;
+            }
+            printf("Element %d not found in the priority queue.\n", key);
+        }
+        
+        int main() {
+            struct Node* front = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+        
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            // Search for a node
+            searchNode(front, 20);
+        
+            return 0;
+        }
+        </code></pre>
+        
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Element 20 found at position 1.
+        </code></pre>
+
+
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('intro3')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl6')">Next</span>
+        </div>
+    </section>
+    
+    
+    <section id="impl2"> 
+        <h2>Implementation of Priority Queue Operations</h2>
+        <br>
+        <h3>1. Priority Queue Creation</h3>
+        <p>Let's begin by declaring and initializing a simple priority queue in C:</p>
+        <br>
+        <pre><code>
+        // C Program to declare and initialize a priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        int main() {
+            struct Node* front = NULL;
+            struct Node* second = NULL;
+            struct Node* third = NULL;
+        
+            // Allocating memory for nodes
+            front = (struct Node*)malloc(sizeof(struct Node));
+            second = (struct Node*)malloc(sizeof(struct Node));
+            third = (struct Node*)malloc(sizeof(struct Node));
+        
+            // Initializing data and setting priority
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+        
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+        
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            // Printing the priority queue
+            struct Node* current = front;
+            while(current != NULL) {
+                printf("Node data: %d, Priority: %d\n", current->data, current->priority);
+                current = current->next;
+            }
+            return 0;
+        }
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Node data: 10, Priority: 1
+        Node data: 20, Priority: 3
+        Node data: 30, Priority: 2
+        </code></pre>
+        <br><br><br>
+        <h3>2. Priority Queue Traversal</h3>
+        <p>Traverse the priority queue in order of priority:</p>
+        <br>
+        <pre><code>
+        // C Program to traverse and print priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        void traverseQueue(struct Node* front) {
+            struct Node* current = front;
+            printf("Priority Queue Traversal:\n");
+            while(current != NULL) {
+                printf("Node data: %d, Priority: %d\n", current->data, current->priority);
+                current = current->next;
+            }
+        }
+        
+        int main() {
+            struct Node* front = NULL;
+            struct Node* second = NULL;
+            struct Node* third = NULL;
+        
+            front = (struct Node*)malloc(sizeof(struct Node));
+            second = (struct Node*)malloc(sizeof(struct Node));
+            third = (struct Node*)malloc(sizeof(struct Node));
+        
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+        
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+        
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            traverseQueue(front);
+        
+            return 0;
+        }
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Priority Queue Traversal:
+        Node data: 10, Priority: 1
+        Node data: 20, Priority: 3
+        Node data: 30, Priority: 2
+        </code></pre>
+        <br><br><br>
+        <h3>3. Priority Queue Insertion (at a specific position)</h3>
+        <p>Inserting a new node in the priority queue based on priority:</p>
+        <br>
+        <pre><code>
+        // C Program to insert a node at a specific position in priority queue
+        #include &lt;stdio.h&gt;
+        #include &lt;stdlib.h&gt;
+        
+        struct Node {
+            int data;
+            int priority;
+            struct Node* next;
+        };
+        
+        void insertAtPriority(struct Node** front, int data, int priority) {
+            struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+            struct Node* current = *front;
+        
+            newNode->data = data;
+            newNode->priority = priority;
+            newNode->next = NULL;
+        
+            if(*front == NULL || (*front)->priority < priority) {
+                newNode->next = *front;
+                *front = newNode;
+                return;
+            }
+        
+            while(current->next != NULL && current->next->priority >= priority) {
+                current = current->next;
+            }
+        
+            newNode->next = current->next;
+            current->next = newNode;
+        }
+        
+        int main() {
+            struct Node* front = NULL;
+            struct Node* second = NULL;
+            struct Node* third = NULL;
+        
+            front = (struct Node*)malloc(sizeof(struct Node));
+            second = (struct Node*)malloc(sizeof(struct Node));
+            third = (struct Node*)malloc(sizeof(struct Node));
+        
+            front->data = 10;
+            front->priority = 1;
+            front->next = second;
+        
+            second->data = 20;
+            second->priority = 3;
+            second->next = third;
+        
+            third->data = 30;
+            third->priority = 2;
+            third->next = NULL;
+        
+            // Inserting 25 with priority 2 at the correct position
+            insertAtPriority(&front, 25, 2);
+        
+            // Printing the priority queue after insertion
+            struct Node* current = front;
+            while(current != NULL) {
+                printf("Node data: %d, Priority: %d\n", current->data, current->priority);
+                current = current->next;
+            }
+        
+            return 0;
+        }
+        </code></pre>
+        <p><strong>Output:</strong></p>
+        <pre><code>
+        Node data: 20, Priority: 3
+        Node data: 25, Priority: 2
+        Node data: 30, Priority: 2
+        Node data: 10, Priority: 1
+        </code></pre>
+        <br><br><br>
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl4')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl6')">Next</span>
+        </div>
+        <!-- Continue with deletion, searching, sorting, and reversal sections similar to this -->
+    </section>
+    
+     
+    <section id="impl6">
+        <h2>Priority Queue Overflow and Underflow</h2><br>
+        
+        <p>
+            Priority queues, like other data structures, can encounter challenges such as overflow and underflow. These issues often occur due to improper handling during operations like insertion and deletion. Below, we discuss what these terms mean in the context of priority queues:
+        </p><br><br>
+        
+        <h3>Priority Queue Overflow</h3>
+        <p>
+            Overflow in a priority queue happens when the system exceeds its capacity for new elements. While many implementations dynamically allocate memory, fixed-size priority queues or systems with limited memory can encounter overflow.
+        </p>
+        <ul>
+            <li><strong>Causes:</strong></li>
+            <ul>
+                <li>Exceeding the maximum size of a fixed-size priority queue.</li>
+                <li>Insufficient system memory for dynamic allocation.</li>
+            </ul>
+            <li><strong>Prevention:</strong></li>
+            <ul>
+                <li>Define a maximum capacity and prevent insertions beyond that limit.</li>
+                <li>Ensure proper memory allocation and handle memory constraints effectively.</li>
+            </ul>
+        </ul>
+        <br><br>
+        <h3>Priority Queue Underflow</h3>
+        <p>
+            Underflow in a priority queue occurs when an operation, such as deletion or extraction, is attempted on an empty queue. This can lead to runtime errors or undefined behavior.
+        </p>
+        <ul>
+            <li><strong>Causes:</strong></li>
+            <ul>
+                <li>Attempting to remove elements from an empty priority queue.</li>
+                <li>Accessing elements when the queue has not been initialized or cleared.</li>
+            </ul>
+            <li><strong>Prevention:</strong></li>
+            <ul>
+                <li>Check if the queue is empty before performing operations like deletion or extraction.</li>
+                <li>Use conditionals to handle cases where the queue is empty gracefully.</li>
+            </ul>
+        </ul>
+    
+        <p>
+            Proper management of priority queues through effective error handling and capacity monitoring can help prevent overflow and underflow issues, ensuring reliable and efficient performance.
+        </p>
+        
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+            <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+        </div>
+    </section>
+    
+    
+    <section id="impl3">
+        <h2>Advantages and Disadvantages of a Priority Queue</h2><br>
+        
+        <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Advantage</th>
+                        <th>Disadvantage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. <strong>Efficient prioritization:</strong> Elements are processed based on priority, making priority queues ideal for tasks like scheduling and resource allocation.</td>
+                        <td>1. <strong>Memory overhead:</strong> Some implementations require additional memory for maintaining heap structures or pointers.</td>
+                    </tr>
+                    <tr>
+                        <td>2. <strong>Dynamic size:</strong> Priority queues can grow or shrink dynamically, adapting to varying workloads.</td>
+                        <td>2. <strong>Insertion complexity:</strong> Adding elements while maintaining priority order can be more complex compared to simple data structures like stacks or queues.</td>
+                    </tr>
+                    <tr>
+                        <td>3. <strong>Optimal task scheduling:</strong> Priority queues ensure high-priority tasks are completed first, enhancing efficiency in time-critical applications.</td>
+                        <td>3. <strong>Sequential access:</strong> Direct access to elements based on their position is not supported; only the highest-priority element is readily accessible.</td>
+                    </tr>
+                    <tr>
+                        <td>4. <strong>Versatility:</strong> Priority queues can handle elements with varying priorities, allowing for flexible use in different scenarios.</td>
+                        <td>4. <strong>Implementation complexity:</strong> Managing and implementing a priority queue requires more effort compared to simpler data structures.</td>
+                    </tr>
+                    <tr>
+                        <td>5. <strong>Scalability:</strong> Priority queues can efficiently handle large datasets, especially when implemented with heaps.</td>
+                        <td>5. <strong>Fragmentation risk:</strong> Dynamic memory allocation in certain implementations may lead to memory fragmentation over time.</td>
+                    </tr>
+                    <tr>
+                        <td>6. <strong>Real-time processing:</strong> Ideal for scenarios where tasks or elements need to be processed in a specific order of priority.</td>
+                        <td>6. <strong>Maintenance cost:</strong> Maintaining the correct order of elements based on priority can add computational overhead.</td>
+                    </tr>
+                    <tr>
+                        <td>7. <strong>Efficient extraction:</strong> Retrieving the highest-priority element is efficient in well-implemented priority queues (O(1) or O(log n) depending on the structure).</td>
+                        <td>7. <strong>Higher insertion time:</strong> Inserting elements may take longer compared to basic data structures due to reordering based on priority.</td>
+                    </tr>
+                    <tr>
+                        <td>8. <strong>Customizable priorities:</strong> Elements can be assigned custom priorities, enabling fine-grained control over processing order.</td>
+                        <td>8. <strong>Not suitable for all applications:</strong> Priority queues may be overkill for applications where simple order is sufficient.</td>
+                    </tr>
+                    <tr>
+                        <td>9. <strong>Optimized resource usage:</strong> Frequently used in optimizing resource allocation and load balancing.</td>
+                        <td>9. <strong>Limited use cases:</strong> Priority queues are specialized and may not be the best choice for general-purpose data storage or processing.</td>
+                    </tr>
+                    <tr>
+                        <td>10. <strong>No size limitations:</strong> Priority queues can adapt dynamically without predefining a size limit.</td>
+                        <td>10. <strong>Slower traversal:</strong> Traversing all elements can be inefficient compared to arrays or lists.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><br><br>
+    
+        <div class="navigation-buttons">
+            <span class="nav-btn" onclick="showSection('impl6')">Previous</span>
+            <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+        </div>
+    </section>
+    
+    <section id="quiz">
+        <h2>Test Your Knowledge on Priority Queue</h2>
+        <h4 style="text-align: center;">This test consists of 15 multiple choice questions. <br>
+            You will have 15 minutes time to complete the test. <br>click on the below to start the test <br>
+ </h4><br>
+            <h3 style="text-align: center;">All the best 👍🏼...</h3>
+            <div id="btn">
+            <button type="button" class="action" onclick="openCourse('priorityqueue_test.html')">Start Writing</button>
+            </div>
+    </section>
+    
+    <script>   
+        // Function to show the selected section and hide the others
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            const section = document.getElementById(sectionId);
+            section.classList.add('active');
+            section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+        }
+    
+        // Handle next and previous buttons
+        let currentSection = 0;
+        const sections = document.querySelectorAll('section');
+        const totalSections = sections.length;
+    
+        function showNextSection() {
+            if (currentSection < totalSections - 1) {
+                currentSection++;
+                showSection('section-' + (currentSection + 1));
+            }
+        }
+    
+        function showPreviousSection() {
+            if (currentSection > 0) {
+                currentSection--;
+                showSection('section-' + (currentSection + 1));
+            }
+        }
+    
+        // Attach event listeners to next/previous buttons
+        document.getElementById('next-btn').addEventListener('click', showNextSection);
+        document.getElementById('prev-btn').addEventListener('click', showPreviousSection);
+    
+        function openInNewTabPriorityQueue() {
+            window.open('priority_queue/priority_viz.html', '_blank');
+        }
+
+        function openCourse(url) {
+            window.open(url, '_blank');}
+    </script>
+    
+      
+</body>
+</html>
