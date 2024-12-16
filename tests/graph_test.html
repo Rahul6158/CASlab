@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.jpg">
+  <title>Graphs Assessment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    header {
+      background-color: #1e88e5;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 1.8em;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #1c1c1c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #f4f4f4;
+    }
+
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #f4f4f4;
+    }
+
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 1em;
+      color: #cfcfcf;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      color: white;
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .marks-display {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #2e7d32;
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      border: 2px solid #388e3c;
+      border-radius: 5px;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: rgba(46, 125, 50, 0.3);
+      border: 1px solid #2e7d32;
+      color: #81c784;
+      border-radius: 5px;
+    }
+
+    .correct-answer {
+      color: #76ff03;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .timer {
+      text-align: right;
+      font-size: 1.2em;
+      color: #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      color: #ff5252;
+      margin-top: 15px;
+      font-size: 1em;
+      padding: 10px;
+      background-color: rgba(255, 82, 82, 0.1);
+      border: 1px solid #ff5252;
+      border-radius: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Graphs Assessment
+  </header>
+  <main>
+    <div class="timer" id="timer">Time Left: 15:00</div>
+    <h2 style="text-align: center;">Test Your Knowledge of Graphs</h2>
+    <div id="testContainer"></div>
+    <div id="alertContainer" class="alert" style="display: none;">Please ensure all questions are answered before submitting. Each response helps us evaluate your understanding accurately!</div>
+    <button id="submitButton" class="submit-btn">Submit Answers</button>
+    <div id="marksContainer" class="marks-display" style="display: none;"></div>
+  </main>
+  <footer>
+    &copy;Dr. Bomma Rama Krishna
+  </footer>
+
+  <script>
+    const questions = [
+  { question: "What is a graph?", options: ["Collection of nodes and edges", "Data arranged in rows and columns", "Tree structure"], correctIndex: 0, explanation: "A graph is a collection of nodes (vertices) connected by edges, used to represent relationships." },
+  { question: "What is a weighted graph?", options: ["Graph with numeric values on edges", "Graph with directed edges", "Graph with loops"], correctIndex: 0, explanation: "In a weighted graph, each edge is assigned a numerical value or weight." },
+  { question: "What is the degree of a vertex in an undirected graph?", options: ["Number of edges connected to it", "Number of paths from it", "Its position in adjacency matrix"], correctIndex: 0, explanation: "The degree of a vertex in an undirected graph is the number of edges connected to it." },
+  { question: "What is a directed graph?", options: ["Graph where edges have direction", "Graph with no cycles", "Graph with equal weights"], correctIndex: 0, explanation: "A directed graph (digraph) is one where each edge has a direction, going from one vertex to another." },
+  { question: "What is a cycle in a graph?", options: ["Closed path where nodes repeat", "Longest path in a graph", "Isolated edge"], correctIndex: 0, explanation: "A cycle is a closed path where the first and last vertices are the same, and nodes may repeat." },
+  { question: "What is the adjacency matrix representation of a graph?", options: ["Matrix showing edge connections", "Matrix showing edge weights", "Matrix showing paths"], correctIndex: 0, explanation: "An adjacency matrix is a 2D array where cell (i, j) is 1 if there is an edge from vertex i to vertex j." },
+  { question: "What is a connected graph?", options: ["Graph where all vertices are reachable", "Graph with no cycles", "Graph with all edges weighted"], correctIndex: 0, explanation: "A connected graph has a path between every pair of vertices." },
+  { question: "What is a spanning tree of a graph?", options: ["Tree connecting all vertices of a graph", "Cycle with minimum weight", "Tree with maximum height"], correctIndex: 0, explanation: "A spanning tree is a subgraph that connects all vertices of a graph without cycles." },
+  { question: "Which algorithm is used to find the shortest path in a graph?", options: ["Dijkstra's Algorithm", "Prim's Algorithm", "DFS"], correctIndex: 0, explanation: "Dijkstra's algorithm finds the shortest path in a graph with non-negative weights." },
+  { question: "What is the time complexity of BFS for a graph with V vertices and E edges?", options: ["O(V + E)", "O(V²)", "O(E log V)"], correctIndex: 0, explanation: "Breadth-First Search (BFS) traverses all vertices and edges, making its time complexity O(V + E)." },
+  { question: "What is the use of DFS in graphs?", options: ["Detecting cycles", "Finding shortest paths", "Sorting edges"], correctIndex: 0, explanation: "Depth-First Search (DFS) is used for tasks like cycle detection, connected components, and topological sorting." },
+  { question: "What is a bipartite graph?", options: ["Graph whose vertices can be divided into two sets", "Graph with no edges", "Graph with self-loops"], correctIndex: 0, explanation: "A bipartite graph is one where vertices can be divided into two sets, and edges only connect vertices from different sets." },
+  { question: "What is a dense graph?", options: ["Graph with many edges compared to vertices", "Graph with few edges", "Graph with loops"], correctIndex: 0, explanation: "A dense graph has a large number of edges compared to the number of vertices." },
+  { question: "Which algorithm is used for minimum spanning trees?", options: ["Kruskal's Algorithm", "Dijkstra's Algorithm", "Bellman-Ford Algorithm"], correctIndex: 0, explanation: "Kruskal's algorithm finds the minimum spanning tree by sorting edges and adding them in increasing weight order." },
+  { question: "What is the time complexity of Prim's Algorithm?", options: ["O(E log V)", "O(V²)", "O(E)"], correctIndex: 0, explanation: "Using a priority queue, Prim's algorithm has a time complexity of O(E log V)." },
+  { question: "What is a cut in a graph?", options: ["Division of vertices into two subsets", "Set of minimum edges", "Path from source to sink"], correctIndex: 0, explanation: "A cut divides the graph's vertices into two subsets while separating some edges." },
+  { question: "What is a tree?", options: ["Connected acyclic graph", "Graph with loops", "Graph with weighted edges"], correctIndex: 0, explanation: "A tree is a connected graph with no cycles." },
+  { question: "What is a multigraph?", options: ["Graph with multiple edges between vertices", "Graph with no edges", "Graph with directed edges"], correctIndex: 0, explanation: "A multigraph allows multiple edges between the same pair of vertices." },
+  { question: "What is the minimum number of edges in a connected graph with N vertices?", options: ["N - 1", "N", "N + 1"], correctIndex: 0, explanation: "A connected graph with N vertices has at least N - 1 edges (a tree)." },
+  { question: "What is an Eulerian path?", options: ["Path visiting every edge exactly once", "Path visiting every vertex exactly once", "Shortest path in a weighted graph"], correctIndex: 0, explanation: "An Eulerian path is a trail in a graph that visits every edge exactly once." },
+  { question: "What is a Hamiltonian path?", options: ["Path visiting every vertex exactly once", "Path visiting every edge exactly once", "Path with maximum length"], correctIndex: 0, explanation: "A Hamiltonian path is a path in a graph that visits every vertex exactly once." },
+  { question: "What is the main purpose of the Bellman-Ford Algorithm?", options: ["Finding shortest paths in graphs with negative weights", "Finding minimum spanning trees", "Finding cycles"], correctIndex: 0, explanation: "Bellman-Ford Algorithm handles graphs with negative weights and detects negative weight cycles." },
+  { question: "What is a complete graph?", options: ["Graph where every pair of vertices is connected", "Graph with no cycles", "Graph with only one connected component"], correctIndex: 0, explanation: "A complete graph has an edge between every pair of vertices." },
+  { question: "What is the adjacency list representation of a graph?", options: ["List showing edges for each vertex", "List of vertex degrees", "Matrix with edge weights"], correctIndex: 0, explanation: "An adjacency list stores each vertex along with its connected vertices." },
+  { question: "What is a planar graph?", options: ["Graph that can be drawn without edge crossings", "Graph with weighted edges", "Graph with loops"], correctIndex: 0, explanation: "A planar graph can be drawn in a plane without any edges crossing." }
+];
+
+    let timerInterval;
+    let timeLeft = 15 * 60;
+
+    function startTimer() {
+      const timerElement = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          autoSubmit();
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
+    function checkAllAnswered() {
+      return questions.every((_, index) => document.querySelector(`input[name="q${index}"]:checked`));
+    }
+
+    function evaluateAnswers() {
+    let score = 0;
+    const feedbackElements = document.querySelectorAll(".feedback");
+    const correctAnswerElements = document.querySelectorAll(".correct-answer");
+    const answerStatusElements = document.querySelectorAll(".answer-status");
+
+    questions.forEach((q, index) => {
+        const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+        const correctAnswerElement = correctAnswerElements[index];
+        const feedbackElement = feedbackElements[index];
+        const answerStatusElement = answerStatusElements[index];
+
+        if (selectedOption) {
+            const isCorrect = parseInt(selectedOption.value) === q.correctIndex;
+
+            // If the answer is correct
+            if (isCorrect) {
+                score++;
+                answerStatusElement.textContent = "Correct!";
+                answerStatusElement.style.color = "#76ff03"; // Green for correct
+            } else {
+                // If the answer is wrong
+                answerStatusElement.textContent = `Wrong! The correct answer is: ${q.options[q.correctIndex]}`;
+                answerStatusElement.style.color = "#ff5252"; // Red for wrong
+            }
+        }
+
+        // Display correct answer and explanation
+        correctAnswerElement.style.display = "block";
+        feedbackElement.style.display = "block";
+    });
+
+    return score;
+}
+
+function renderQuestions() {
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+    testContainer.innerHTML = shuffledQuestions.map((q, index) => `
+    <div class="question-container">
+        <p class="question">${index + 1}. ${q.question}</p>
+        <div class="options">
+            ${q.options.map((option, i) => `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}"> ${option}
+                </label>
+            `).join("")}
+        </div>
+        <p class="answer-status" style="font-weight: bold;"></p> <!-- Added line to show answer status -->
+        <p class="correct-answer" style="display: none; color: #76ff03;">Correct Answer: ${q.options[q.correctIndex]}</p>
+        <p class="feedback" style="display: none; color: #81c784;">Explanation: ${q.explanation}</p>
+    </div>
+    `).join("");
+}
+
+function autoSubmit() {
+    const totalScore = evaluateAnswers();
+    marksContainer.textContent = `You scored ${totalScore} out of ${questions.length}!`;
+    marksContainer.style.display = "block";
+    submitButton.disabled = true;
+}
+
+
+    submitButton.addEventListener("click", () => {
+      if (!checkAllAnswered()) {
+        alertContainer.style.display = "block";
+      } else {
+        clearInterval(timerInterval);
+        alertContainer.style.display = "none";
+        autoSubmit();
+      }
+    });
+
+    renderQuestions();
+    startTimer();
+  </script>
+</body>
+</html>
