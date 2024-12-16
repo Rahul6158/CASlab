@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+    <title>Graph Data Structures</title>
+    
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+        width: 250px;
+        background-color: #3a6cf4;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: width 0.3s ease;
+    }
+
+    h2 {
+        font-family: cursive;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .sidebar ul li {
+        margin: 10px 0;
+    }
+
+    .sidebar ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        border-radius: 5px;
+    }
+
+    .sidebar ul li a:hover {
+        background-color: #ffffff;
+        color: #3a6cf4;
+    }
+
+    /* Main content area */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s ease;
+    }
+    pre {
+    background: #f4f4f4; /* Light gray background */
+    padding: 10px; /* Padding around the code */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+}
+
+pre code {
+    display: block; /* Ensures that the code is block-level */
+    color: #2c3e50; /* Default text color */
+    white-space: pre; /* Maintain whitespace formatting */
+}
+
+/* Highlight for keywords (like 'if', 'else', 'while') */
+pre .keyword {
+    color: #2980b9; /* Blue for keywords */
+    font-weight: bold; /* Bold for emphasis */
+}
+
+/* Highlight for comments */
+pre .comment {
+    color: #7f8c8d; /* Gray for comments */
+}
+
+/* Highlight for strings */
+pre .string {
+    color: #e74c3c; /* Red for strings */
+}
+
+/* Highlight for numbers */
+pre .number {
+    color: #27ae60; /* Green for numbers */
+}
+
+
+    section {
+        display: none;
+        margin-bottom: 50px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: justify;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section h2 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3a6cf4;
+        text-align: center;
+    }
+
+    section p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 10px;
+        text-align: justify;
+    }
+
+    section img {
+        max-width: 100%;
+        height: auto;
+        margin: 20px 0;
+    }
+
+    section li {
+        margin-left: 20px;
+    }
+
+    .navigation-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #3a6cf4;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background-color: #2a52b5;
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;  /* Enable horizontal scrolling */
+}
+
+/* Button */
+.action {
+    user-select: none;
+    border: none;
+    outline: none;
+    padding: 0.75rem 1.25rem;
+    background-color: #007acc;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action:hover {
+    background-color: #005a99;
+}
+
+    /* Responsive design */
+    @media (max-width: 576px) {
+        body {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #quiz {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+        margin-bottom: 20px;
+    }
+
+    .result {
+        margin: 40px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #submit {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #submit:hover {
+        background-color: #45a049;
+    }
+
+    #result, #analytics {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+#table-overflow {
+    overflow: scroll;
+}
+
+#visualized{
+border: 2px  solid black;
+border-radius: 30px;
+text-align: center;
+background-color: aquamarine;
+}
+
+#btn {
+    display: table-row;
+
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#btn1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button{
+    padding: 5px;
+    text-align: center;
+}
+
+button:hover{
+    background-color: #4CAF50;
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-family: 'Courier New', monospace;
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+code {
+    font-family: 'Courier New', monospace;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Graph Data Structure</h2>
+        <ul>
+            <li><a href="#" onclick="showSection('intro1')">Introduction to Graphs</a></li>
+            <li><a href="#" onclick="showSection('gtdiff')">Difference between Graphs and Trees</a></li>
+            <li><a href="#" onclick="showSection('intro2')">Key Operations of Graphs</a></li>
+            <li><a href="#" onclick="showSection('impl1')">Implementation of Graphs</a></li>
+            <li><a href="#" onclick="showSection('impl6')">Types of Graphs</a></li>
+            <li><a href="#" onclick="showSection('impl2')">Directed and undirected Graphs</a></li>
+            <li><a href="#" onclick="showSection('impl7')">Cyclic and Acyclic Graphs</a></li>
+            <li><a href="#" onclick="showSection('impl3')">Implementing Weighted and Unweighted Graphs</a></li>
+            <li><a href="#" onclick="showSection('impl4')">Graph Traversal Algorithms</a></li>
+            <li><a href="#" onclick="showSection('impl5')">Shortest Path Algorithms</a></li>
+            <li><a href="#" onclick="showSection('apps0')">Minimum Spanning Trees</a></li>
+            <li><a href="#" onclick="showSection('quiz')">Test your Knowledge</a></li>
+            
+            <li>
+                <div id="btn">
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/GraphAlgorithms/BFS/BFS.html')">BFS Graph Traversal Algorithm</button><br><br>
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/GraphAlgorithms/DFS/DFS.html')">DFS Graph Traversal Algorithm</button><br><br>
+                    <button type="button" class="action" onclick="openCourse('https://brk8789.github.io/Brk_visualizations/GraphAlgorithms/PrimsAlgorithm/Prim.html')">Minimum Cost Spanning Tree Algorithm </button><br><br>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+    
+
+    <!-- Main Content -->
+    <div class="content">
+        <section id="intro1" class="active">
+            <h2>What is a Graph?</h2>
+            <p>A <strong>graph</strong> is a data structure consisting of nodes (also called vertices) connected by edges. It is used to model relationships or connections, such as social networks, transportation systems, or communication networks.</p><br>
+            <img src="graphs_ex.png" alt="graph example"><br><br>
+            <h3>Structure of a Graph:</h3><br>
+            <p>A graph is composed of vertices and edges. The key components are:</p>
+            <ul>
+                <li><strong>Vertex (Node):</strong> A fundamental unit of a graph.</li><br>
+                <li><strong>Edge:</strong> A connection between two vertices.</li><br>
+                <li><strong>Weight (Optional):</strong> A value associated with an edge, representing cost, distance, or other metrics.</li><br>
+                <li><strong>Direction (Optional):</strong> Indicates the edge's flow from one vertex to another in directed graphs.</li><br>
+            </ul>
+            <img src="graphs examples.png" alt="Directed and Undirected graphs">
+        <br><br>
+            <h3> Basic Concepts in Graph Data Structure</h3><br><br>
+            <h4>Example Graph Structure:</h4><br>
+            <pre>
+                A--B
+                | /
+                C--D
+            </pre><br>
+        
+            <h4>1. Vertices and Edges</h4>
+            <p>Graphs consist of vertices (nodes) connected by edges. Types of graphs include:</p><br>
+            <ul>
+                <li><strong>Undirected Graph:</strong> Edges have no direction.
+                    <br><em>Example:</em> A connection between cities where travel is possible in both directions.
+                </li><br>
+                <li><strong>Directed Graph (Digraph):</strong> Edges have a specific direction.
+                    <br><em>Example:</em> Flight routes where travel is possible only in one direction.
+                </li><br>
+                <li><strong>Weighted Graph:</strong> Edges have weights associated with them.
+                    <br><em>Example:</em> A map where edges represent distances between cities.
+                </li><br>
+            </ul>
+        
+            <br><br>
+            <h4>2. Types of Graphs</h4>
+            <ul>
+                <li><strong>Simple Graph:</strong> Contains no loops or multiple edges.</li>
+                <li><strong>Complete Graph:</strong> Every vertex is connected to every other vertex.</li>
+                <li><strong>Cyclic Graph:</strong> Contains at least one cycle (a path that starts and ends at the same vertex).</li>
+                <li><strong>Acyclic Graph:</strong> Contains no cycles (e.g., Directed Acyclic Graphs).</li>
+            </ul>
+            
+            <br><br>
+            <h4>3. Subgraphs</h4>
+            <p>A subgraph is a subset of a graph's vertices and edges. It represents a smaller portion of the original graph.</p>
+            <ul>
+                <li><strong>Example:</strong> In the graph above, a subgraph could include vertices <code>A</code>, <code>B</code>, and <code>C</code> with their connecting edges.</li>
+            </ul>
+            <br><br>
+            <h4>4. Other Fundamental Concepts</h4><br>
+            <ul>
+                <li><strong>Degree of a Vertex:</strong> The number of edges connected to a vertex.
+                    <br><em>Example:</em> In the above graph, the degree of <code>A</code> is 2.
+                </li>
+                <li><strong>Path:</strong> A sequence of vertices connected by edges.
+                    <br><em>Example:</em> The path from <code>A</code> to <code>D</code> is <code>A -> C -> D</code>.
+                </li>
+                <li><strong>Cycle:</strong> A path where the first and last vertices are the same.
+                    <br><em>Example:</em> <code>A -> C -> B -> A</code>.
+                </li>
+                <li><strong>Connected Graph:</strong> Every vertex is reachable from any other vertex.</li>
+                <li><strong>Disconnected Graph:</strong> Some vertices cannot be reached from others.</li>
+            </ul>
+            <br><br>
+            <h4>5. Graph Traversals</h4>
+            <p>Traversals are methods of visiting vertices in a graph:</p>
+            <ul>
+                <li><strong>Depth-First Search (DFS):</strong> Explores as far as possible along each branch before backtracking.</li>
+                <li><strong>Breadth-First Search (BFS):</strong> Explores all neighbors of a vertex before moving to the next level.</li>
+            </ul>
+        
+            <br><br>
+            <p><strong>Example:</strong> Consider a network of cities connected by roads where vertices represent cities, and edges represent roads.</p>
+            <img src="road_networks.avif" alt="city network example"><br><br>
+        
+            <h3>Understanding the Graph Process</h3><br>
+            <p>A graph represents relationships between entities, making it suitable for modeling complex systems. Let’s break down how a graph works.</p><br>
+            <ul>
+                <li><strong>Connections:</strong><br>
+                    Edges represent relationships, such as social connections or physical roads.</li><br>
+                <li><strong>Traversal:</strong><br>
+                    Traversing a graph involves visiting vertices to find relationships or paths.</li><br>
+            </ul><br>
+        
+            <h3>Real-Time Examples of Graphs</h3>
+            <p>Graphs are widely used in real-world applications. Some examples include:</p><br>
+            <ul>
+                <li><strong>Social Networks:</strong> Represent users as vertices and friendships as edges.</li><br>
+                <li><strong>Transportation Systems:</strong> Model cities and routes using graphs.</li><br>
+                <li><strong>Web Crawling:</strong> Represent web pages as vertices and hyperlinks as edges.</li><br>
+                <li><strong>Computer Networks:</strong> Represent devices as vertices and connections as edges.</li><br>
+                <li><strong>Machine Learning:</strong> Represent feature interactions in models like Graph Neural Networks.</li><br>
+            </ul><br>
+        
+            <div class="navigation-buttons">
+                <span></span>
+                <span class="nav-btn" onclick="showSection('gtdiff')">Next</span>
+            </div>
+        </section>
+               
+        <section id="intro2">
+            <h2>Key Operations of a Graph:</h2><br>
+            <ol>
+                <li>
+                    <strong>Insertion</strong>: Adding a new vertex or edge to the graph. This operation ensures that the graph's structure remains valid.
+                </li><br>
+                <li>
+                    <strong>Deletion</strong>: Removing a vertex or edge from the graph. The graph must handle such changes without losing its connectivity where applicable.
+                </li><br>
+                <li>
+                    <strong>Traversal</strong>: Visiting all the vertices or edges of the graph in a specific order. Common traversal methods include:
+                    <ul>
+                        <li><strong>Depth-First Search (DFS):</strong> Explore as far as possible along one branch before backtracking.</li>
+                        <li><strong>Breadth-First Search (BFS):</strong> Explore all neighbors at the current depth before moving deeper.</li>
+                    </ul>
+                </li><br>
+                <li>
+                    <strong>Search</strong>: Finding a specific vertex or edge in the graph. Search operations are fundamental for tasks like pathfinding and connectivity checks.
+                </li><br>
+                <li>
+                    <strong>Shortest Path</strong>: Determining the shortest path between two vertices. Algorithms like Dijkstra's or Bellman-Ford are commonly used.
+                </li><br>
+                <li>
+                    <strong>Cycle Detection</strong>: Checking if the graph contains any cycles, important in dependency resolution and circuit detection.
+                </li><br>
+            </ol><br><br>
+            
+            <h3>A Real-World Example</h3><br>
+            <ul>
+                <li><strong>Insertion</strong>: Adding a new city or road to a map. <br> Example: Adding a new route in a GPS system.</li><br>
+                <li><strong>Deletion</strong>: Removing a city or road from a map. <br> Example: Removing a discontinued bus route.</li><br>
+                <li><strong>Traversal</strong>: Navigating through all connected points in a network. <br> Example: Exploring all flight routes from a given city.</li><br>
+                <li><strong>Search</strong>: Find a specific city or route in a transportation network. <br> Example: Searching for a direct flight between two cities.</li><br>
+                <li><strong>Shortest Path</strong>: Determine the quickest or least-cost route. <br> Example: Calculating the fastest driving route between two locations.</li><br>
+                <li><strong>Cycle Detection</strong>: Check if there are redundant paths or loops in a system. <br> Example: Identifying cyclic dependencies in a project management task graph.</li><br>
+                <img src="Gps-Circle.jpg" alt="graph structure example">
+            </ul><br><br><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('gtdiff')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl1')">Next</span>
+            </div>
+        </section>
+        
+        <section id="gtdiff">
+            <h2>Differences Between Graphs and Trees</h2>
+            <p>Graphs and trees are both fundamental data structures in computer science but have distinct properties and applications. Below is a comparison to clarify the differences:</p>
+            <br>
+            <div id="table-overflow">
+                <table border="1" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Graph</th>
+                            <th>Tree</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Definition</td>
+                            <td>A graph is a collection of vertices (nodes) connected by edges, where connections can be arbitrary.</td>
+                            <td>A tree is a special type of graph that is connected and acyclic, with a hierarchical structure.</td>
+                        </tr>
+                        <tr>
+                            <td>Structure</td>
+                            <td>Can have cycles, multiple paths between nodes, and no specific root.</td>
+                            <td>Has a single root, no cycles, and exactly one path between any two nodes.</td>
+                        </tr>
+                        <tr>
+                            <td>Connectivity</td>
+                            <td>Can be disconnected (not all vertices are connected).</td>
+                            <td>Always connected; all nodes are reachable from the root.</td>
+                        </tr>
+                        <tr>
+                            <td>Types of Edges</td>
+                            <td>Can have undirected or directed edges, as well as weighted edges.</td>
+                            <td>Typically has undirected edges in simple trees. Directed edges are used in rooted or binary trees.</td>
+                        </tr>
+                        <tr>
+                            <td>Number of Edges</td>
+                            <td>Can have any number of edges, even exceeding the number of vertices.</td>
+                            <td>Always has exactly (n - 1) edges for n nodes.</td>
+                        </tr>
+                        <tr>
+                            <td>Cycle</td>
+                            <td>May contain cycles, depending on the type of graph (e.g., directed, undirected).</td>
+                            <td>Never contains cycles; acyclic by definition.</td>
+                        </tr>
+                        <tr>
+                            <td>Traversal</td>
+                            <td>Traversal methods include depth-first search (DFS) and breadth-first search (BFS).</td>
+                            <td>Traversal methods include pre-order, in-order, post-order, and level-order.</td>
+                        </tr>
+                        <tr>
+                            <td>Applications</td>
+                            <td>Modeling networks (e.g., social networks, road maps, communication systems).</td>
+                            <td>Hierarchical data (e.g., file systems, organizational charts, decision-making processes).</td>
+                        </tr>
+                        <tr>
+                            <td>Flexibility</td>
+                            <td>More flexible; supports multiple representations like adjacency lists and matrices.</td>
+                            <td>More rigid due to its hierarchical and acyclic nature.</td>
+                        </tr>
+                        <tr>
+                            <td>Examples</td>
+                            <td>Social networks, web graphs, road maps, electrical circuits.</td>
+                            <td>Binary trees, binary search trees, AVL trees, heaps.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <p>While trees are a subset of graphs with specific rules, graphs are more general and versatile. Understanding the differences helps choose the right data structure for the problem at hand.</p>
+            <br>
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('intro2')">Next</span>
+            </div>
+        </section>
+        
+        <section id="impl1">
+
+            <h2>Implementation of Graphs</h2>
+            <p>Graphs can be implemented in various ways, primarily using:</p><br>
+            <ol>
+                <li><strong>Adjacency List:</strong> A space-efficient way where each vertex stores a list of its adjacent vertices.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Efficient for sparse graphs and supports dynamic graph structures.</li>
+                        <li><strong>Drawbacks:</strong> Traversing all edges requires accessing each vertex's adjacency list.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Adjacency Matrix:</strong> A 2D matrix where each cell (i, j) indicates the presence of an edge between vertex i and vertex j.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Suitable for dense graphs and for quickly checking edge existence.</li>
+                        <li><strong>Drawbacks:</strong> Requires O(V^2) space regardless of the graph's density.</li>
+                    </ul>
+                </li><br>
+            </ol><br><br>
+            <h3>Comparison of Graph Implementation: Adjacency List vs Adjacency Matrix</h3><br>
+            <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Graph Using Adjacency List</th>
+                        <th>Graph Using Adjacency Matrix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Memory Usage</td>
+                        <td>Efficient for sparse graphs; memory depends on the number of edges.</td>
+                        <td>Requires O(V^2) space regardless of sparsity.</td>
+                    </tr>
+                    <tr>
+                        <td>Edge Lookup Time</td>
+                        <td>O(V) in the worst case for an edge check.</td>
+                        <td>O(1) time for an edge check.</td>
+                    </tr>
+                    <tr>
+                        <td>Insertion/Deletion</td>
+                        <td>Efficient for dynamic graphs; requires list updates.</td>
+                        <td>Inefficient for dynamic graphs; involves matrix resizing.</td>
+                    </tr>
+                    <tr>
+                        <td>Traversal Complexity</td>
+                        <td>Efficient for sparse graphs; depends on the number of edges (O(V + E)).</td>
+                        <td>Less efficient for sparse graphs; traversal is O(V^2).</td>
+                    </tr>
+                    <tr>
+                        <td>Space Efficiency</td>
+                        <td>Highly efficient for sparse graphs with fewer edges.</td>
+                        <td>Wasteful for sparse graphs but efficient for dense graphs.</td>
+                    </tr>
+                    <tr>
+                        <td>Flexibility</td>
+                        <td>Highly flexible; can easily adapt to changes in graph structure.</td>
+                        <td>Limited flexibility; requires a predefined matrix size or resizing.</td>
+                    </tr>
+                    <tr>
+                        <td>Implementation Complexity</td>
+                        <td>More complex due to dynamic list management.</td>
+                        <td>Simpler; straightforward matrix indexing.</td>
+                    </tr>
+                    <tr>
+                        <td>Best Suited For</td>
+                        <td>Sparse graphs and scenarios where edge additions/removals are frequent.</td>
+                        <td>Dense graphs or scenarios requiring constant-time edge lookups.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('intro2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl6')">Next</span>
+            </div>
+        </section>
+        
+        <section id="impl6">
+            <h2>Types of Graphs</h2>
+            <p>Graphs are categorized into various types based on their structure and properties:</p><br>
+            <img src="Types-of-graphs.jpg" alt="types of graphs"><br><br>
+            <ol>
+                <li><strong>Undirected Graph:</strong> A graph in which edges have no direction, meaning the connection between two vertices is bidirectional.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Commonly used in social networks and road networks.</li>
+                        <li><strong>Examples:</strong> Friendship graphs, collaboration networks.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Directed Graph (Digraph):</strong> A graph where edges have a direction, meaning connections are one-way.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Used in workflows, dependency graphs, and navigation systems.</li>
+                        <li><strong>Properties:</strong> Can have cycles or be acyclic (DAG).</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Sparse Graph:</strong> A graph in which the number of edges is relatively small compared to the number of vertices.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Efficient storage and computation, often used in large-scale systems like the internet or social networks.</li>
+                        <li><strong>Properties:</strong> Ideal for adjacency lists since most entries are empty.</li>
+                        <li><strong>Examples:</strong> Road maps with limited connections, certain scientific networks.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Complete Graph:</strong> A graph in which every pair of vertices is connected by a unique edge.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Used in modeling fully connected networks where every node interacts with every other node.</li>
+                        <li><strong>Properties:</strong> Contains the maximum number of edges possible for a given set of vertices.</li>
+                        <li><strong>Examples:</strong> Fully connected peer-to-peer networks, small group communication models.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Weighted Graph:</strong> A graph where edges have weights associated with them, representing costs, distances, or capacities.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Used in shortest path algorithms like Dijkstra's and network flow problems.</li>
+                        <li><strong>Examples:</strong> Transportation networks, communication networks.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Cyclic Graph:</strong> A graph that contains at least one cycle, where a cycle is a path that starts and ends at the same vertex.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Models systems with feedback loops.</li>
+                        <li><strong>Drawbacks:</strong> Requires special handling in algorithms like topological sorting.</li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Acyclic Graph:</strong> A graph with no cycles, often used in scenarios where dependency resolution is required.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Commonly used in project scheduling and hierarchical structures.</li>
+                        <li><strong>Examples:</strong> Directed Acyclic Graphs (DAGs) in version control systems.</li>
+                    </ul>
+                </li><br><br>
+
+            </ol><br><br>
+            <h3>Comparison of Types of Graphs</h3><br>
+            <div id="table-overflow">
+                <table border="1" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Key Properties</th>
+                            <th>Best Suited For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Undirected Graph</td>
+                            <td>Edges have no direction; bidirectional connections.</td>
+                            <td>Social networks, road networks.</td>
+                        </tr>
+                        <tr>
+                            <td>Directed Graph</td>
+                            <td>Edges have direction; connections are one-way.</td>
+                            <td>Workflows, navigation systems.</td>
+                        </tr>
+                        <tr>
+                            <td>Weighted Graph</td>
+                            <td>Edges have weights representing costs, distances, or capacities.</td>
+                            <td>Shortest path problems, transportation networks.</td>
+                        </tr>
+                        <tr>
+                            <td>Cyclic Graph</td>
+                            <td>Contains at least one cycle; paths that start and end at the same vertex.</td>
+                            <td>Feedback systems, recurrent processes.</td>
+                        </tr>
+                        <tr>
+                            <td>Acyclic Graph</td>
+                            <td>No cycles; used for hierarchical or dependency structures.</td>
+                            <td>Project scheduling, version control systems.</td>
+                        </tr>
+                        <tr>
+                            <td>Sparse Graph</td>
+                            <td>Few edges relative to vertices; low density.</td>
+                            <td>Large networks, web structures.</td>
+                        </tr>
+                        <tr>
+                            <td>Complete Graph</td>
+                            <td>Every pair of vertices is connected by a unique edge.</td>
+                            <td>Fully connected networks, communication models.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl1')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl2')">Next</span>
+            </div>
+        </section>
+
+        <section id="impl2">
+
+            <h2>Directed and Undirected Graphs</h2>
+            <p>Graphs are fundamental mathematical structures that represent pairwise relationships between objects. They are extensively used in computer science, physics, biology, and many other fields to solve complex problems and model real-world phenomena. A graph consists of two main components: vertices (or nodes) and edges (connections between the nodes). Based on the nature of the edges, graphs can be categorized into directed and undirected graphs, each serving distinct purposes and applications.</p><br>
+            
+            <img src="directed-and-undirected-graphs.png" alt="Directed and Undirected Graph">
+            
+            <ol>
+                <li><strong>Directed Graph (Digraph): </strong><br><br> A directed graph is characterized by edges that have a specific direction, signifying a one-way relationship between nodes. These are particularly useful in scenarios where directionality is crucial.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Commonly used in modeling workflows, citation networks, social media interactions, web page rankings, and navigation systems.</li>
+                        <li><strong>Properties:</strong> 
+                            <ul style="list-style-type: circle;">
+                                <li>Each edge is represented as an ordered pair of vertices (u, v), indicating a connection from vertex u to vertex v.</li>
+                                <li>Self-loops (edges from a vertex to itself) and parallel edges may exist, depending on the application.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Advantages:</strong> 
+                            <ul style="list-style-type: circle;">
+                                <li>Effectively captures directional relationships.</li>
+                                <li>Enables representation of processes like data flow or dependency resolution.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Disadvantages:</strong> Complexity increases with larger datasets due to the need to track directionality for each edge.</li>
+                        <br><br>
+                        <li><strong>Example:</strong>
+                            <div>
+                                <pre>
+Vertices: A, B, C
+Edges: A -> B, B -> C, A -> C
+                                </pre>
+                            </div>
+                        </li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Undirected Graph: </strong><br><br> An undirected graph is defined by edges that lack a direction, implying a mutual or bidirectional relationship between nodes. These graphs are simpler and widely used in scenarios where directionality is irrelevant.
+                    <br><br><ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Often used in modeling road networks, social networks (e.g., friendships), communication networks, and biological interactions.</li>
+                        <li><strong>Properties:</strong> 
+                            <ul style="list-style-type: circle;">
+                                <li>Each edge is an unordered pair of vertices {u, v}, indicating a bidirectional connection between u and v.</li>
+                                <li>Self-loops are generally not allowed, but parallel edges may exist in some variations.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Advantages:</strong> 
+                            <ul style="list-style-type: circle;">
+                                <li>Simpler representation when directional relationships are not required.</li>
+                                <li>Efficient for applications that deal with mutual connections.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Disadvantages:</strong> Cannot explicitly represent one-way relationships.</li>
+                        <br><br>
+                        <li><strong>Example:</strong>
+                            <div>
+                                <pre>
+Vertices: A, B, C
+Edges: A -- B, B -- C, A -- C
+                                </pre
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ol><br><br>
+
+            <h3>Comparison of Directed and Undirected Graphs</h3><br>
+            <div id="table-overflow">
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Key Properties</th>
+                        <th>Best Suited For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Directed Graph</td>
+                        <td>Edges have a specific direction, indicating a one-way relationship. Allows for modeling dependencies and processes.</td>
+                        <td>Workflows, navigation systems, citation networks, and dependency modeling.</td>
+                    </tr>
+                    <tr>
+                        <td>Undirected Graph</td>
+                        <td>Edges have no direction, representing mutual relationships. Simpler to analyze and visualize.</td>
+                        <td>Social networks, communication networks, and road systems.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div><br><br>
+
+            <h3>Applications of Graphs</h3>
+            <p>Graphs have a wide array of applications across various domains. Some notable examples include:</p>
+            <ul style="list-style-type: disc;">
+                <li><strong>Transportation:</strong> Modeling road networks, railway systems, and flight routes.</li>
+                <li><strong>Data Science:</strong> Representing relationships in datasets, clustering, and network analysis.</li>
+                <li><strong>Biology:</strong> Analyzing protein-protein interactions and gene regulatory networks.</li>
+                <li><strong>Technology:</strong> Modeling internet topology and search engine algorithms.</li>
+            </ul>
+
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl6')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl7')">Next</span>
+            </div>
+        </section>
+        
+        <section id="impl7">
+            <h2>Cyclic and Acyclic Graphs</h2>
+            <p>Graphs can also be categorized based on the presence or absence of cycles:</p>
+            <ol>
+                <li><strong>Cyclic Graphs:</strong><br><br>
+                    A cyclic graph contains at least one cycle, which is a path that starts and ends at the same vertex, with all edges and vertices distinct (except the starting and ending vertex).
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Often used in circuit design, network modeling, and dependency resolution where feedback loops are involved.</li>
+                        <li><strong>Properties:</strong>
+                            <ul style="list-style-type: circle;">
+                                <li>A cycle must involve at least three vertices.</li>
+                                <li>Both directed and undirected graphs can have cycles.</li>
+                            </ul>
+                        </li><br><br>
+                        <li><strong>Example:</strong>
+                            <div>
+                                <pre>
+    Vertices: A, B, C, D
+    Edges: A -> B, B -> C, C -> A
+                                </pre>
+                                
+                            </div>
+                        </li>
+                    </ul>
+                </li><br><br>
+                <li><strong>Acyclic Graphs:</strong><br><br>
+                    An acyclic graph contains no cycles, meaning there is no path that starts and ends at the same vertex.
+                    <br><br>
+                    <ul style="list-style-type: disc;">
+                        <li><strong>Usage:</strong> Commonly used in hierarchical structures like organization charts, dependency graphs, and family trees.</li>
+                        <li><strong>Properties:</strong>
+                            <ul style="list-style-type: circle;">
+                                <li>If the graph is directed and acyclic, it is known as a Directed Acyclic Graph (DAG).</li>
+                                <li>In an undirected graph, an acyclic graph is a tree or forest.</li>
+                            </ul>
+                        </li><br><br>
+                        <li><strong>Example:</strong>
+                            <div>
+                                <pre>
+    Vertices: A, B, C, D
+    Edges: A -> B, B -> C, C -> D
+                                </pre>
+                                
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ol><br>
+            <br><br>
+            <h3>Comparison of Cyclic and Acyclic Graphs</h3><br>
+            <div id="table-overflow">
+                <table border="1" cellpadding="10">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Key Properties</th>
+                            <th>Best Suited For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cyclic Graph</td>
+                            <td>Contains at least one cycle; applicable to both directed and undirected graphs.</td>
+                            <td>Modeling feedback systems, circuits, and network dependencies.</td>
+                        </tr>
+                        <tr>
+                            <td>Acyclic Graph</td>
+                            <td>Does not contain any cycles; includes trees and DAGs.</td>
+                            <td>Representing hierarchies, scheduling tasks, and dependency management.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br><br><br>
+            <h3>Applications of Graphs</h3><br>
+            <p>Graphs have a wide array of applications across various domains. Some notable examples include:</p>
+            <ul style="list-style-type: disc;">
+                <li><strong>Transportation:</strong> Modeling road networks, railway systems, and flight routes.</li>
+                <li><strong>Data Science:</strong> Representing relationships in datasets, clustering, and network analysis.</li>
+                <li><strong>Biology:</strong> Analyzing protein-protein interactions and gene regulatory networks.</li>
+                <li><strong>Technology:</strong> Modeling internet topology and search engine algorithms.</li>
+            </ul>
+    
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl2')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl3')">Next</span>
+            </div>
+        </section>
+
+        <section id="impl3">
+
+            <h2>Implementing Weighted and Unweighted Graphs</h2><br>
+        
+            <p>A graph is a data structure that consists of a set of nodes (also called vertices) and a set of edges that connect pairs of nodes. Graphs can be classified into weighted and unweighted based on the type of edges they have:</p>
+            <br><br><br>
+            <h3>Unweighted Graph</h3><br>
+            <p>An unweighted graph is a graph where all edges have no weights or equal weights. It can be used for scenarios where the connections between nodes are important, but their cost or distance is not a concern.</p>
+        
+            <h4>Example of an Unweighted Graph</h4><br>
+            <p>Consider the following unweighted graph:</p>
+            <pre><code>
+                A - B - C
+                    |   |
+                    D - E
+            </code></pre><br>
+            <p>In this graph:
+                <ul>
+                    <li>Nodes A, B, C, D, and E are connected by edges.</li>
+                    <li>No edge has a weight associated with it.</li>
+                </ul>
+            </p><br><br><br>
+        
+            <h3>Weighted Graph</h3><br>
+            <p>A weighted graph is a graph where each edge has an associated weight, often used to represent costs, distances, or capacities.</p>
+        
+            <h4>Example of a Weighted Graph</h4><br>
+            <p>Consider the following weighted graph:</p>
+            <img src="weighted_graph.jpg" alt="weighted_graph_example"><br>
+            <p>In this graph:
+                <ul>
+                    <li>Edge A->B has a weight of 3.</li>
+                    <li>Edge B->C has a weight of 1.</li>
+                    <li>Edge B->D has a weight of 6.</li>
+                    <li>Edge B->E has a weight of 5.</li>
+                    <li>Edge C->E has a weight of 6.</li>
+                    <li>Edge D->E has a weight of 7.</li>
+                </ul>
+            </p>
+            <br><br><br>
+            <h3>Operations and their Algorithms:</h3><br>
+            <p>
+                1. <strong>Insert Operation:</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;a) For unweighted graphs, add an edge between two nodes.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b) For weighted graphs, add an edge with its associated weight.<br><br>
+        
+                2. <strong>Search Operation:</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;a) Use BFS or DFS to find if two nodes are connected in unweighted graphs.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b) For weighted graphs, use algorithms like Dijkstra's or Bellman-Ford to find the shortest path.<br><br>
+        
+                3. <strong>Traversal:</strong><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;a) <strong>Breadth-First Search (BFS):</strong> Traverse the graph level by level.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b) <strong>Depth-First Search (DFS):</strong> Traverse as deep as possible before backtracking.<br><br>
+            </p>
+            <br><br><br>
+            <h3>Implementation Code</h3><br>
+            <pre>
+            <code>
+            // C program to represent a graph as adjacency lists
+            #include &lt;stdio.h&gt;
+            #include &lt;stdlib.h&gt;
+        
+            // Struct to represent a node in the adjacency list
+            typedef struct Node {
+                int vertex;
+                int weight; // Weight is optional for unweighted graphs
+                struct Node* next;
+            } Node;
+        
+            // Struct to represent the graph
+            typedef struct Graph {
+                int numVertices;
+                Node** adjLists;
+            } Graph;
+        
+            // Function to create a new node
+            Node* createNode(int vertex, int weight) {
+                Node* newNode = (Node*)malloc(sizeof(Node));
+                newNode->vertex = vertex;
+                newNode->weight = weight;
+                newNode->next = NULL;
+                return newNode;
+            }
+        
+            // Function to create a graph
+            Graph* createGraph(int vertices) {
+                Graph* graph = (Graph*)malloc(sizeof(Graph));
+                graph->numVertices = vertices;
+                graph->adjLists = malloc(vertices * sizeof(Node*));
+                for (int i = 0; i < vertices; i++) {
+                    graph->adjLists[i] = NULL;
+                }
+                return graph;
+            }
+        
+            // Function to add an edge to an unweighted graph
+            void addEdge(Graph* graph, int src, int dest) {
+                Node* newNode = createNode(dest, 0);
+                newNode->next = graph->adjLists[src];
+                graph->adjLists[src] = newNode;
+        
+                newNode = createNode(src, 0);
+                newNode->next = graph->adjLists[dest];
+                graph->adjLists[dest] = newNode;
+            }
+        
+            // Function to add an edge to a weighted graph
+            void addWeightedEdge(Graph* graph, int src, int dest, int weight) {
+                Node* newNode = createNode(dest, weight);
+                newNode->next = graph->adjLists[src];
+                graph->adjLists[src] = newNode;
+        
+                newNode = createNode(src, weight);
+                newNode->next = graph->adjLists[dest];
+                graph->adjLists[dest] = newNode;
+            }
+        
+            // Function to print the graph
+            void printGraph(Graph* graph) {
+                for (int v = 0; v < graph->numVertices; v++) {
+                    Node* temp = graph->adjLists[v];
+                    printf("Vertex %d:\n", v);
+                    while (temp) {
+                        printf(" -> %d (weight %d)", temp->vertex, temp->weight);
+                        temp = temp->next;
+                    }
+                    printf("\n");
+                }
+            }
+        
+            int main() {
+                Graph* graph = createGraph(5);
+        
+                // Add edges for weighted graph example
+                addWeightedEdge(graph, 0, 1, 3);
+                addWeightedEdge(graph, 1, 2, 1);
+                addWeightedEdge(graph, 1, 3, 6);
+                addWeightedEdge(graph, 1, 4, 5);
+                addWeightedEdge(graph, 2, 4, 6);
+                addWeightedEdge(graph, 3, 4, 7);
+        
+                printGraph(graph);
+        
+                return 0;
+            }
+            </code>
+            </pre><br>
+        
+            <h3>Output</h3><br>
+            <pre><code>
+            Vertex 0:
+            -> 1 (weight 3)
+            Vertex 1:
+            -> 4 (weight 5) -> 3 (weight 6) -> 2 (weight 1) -> 0 (weight 3)
+            Vertex 2:
+            -> 4 (weight 6) -> 1 (weight 1)
+            Vertex 3:
+            -> 4 (weight 7) -> 1 (weight 6)
+            Vertex 4:
+            -> 3 (weight 7) -> 2 (weight 6) -> 1 (weight 5)
+            </code></pre><br>
+            <br><br>
+            <h3>Complexity Analysis</h3><br>
+            <p><strong>Time Complexity:</strong><br> O(V + E) for traversal operations (BFS/DFS).<br>
+            <strong>Space Complexity:</strong><br> O(V + E) for storing adjacency lists.</p>
+                <br><br><br>
+            <h3>Summary</h3>
+            <p>This implementation demonstrates the difference between weighted and unweighted graphs. Weighted graphs allow edges to have associated weights, making them useful for scenarios involving costs, distances, or capacities. Unweighted graphs are simpler and ideal for situations where weights are not relevant.</p>
+        <br><br><br>
+            <h3>Benefits of Using Graphs</h3><br>
+            <ul>
+                <li><strong>Versatility:</strong> Graphs can represent a wide range of problems, from social networks to road maps.</li><br>
+                <li><strong>Efficient Algorithms:</strong> Algorithms like BFS, DFS, and Dijkstra's help solve complex graph problems efficiently.</li><br>
+                <li><strong>Scalability:</strong> Graphs can handle a large number of nodes and edges.</li><br>
+            </ul>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl7')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl4')">Next</span>
+            </div>
+        </section>
+        
+        <section id="impl4">
+
+            <h2>Graph Traversal Algorithms</h2><br>
+            
+            <p>Graph traversal is the process of visiting all the nodes in a graph in a systematic manner. Traversal algorithms are fundamental for understanding and manipulating graph structures. Two widely used graph traversal techniques are **Breadth-First Search (BFS)** and **Depth-First Search (DFS)**. These techniques help in solving various problems like finding paths, detecting cycles, and exploring connectivity.</p>
+            <br><br>
+            <h3>Breadth-First Search (BFS)</h3><br>
+            <p>BFS is an algorithm for traversing or searching tree or graph data structures. It explores all the nodes at the present depth before moving on to the nodes at the next depth level. BFS is implemented using a queue.</p>
+            
+            <strong>Steps:</strong>
+            <ul>
+                <li>Start at the source node (root).</li>
+                <li>Enqueue the source node and mark it as visited.</li>
+                <li>While the queue is not empty, dequeue a node, process it, and enqueue all its unvisited neighbors.</li>
+            </ul><br>
+            <br><br>
+            <h3>Depth-First Search (DFS)</h3><br>
+            <p>DFS is an algorithm for traversing or searching tree or graph data structures. It explores as far as possible along each branch before backtracking. DFS can be implemented using recursion or a stack.</p>
+            
+            <strong>Steps:</strong>
+            <ul>
+                <li>Start at the source node (root).</li>
+                <li>Mark the current node as visited.</li>
+                <li>Recursively visit all its unvisited neighbors.</li>
+            </ul><br>
+            <br><br>
+            <h3>Implementation Code</h3><br>
+            <pre>
+            <code>
+            // C program for Graph Traversal Algorithms
+            #include <stdio.h>
+            #include <stdlib.h>
+            #include <stdbool.h>
+            
+            #define MAX_NODES 100
+            
+            // Adjacency Matrix representation
+            int graph[MAX_NODES][MAX_NODES];
+            bool visited[MAX_NODES];
+            int queue[MAX_NODES], front = -1, rear = -1;
+            
+            // Add an edge to the graph
+            void addEdge(int u, int v) {
+                graph[u][v] = 1;
+                graph[v][u] = 1; // For undirected graphs
+            }
+            
+            // BFS Implementation
+            void BFS(int start, int numNodes) {
+                front = rear = 0;
+                queue[rear] = start;
+                visited[start] = true;
+            
+                printf("BFS Traversal: ");
+                while (front <= rear) {
+                    int current = queue[front++];
+                    printf("%d ", current);
+            
+                    for (int i = 0; i < numNodes; i++) {
+                        if (graph[current][i] && !visited[i]) {
+                            queue[++rear] = i;
+                            visited[i] = true;
+                        }
+                    }
+                }
+                printf("\n");
+            }
+            
+            // DFS Implementation
+            void DFS(int node, int numNodes) {
+                visited[node] = true;
+                printf("%d ", node);
+            
+                for (int i = 0; i < numNodes; i++) {
+                    if (graph[node][i] && !visited[i]) {
+                        DFS(i, numNodes);
+                    }
+                }
+            }
+            
+            // Main program to test graph traversal algorithms
+            int main() {
+                int numNodes = 6;
+            
+                // Initialize the graph and visited array
+                for (int i = 0; i < numNodes; i++) {
+                    for (int j = 0; j < numNodes; j++) {
+                        graph[i][j] = 0;
+                    }
+                    visited[i] = false;
+                }
+            
+                // Create a sample graph
+                addEdge(0, 1);
+                addEdge(0, 2);
+                addEdge(1, 3);
+                addEdge(1, 4);
+                addEdge(2, 5);
+            
+                // Perform BFS
+                BFS(0, numNodes);
+            
+                // Reset visited array for DFS
+                for (int i = 0; i < numNodes; i++) {
+                    visited[i] = false;
+                }
+            
+                // Perform DFS
+                printf("DFS Traversal: ");
+                DFS(0, numNodes);
+                printf("\n");
+            
+                return 0;
+            }
+            </code>
+            </pre><br>
+            <br>
+            <h3>Output</h3><br>
+            <pre><code>
+            BFS Traversal: 0 1 2 3 4 5
+            DFS Traversal: 0 1 3 4 2 5
+            </code></pre><br>
+            <br><br>
+            <h3>Complexity Analysis</h3><br>
+            <ul>
+                <li><strong>Time Complexity:</strong> O(V + E), where V is the number of vertices and E is the number of edges.</li>
+                <li><strong>Space Complexity:</strong> O(V) for storing the visited array and queue/stack.</li>
+            </ul><br>
+            <br><br>
+            <h3>Applications</h3><br>
+            <ul>
+                <li><strong>Path Finding:</strong> BFS can be used to find the shortest path in an unweighted graph.</li>
+                <li><strong>Cycle Detection:</strong> DFS can be used to detect cycles in a graph.</li>
+                <li><strong>Topological Sorting:</strong> DFS is used in directed acyclic graphs (DAGs) for topological ordering.</li>
+                <li><strong>Connected Components:</strong> Both BFS and DFS can identify connected components in a graph.</li>
+            </ul><br>
+            
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl3')">Previous</span>
+                <span class="nav-btn" onclick="showSection('impl5')">Next</span>
+            </div>
+            
+        </section>
+
+        <section id="impl5">
+
+            <h2>Shortest Path Algorithms</h2><br>
+        
+            <p>Shortest Path Algorithms are used to find the minimum distance or cost between nodes in a graph. These algorithms are fundamental in graph theory and have applications in navigation systems, network routing, and resource optimization.</p><br>
+        
+            <h3>Types of Shortest Path Problems</h3><br>
+            <ul>
+                <li><strong>Single-Source Shortest Path:</strong> Finds the shortest path from a source node to all other nodes in the graph (e.g., Dijkstra's Algorithm).</li><br>
+                <li><strong>All-Pairs Shortest Path:</strong> Finds the shortest paths between all pairs of nodes (e.g., Floyd-Warshall Algorithm).</li><br>
+                <li><strong>Single-Pair Shortest Path:</strong> Finds the shortest path between two specific nodes.</li><br>
+            </ul><br>
+        
+            <h3>Popular Shortest Path Algorithms</h3><br>
+            <ul>
+                <li><strong>Dijkstra's Algorithm:</strong> A greedy algorithm that works on graphs with non-negative edge weights.</li><br>
+                <li><strong>Bellman-Ford Algorithm:</strong> Works with graphs that may have negative edge weights, but not negative weight cycles.</li><br>
+                <li><strong>Floyd-Warshall Algorithm:</strong> A dynamic programming approach to solve the all-pairs shortest path problem.</li><br>
+                <li><strong>A* Algorithm:</strong> A heuristic-based algorithm used in scenarios like game development and pathfinding.</li><br>
+            </ul><br>
+        
+            <h3>Example: Dijkstra's Algorithm</h3><br>
+            <p>Consider the following graph:</p>
+            <pre><code>
+                Graph:
+                A --4-- B
+                A --2-- C
+                B --3-- C
+                B --6-- D
+                C --1-- D
+        
+                Steps of Dijkstra's Algorithm:
+                1. Start at source node A.
+                2. Initialize distances: A=0, B=∞, C=∞, D=∞.
+                3. Update neighbors of A: B=4, C=2.
+                4. Move to the node with the smallest distance (C).
+                5. Update neighbors of C: D=3.
+                6. Move to the next smallest distance node (B).
+                7. Continue until all nodes are visited.
+        
+                Shortest Path from A to D: A -> C -> D (Cost: 3)
+            </code></pre><br>
+        
+            <h3>Example: Floyd-Warshall Algorithm</h3><br>
+            <p>Consider the same graph:</p>
+            <pre><code>
+                Adjacency Matrix Representation:
+                A   B   C   D
+            A   0   4   2   ∞
+            B   4   0   3   6
+            C   2   3   0   1
+            D   ∞   6   1   0
+        
+                Steps:
+                1. Use each node as an intermediate node.
+                2. Update distances to find shortest paths between all pairs.
+        
+                Result:
+                A -> D: Cost = 3
+                B -> D: Cost = 4
+                ...
+            </code></pre><br>
+        
+            <h3>Complexity Analysis</h3><br>
+            <p><strong>Dijkstra's Algorithm:</strong><br>
+                Time Complexity: O((V + E) log V) with a priority queue.<br>
+                Space Complexity: O(V) for distances and visited sets.
+            </p><br>
+            <p><strong>Bellman-Ford Algorithm:</strong><br>
+                Time Complexity: O(V × E).<br>
+                Space Complexity: O(V) for distances.
+            </p><br>
+            <p><strong>Floyd-Warshall Algorithm:</strong><br>
+                Time Complexity: O(V³).<br>
+                Space Complexity: O(V²) for the distance matrix.
+            </p><br>
+        
+            <h3>Applications of Shortest Path Algorithms</h3><br>
+            <ul>
+                <li><strong>Navigation Systems:</strong> Finding the shortest route between two locations.</li><br>
+                <li><strong>Network Routing:</strong> Optimizing data transfer across computer networks.</li><br>
+                <li><strong>Logistics and Transportation:</strong> Planning efficient delivery routes.</li><br>
+                <li><strong>Game Development:</strong> AI pathfinding in games.</li><br>
+            </ul><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl4')">Previous</span>
+                <span class="nav-btn" onclick="showSection('apps0')">Next</span>
+            </div>
+        </section>
+         
+        <section id="apps0">
+
+            <h2>Minimum Spanning Tree (MST)</h2><br>
+        
+            <p>A Minimum Spanning Tree (MST) of a weighted undirected graph is a subset of its edges that connects all vertices together, without any cycles, and with the minimum possible total edge weight. MSTs are widely used in network design, clustering, and optimizing paths in graphs.</p><br>
+        
+            <h3>Properties of MST</h3><br>
+            <ul>
+                <li><strong>Number of edges:</strong> An MST has exactly (V - 1) edges, where V is the number of vertices in the graph.</li><br>
+                <li><strong>No cycles:</strong> MSTs are acyclic, meaning they do not contain any loops.</li><br>
+                <li><strong>Minimum weight:</strong> The sum of the edge weights in an MST is the smallest among all possible spanning trees.</li><br>
+            </ul><br>
+        
+            <h3>Popular Algorithms for Finding MST</h3><br>
+            <ul>
+                <li><strong>Kruskal's Algorithm:</strong> A greedy approach that sorts all edges by weight and adds them to the MST if they do not form a cycle.</li><br>
+                <li><strong>Prim's Algorithm:</strong> Another greedy approach that starts with a single vertex and grows the MST by adding the smallest edge that connects a vertex in the MST to one outside it.</li><br>
+            </ul><br>
+        
+            <h3>Example: MST using Kruskal's Algorithm</h3><br>
+            <p>Consider the following graph with vertices and weighted edges:</p>
+            <pre><code>
+                Graph:
+                A --1-- B
+                A --3-- C
+                B --4-- C
+                B --2-- D
+                C --5-- D
+        
+                Steps of Kruskal's Algorithm:
+                1. Sort edges: (A-B:1), (B-D:2), (A-C:3), (B-C:4), (C-D:5).
+                2. Add (A-B:1) to MST.
+                3. Add (B-D:2) to MST.
+                4. Add (A-C:3) to MST.
+        
+                Resulting MST:
+                A --1-- B
+                A --3-- C
+                B --2-- D
+            </code></pre><br>
+        
+            <h3>Example: MST using Prim's Algorithm</h3><br>
+            <p>Consider the same graph:</p>
+            <pre><code>
+                Graph:
+                A --1-- B
+                A --3-- C
+                B --4-- C
+                B --2-- D
+                C --5-- D
+        
+                Steps of Prim's Algorithm:
+                1. Start from vertex A.
+                2. Add (A-B:1) to MST.
+                3. Add (B-D:2) to MST.
+                4. Add (A-C:3) to MST.
+        
+                Resulting MST:
+                A --1-- B
+                A --3-- C
+                B --2-- D
+            </code></pre><br>
+        
+            <h3>Complexity Analysis</h3><br>
+            <p><strong>Kruskal's Algorithm:</strong><br>
+                Time Complexity: O(E log E), where E is the number of edges (due to sorting).<br>
+                Space Complexity: O(E + V) for storing edges and subsets.
+            </p><br>
+            <p><strong>Prim's Algorithm:</strong><br>
+                Time Complexity: O((V + E) log V) using a priority queue.<br>
+                Space Complexity: O(V) for storing visited nodes and the priority queue.
+            </p><br>
+        
+            <h3>Applications of MST</h3><br>
+            <ul>
+                <li><strong>Network Design:</strong> MSTs are used to design efficient networks, such as minimizing cable length for electrical or communication networks.</li><br>
+                <li><strong>Clustering:</strong> MSTs help in clustering data points based on minimum connections.</li><br>
+                <li><strong>Approximation Algorithms:</strong> MSTs are used in solving problems like the Traveling Salesman Problem (TSP).</li><br>
+            </ul><br>
+        
+            <div class="navigation-buttons">
+                <span class="nav-btn" onclick="showSection('impl5')">Previous</span>
+                <span class="nav-btn" onclick="showSection('quiz')">Next</span>
+            </div>
+        </section>
+        
+        <section id="quiz">
+                    <h2>Test Your Knowledge on Graphs</h2>
+                    <h4 style="text-align: center;">This test consists of 15 multiple choice questions. <br>
+                        You will have 15 minutes time to complete the test. <br>click on the below Button to start the test <br>
+            </h4><br>
+                        <h3 style="text-align: center;">All the best 👍🏼...</h3>
+                        <div id="btn1">
+                        <button type="button" class="action" onclick="openCourse('graph_test.html')">Start Writing</button>
+                        </div>
+        </section>
+        
+        <script>
+            // Function to show the selected section and scroll to it
+            function showSection(sectionId) {
+                var sections = document.querySelectorAll('section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                const section = document.getElementById(sectionId);
+                section.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth' }); // Scrolls the specific section into view
+            }
+            
+            function openInNewTab() {
+                window.open('https://brk8789.github.io/Brk_visualizations/Basics/stack/stack.html', '_blank');
+            }
+            
+            function openInNewTabLl() {
+                window.open('https://brk8789.github.io/Brk_visualizations/Basics/implementation-linked-list/linkedlist.html', '_blank');
+            }
+            function openCourse(url) {
+      window.open(url, '_blank');
+    }
+        </script>
+            
+
+</body>
+
+</html>
